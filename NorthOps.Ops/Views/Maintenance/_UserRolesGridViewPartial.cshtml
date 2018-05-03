@@ -1,0 +1,56 @@
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "User Roles";
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "UserRolesGridView";
+        settings.CallbackRouteValues = new { Controller = "Maintenance", Action = "UserRolesGridViewPartial" };
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Maintenance", Action = "UserRolesGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Maintenance", Action = "UserRolesGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Maintenance", Action = "UserRolesGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.Width = Unit.Percentage(10);
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.Columns.Add("Name");
+        settings.Columns.Add("Description");
+        settings.SetEditFormTemplateContent(c =>
+        {
+            Html.DevExpress().Button(btn => { btn.Name = "btnSave"; btn.Text = "Save"; btn.ClientSideEvents.Click = "function(s,e){UserRolesGridView.UpdateEdit();}"; }).GetHtml();
+            Html.DevExpress().Button(btn => { btn.Name = "btnCancel"; btn.Text = "Cancel"; btn.ClientSideEvents.Click = "function(s,e){UserRolesGridView.CancelEdit();}"; }).GetHtml();
+            if (ViewData["model"] != null)
+            {
+                Html.RenderPartial("_UserRoleAddEditPartial", ViewData["model"]);
+            }
+            else
+            {
+                Html.RenderAction("UserRoleAddEditPartial", new { Id = DataBinder.Eval(ViewData["item"] ?? c.DataItem, "Id") });
+
+            }
+            
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

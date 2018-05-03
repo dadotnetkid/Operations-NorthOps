@@ -1,0 +1,64 @@
+@using System.Web.UI.WebControls;
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "ExamGrid";
+        settings.CallbackRouteValues = new { Controller = "Exam", Action = "ExamGridPartial" };
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Exam", Action = "ExamGridPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Exam", Action = "ExamGridPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Exam", Action = "ExamGridPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+
+        settings.KeyFieldName = "ExamId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.Columns.Add("ExamName");
+        settings.Columns.Add("Type");
+        settings.Columns.Add("Items");
+
+
+
+
+
+      settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+        settings.SettingsDetail.ShowDetailRow = true;
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            //Html.RenderAction("gvUsersPartial", new { SubscriptionId = DataBinder.Eval(c.DataItem, "SubscriptionId") });
+
+            var item = ViewData["item"] ?? c.DataItem;
+            Html.RenderAction("QuestionGridPartial", new { ExamId = DataBinder.Eval(item, "ExamId") });
+
+        });
+        settings.SetEditFormTemplateContent(c =>
+        {
+            var item = ViewData["item"] ?? c.DataItem;
+            Html.RenderAction("ExamAddEditPartial", new { ExamId = DataBinder.Eval(item, "ExamId") });
+
+        });
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,85 @@
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "TownCityGrid";
+        settings.CallbackRouteValues = new { Controller = "Maintenance", Action = "TownCityGridPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Maintenance", Action = "TownCityGridPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Maintenance", Action = "TownCityGridPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Maintenance", Action = "TownCityGridPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        
+        settings.CommandColumn.ShowClearFilterButton = true;
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowDeleteButton = false;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowNewButton = false;
+
+        settings.KeyFieldName = "TownCityId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = false;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        //settings.Columns.Add("TownCityId");
+        settings.Columns.Add("Name");
+        settings.Columns.Add("AddressStateProvince.Name").Caption="Province";
+
+        settings.SetEditFormTemplateContent(c => {
+            var item = ViewData["item"] != null ? ViewData["item"] : c.DataItem;
+
+            ViewContext.Writer.Write("<div class=\"editform col-md-12\" style='float:left;'>");
+            Html.DevExpress().TextBox(cfg => {
+                cfg.Name = "Name"; cfg.Properties.NullText = cfg.Name;
+            }).Bind(DataBinder.Eval(item, "Name")).GetHtml();
+
+            Html.DevExpress().ComboBox(cfg => {
+                cfg.Name = "StateProvinceId";
+                cfg.Width = System.Web.UI.WebControls.Unit.Pixel(213);
+                cfg.Properties.ValueField = "Id";
+                cfg.Properties.TextField = "Name";
+                cfg.Properties.ValueType = typeof(Int32);
+                cfg.Properties.DropDownRows = 6;
+                cfg.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+                cfg.Properties.DropDownStyle = DropDownStyle.DropDownList;
+                cfg.Properties.NullText = "State | Province"; cfg.Width = System.Web.UI.WebControls.Unit.Pixel(260);
+            }).BindList(ViewBag.States).Bind(DataBinder.Eval(item, "StateProvinceId")).GetHtml();
+
+            ViewContext.Writer.Write("</div>");
+            ViewContext.Writer.Write("<div class=\"editform col-md-12\" style='float:right; padding-top:20px;'>");
+            Html.DevExpress().Button(
+                btnSettings => {
+                    btnSettings.Name = "btnUpdate";
+                    btnSettings.Text = "Update";
+                    btnSettings.ClientSideEvents.Click = "function(s, e){ TownCityGrid.UpdateEdit(); }";
+                }).Render();
+            Html.DevExpress().Button(
+                btnSettings => {
+                    btnSettings.Name = "btnCancel";
+                    btnSettings.Text = "Cancel";
+                    btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+                    btnSettings.ClientSideEvents.Click = "function(s, e){ TownCityGrid.CancelEdit(); }";
+                }).Render();
+            ViewContext.Writer.Write("</div>");
+
+
+        });
+
+
+    });
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

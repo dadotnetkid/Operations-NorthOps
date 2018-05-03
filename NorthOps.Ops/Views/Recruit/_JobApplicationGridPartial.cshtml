@@ -1,0 +1,191 @@
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "JobApplicationGrid";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "Recruit",
+            Action = "JobApplicationGridPartial"
+        };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+        settings.CommandColumn.ShowClearFilterButton = true;
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowDeleteButton = false;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "JobApplicationId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        //settings.Columns.Add("JobApplicationId");
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Users.CreatedDate";
+            col.ColumnType = DevExpress.Web.Mvc.MVCxGridViewColumnType.DateEdit; col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+        });
+        settings.Columns.Add("Users.FullName");
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Users.EmailConfirmed";
+            column.Caption = "Resume";
+            column.ColumnType = MVCxGridViewColumnType.CheckBox;
+            column.SetDataItemTemplateContent(c =>
+            {
+
+
+                //ch.Name = "cb_" + c.KeyValue.ToString();
+                //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Resume"));
+                //chk.ClientEnabled = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "IsRequiredRelationship")) != true;
+                //chk.ClientEnabled = false;
+                Html.DevExpress().CheckBox(ch =>
+                {
+                    ch.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Users.EmailConfirmed"));
+                    ch.Name = "cb_" + c.KeyValue.ToString();
+                    ch.ReadOnly = true;
+                }).Bind(DataBinder.Eval(c.DataItem, "Users.EmailConfirmed")).Render();
+            });
+
+        });
+        settings.Columns.Add("ApplicantExamScore").Caption="Score";
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "MBTIResult";
+            column.Caption = "MBTI";
+
+        });
+        settings.Columns.Add("Users.ReApply");
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "PhoneInterview";
+            column.Caption = "Phone Interview";
+            column.ColumnType = MVCxGridViewColumnType.CheckBox;
+            column.SetDataItemTemplateContent(c =>
+            {
+
+                Html.DevExpress().CheckBox(chk =>
+                {
+                    chk.Name = "cbRi_" + c.KeyValue.ToString();
+                    chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "PhoneInterview"));
+                    chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+                }).Bind(DataBinder.Eval(c.DataItem, "PhoneInterview")).Render();
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "PersonalInterview";
+            column.Caption = "Personal Interview";
+            column.ColumnType = MVCxGridViewColumnType.CheckBox;
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().CheckBox(chk =>
+                {
+                    chk.Name = "cbPi_" + c.KeyValue.ToString();
+                    //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "PersonalInterview"));
+                    chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+                }).Bind(DataBinder.Eval(c.DataItem, "PersonalInterview")).Render();
+
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Training";
+            column.Caption = "Training";
+            column.ColumnType = MVCxGridViewColumnType.CheckBox;
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().CheckBox(chk =>
+                {
+                    chk.Name = "cbT_" + c.KeyValue.ToString();
+                    //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Training"));
+                    chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+                }).Bind(DataBinder.Eval(c.DataItem, "Training")).Render();
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "OnBoarding";
+            column.Caption = "OnBoarding";
+            column.ColumnType = MVCxGridViewColumnType.CheckBox;
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().CheckBox(chk =>
+                {
+                    chk.Name = "cbOb_" + c.KeyValue.ToString();
+                    //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "OnBoarding"));
+                    chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+                }).Bind(DataBinder.Eval(c.DataItem, "OnBoarding")).Render();
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Contract";
+            column.Caption = "Contract";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().CheckBox(chk =>
+                {
+                    chk.Name = "cbC_" + c.KeyValue.ToString();
+                    //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Contract"));
+                    chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+                }).Bind(DataBinder.Eval(c.DataItem, "Contract")).Render();
+            });
+        });
+        //settings.Columns.Add("PhoneInterview");
+        //settings.Columns.Add("PersonalInterview");
+        //settings.Columns.Add("Training");
+        //settings.Columns.Add("OnBoarding");
+        //settings.Columns.Add("Contract");
+        settings.Columns.Add("Users.Cellular");
+        settings.Columns.Add("Users.Skills");
+
+        settings.SetEditFormTemplateContent(c =>
+        {
+            var item = ViewData["item"] != null ? ViewData["item"] : c.DataItem;
+            var model = new UnitOfWork().JobApplicationRepo.GetByID(DataBinder.Eval(item, "JobApplicationId"));
+            //settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialUpdate", UserId = model.UserId };
+
+            Html.RenderPartial("_applicantgridviewpartial", model);
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Text = "Update";
+                btn.Name = "btnUpdate";
+                btn.ClientSideEvents.Click = "function(s,e){JobApplicationGrid.UpdateEdit();}";
+            }).GetHtml();
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Text = "Cancel";
+                btn.Name = "btnCancel";
+                btn.ClientSideEvents.Click = "function(s,e){JobApplicationGrid.CancelEdit();}";
+                btn.Style.Add(HtmlTextWriterStyle.MarginLeft, "10px");
+            }).GetHtml();
+        });
+    });
+
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

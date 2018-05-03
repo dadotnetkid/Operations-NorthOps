@@ -1,0 +1,28 @@
+﻿
+@{
+    Html.DevExpress().TokenBox(tb =>
+    {
+        tb.Name = "UserId";
+        tb.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        tb.CallbackRouteValues = new { Controller = "Campaign", Action = "UserTokenPartial", CampaignId = ViewBag.CampaignId };
+        //    tb.Properties.ClientSideEvents.Init= "function(s,e){console.log(s.GetValue()); UserId.PerformCallback({User:s.GetValue()}) }";
+        tb.Properties.ValueField = "Id";
+        tb.Properties.TextField = "Name";
+        tb.Properties.CallbackPageSize = 10;
+        tb.PreRender = (s, e) =>
+        {
+            MVCxTokenBox tokenBox = s as MVCxTokenBox;
+            if (ViewBag.Users != null)
+            {
+                foreach (var i in ViewBag.Users as IEnumerable<NorthOps.Ops.Models.User>)
+                {
+                    tokenBox.Tokens.Add(i.FirstName + " " + i.LastName);
+                }
+            }
+
+
+        };
+        //  tb.Properties.
+
+    }).BindList(Model).GetHtml();
+}

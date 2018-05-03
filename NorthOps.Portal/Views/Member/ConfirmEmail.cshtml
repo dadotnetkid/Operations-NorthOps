@@ -1,0 +1,21 @@
+﻿@model Microsoft.AspNet.Identity.IdentityResult
+
+@{
+    ViewBag.Title = "Confirm Email";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<div class="login-box-body">
+    @if (Model.Succeeded)
+    {
+        <p class="login-box-msg">
+            Thank you for confirming your email address.
+            Please <a href="@Url.Action("index","home")">click here </a>to proceed to the portal.
+        </p>
+    }
+    else
+    {
+        <p class="login-box-msg">Error in confirming your email address.</p>
+    }
+</div>
+

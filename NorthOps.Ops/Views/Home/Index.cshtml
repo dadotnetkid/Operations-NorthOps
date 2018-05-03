@@ -1,0 +1,8 @@
+﻿@using NorthOps.Ops.Controllers
+@{
+    ViewBag.Title = "DASHBOARD";
+}
+
+@if (User.IsInRole("Applicant")) {
+    Html.Action("ApplicationStatusGridViewPartial");
+}

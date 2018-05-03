@@ -1,0 +1,83 @@
+@using NorthOps.Ops.Repository;
+@{
+    var gridname = Bootstrap.randomString();
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+
+
+
+        settings.Name = ((Guid)ViewBag.QuestionId).ToString(); ;
+    
+        settings.CallbackRouteValues = new { Controller = "Question", Action = "ChoicesGridPartial", QuestionId = ViewBag.QuestionId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Question", Action = "ChoicesGridPartialAddNew", QuestionId = ViewBag.QuestionId, ChoiceId = Guid.NewGuid() };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Question", Action = "ChoicesGridPartialUpdate", QuestionId = ViewBag.QuestionId };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Question", Action = "ChoicesGridPartialDelete", QuestionId = ViewBag.QuestionId };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.KeyFieldName = "ChoiceId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+
+        settings.Columns.Add("Choice1").Caption = "Choice";
+        settings.Columns.Add(m => { m.ColumnType = MVCxGridViewColumnType.CheckBox; m.FieldName = "IsAnswer"; });
+        settings.Columns.Add("DateCreated");
+        settings.SetEditFormTemplateContent(c =>
+        {
+            //  Html.RenderAction("GridViewDetailPartial", new { RoomID = DataBinder.Eval(c.DataItem, "ID") });
+            ViewContext.Writer.Write(Bootstrap.beginRow + Bootstrap.colLg4);
+            Html.DevExpress().TextBox(m =>
+            {
+
+                m.Name = "Choice1";
+                m.Width = Bootstrap.FullWidth;
+            }).Render();
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.colLg4);
+            Html.DevExpress().CheckBox(m =>
+            {
+                m.Name = "IsAnswer";
+                m.Checked = false;
+            }).Render();
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.endDiv);
+            ViewContext.Writer.Write("<div class='row margin-top-10'>" + Bootstrap.colLg4);
+            Html.DevExpress().Button(m =>
+            {
+                m.ClientSideEvents.Click = "function(s,e){Grid.UpdateEdit();}";
+                m.Name = "btnChoiceUpdate";
+                m.Text = "Add";
+
+            }).Render();
+            Html.DevExpress().Button(m =>
+            {
+                m.ClientSideEvents.Click = "function(s,e){Grid.CancelEdit();}";
+                m.Name = "btnCancelUpdate";
+                m.Text = "Cancel";
+                m.Style.Add(HtmlTextWriterStyle.MarginLeft, "5px");
+
+            }).Render();
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.endDiv);
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+

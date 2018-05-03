@@ -1,0 +1,1349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NorthOps.Portal.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AddressStateProvinces">
+          <Key>
+            <PropertyRef Name="StateProvinceId" />
+          </Key>
+          <Property Name="StateProvinceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AddressTownCities">
+          <Key>
+            <PropertyRef Name="TownCityId" />
+          </Key>
+          <Property Name="TownCityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="StateProvinceId" Type="int" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicantAnswer">
+          <Key>
+            <PropertyRef Name="ApplicantAnswerId" />
+          </Key>
+          <Property Name="ApplicantAnswerId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="QuestionId" Type="uniqueidentifier" />
+          <Property Name="ChoiceId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Applicants">
+          <Key>
+            <PropertyRef Name="ApplicantId" />
+          </Key>
+          <Property Name="ApplicantId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ExamId" Type="uniqueidentifier" />
+          <Property Name="Result" Type="int" />
+          <Property Name="DateTimeTaken" Type="datetime2" Precision="7" />
+          <Property Name="IsTaken" Type="bit" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="ChoiceId" />
+          </Key>
+          <Property Name="ChoiceId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="QuestionId" Type="uniqueidentifier" />
+          <Property Name="ChoiceLetter" Type="varchar" MaxLength="50" />
+          <Property Name="Choice" Type="varchar(max)" />
+          <Property Name="IsAnswer" Type="bit" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Exam">
+          <Key>
+            <PropertyRef Name="ExamId" />
+          </Key>
+          <Property Name="ExamId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CategoryId" Type="uniqueidentifier" />
+          <Property Name="ExamName" Type="varchar(max)" />
+          <Property Name="ExamType" Type="int" />
+          <Property Name="Duration" Type="int" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="IsFinish" Type="bit" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+          <Property Name="IsRandom" Type="bit" />
+          <Property Name="Percentage" Type="int" />
+          <Property Name="Items" Type="int" />
+        </EntityType>
+        <EntityType Name="JobApplications">
+          <Key>
+            <PropertyRef Name="JobApplicationId" />
+          </Key>
+          <Property Name="JobApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Resume" Type="bit" />
+          <Property Name="PhoneInterview" Type="bit" />
+          <Property Name="PersonalInterview" Type="bit" />
+          <Property Name="Training" Type="bit" />
+          <Property Name="OnBoarding" Type="bit" />
+          <Property Name="Contract" Type="bit" />
+          <Property Name="ExamScore" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Exam" Type="bit" />
+          <Property Name="PhoneInterviewDate" Type="datetime" />
+          <Property Name="PersonalInterviewDate" Type="datetime" />
+          <Property Name="TrainingDate" Type="datetime" />
+          <Property Name="OnBoardingDate" Type="datetime" />
+          <Property Name="ContractDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PersonalityResult">
+          <Key>
+            <PropertyRef Name="PersonalityResultId" />
+          </Key>
+          <Property Name="PersonalityResultId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="E" Type="int" />
+          <Property Name="I" Type="int" />
+          <Property Name="S" Type="int" />
+          <Property Name="N" Type="int" />
+          <Property Name="T" Type="int" />
+          <Property Name="F" Type="int" />
+          <Property Name="J" Type="int" />
+          <Property Name="P" Type="int" />
+          <Property Name="DateTaken" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExamId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="VideoId" Type="uniqueidentifier" />
+          <Property Name="Title" Type="varchar(max)" />
+          <Property Name="Number" Type="int" />
+          <Property Name="Question" Type="varchar(max)" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="TypingSpeed">
+          <Key>
+            <PropertyRef Name="TypingId" />
+          </Key>
+          <Property Name="TypingId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExamId" Type="uniqueidentifier" />
+          <Property Name="Paragraph" Type="varchar(max)" />
+          <Property Name="TypingLevel" Type="int" />
+        </EntityType>
+        <EntityType Name="UserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="25" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="nvarchar" MaxLength="150" />
+          <Property Name="LastUpdated" Type="datetime" />
+          <Property Name="CreatedDate" Type="smalldatetime" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CivilStatus" Type="nvarchar" MaxLength="12" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="6" />
+          <Property Name="BirthDate" Type="smalldatetime" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" />
+          <Property Name="TownCity" Type="int" />
+          <Property Name="Cellular" Type="nvarchar" MaxLength="25" />
+          <Property Name="Photo" Type="varbinary(max)" />
+          <Property Name="Height" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Weight" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Religion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Citizenship" Type="nvarchar" MaxLength="50" />
+          <Property Name="Languages" Type="nvarchar(max)" />
+          <Property Name="Resume" Type="varbinary(max)" />
+          <Property Name="ResumeFileType" Type="varchar" MaxLength="5" />
+          <Property Name="HireDate" Type="datetime" />
+          <Property Name="Skills" Type="nvarchar(max)" />
+          <Property Name="ReApply" Type="int" />
+        </EntityType>
+        <EntityType Name="UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="VideoId" />
+          </Key>
+          <Property Name="VideoId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExamId" Type="uniqueidentifier" />
+          <Property Name="VideoName" Type="varchar(max)" />
+          <Property Name="VideoPath" Type="varchar(max)" />
+          <Property Name="Video" Type="varbinary(max)" />
+          <Property Name="Extension" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_ApplicantAnswer_ChoiceId">
+          <End Role="Choice" Type="Self.Choice" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicantAnswer" Type="Self.ApplicantAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Choice">
+              <PropertyRef Name="ChoiceId" />
+            </Principal>
+            <Dependent Role="ApplicantAnswer">
+              <PropertyRef Name="ChoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicantAnswer_QuestionId">
+          <End Role="Question" Type="Self.Question" Multiplicity="0..1" />
+          <End Role="ApplicantAnswer" Type="Self.ApplicantAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="ApplicantAnswer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicantAnswer_UserId">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="ApplicantAnswer" Type="Self.ApplicantAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicantAnswer">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_ExamId">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_UserId">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Applicants" Type="Self.Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Choice_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Choice" Type="Self.Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
+          <End Role="AddressStateProvinces" Type="Self.AddressStateProvinces" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AddressTownCities" Type="Self.AddressTownCities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressStateProvinces">
+              <PropertyRef Name="StateProvinceId" />
+            </Principal>
+            <Dependent Role="AddressTownCities">
+              <PropertyRef Name="StateProvinceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exam_CategoryId">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Exam">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobApplications_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="JobApplications" Type="Self.JobApplications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JobApplications">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonalityResult_UserId">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="PersonalityResult" Type="Self.PersonalityResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonalityResult">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_ExamId">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_VideoId">
+          <End Role="Video" Type="Self.Video" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="VideoId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="VideoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypingSpeed_ExamId">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="0..1" />
+          <End Role="TypingSpeed" Type="Self.TypingSpeed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="TypingSpeed">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserClaims_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserClaims" Type="Self.UserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLogins_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLogins" Type="Self.UserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersInRoles_UserRoles">
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UsersInRoles" Type="Self.UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersInRoles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UsersInRoles" Type="Self.UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Video_ExamId">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="0..1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NorthOpsPortalModelStoreContainer">
+          <EntitySet Name="AddressStateProvinces" EntityType="Self.AddressStateProvinces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AddressTownCities" EntityType="Self.AddressTownCities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicantAnswer" EntityType="Self.ApplicantAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Applicants" EntityType="Self.Applicants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Choice" EntityType="Self.Choice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exam" EntityType="Self.Exam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobApplications" EntityType="Self.JobApplications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalityResult" EntityType="Self.PersonalityResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypingSpeed" EntityType="Self.TypingSpeed" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserClaims" EntityType="Self.UserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ApplicantAnswer_ChoiceId" Association="Self.FK_ApplicantAnswer_ChoiceId">
+            <End Role="Choice" EntitySet="Choice" />
+            <End Role="ApplicantAnswer" EntitySet="ApplicantAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicantAnswer_QuestionId" Association="Self.FK_ApplicantAnswer_QuestionId">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="ApplicantAnswer" EntitySet="ApplicantAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicantAnswer_UserId" Association="Self.FK_ApplicantAnswer_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ApplicantAnswer" EntitySet="ApplicantAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_ExamId" Association="Self.FK_Applicants_ExamId">
+            <End Role="Exam" EntitySet="Exam" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_UserId" Association="Self.FK_Applicants_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Choice_Question" Association="Self.FK_Choice_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Choice" EntitySet="Choice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" Association="Self.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
+            <End Role="AddressStateProvinces" EntitySet="AddressStateProvinces" />
+            <End Role="AddressTownCities" EntitySet="AddressTownCities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exam_CategoryId" Association="Self.FK_Exam_CategoryId">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Exam" EntitySet="Exam" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobApplications_Users" Association="Self.FK_JobApplications_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="JobApplications" EntitySet="JobApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonalityResult_UserId" Association="Self.FK_PersonalityResult_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PersonalityResult" EntitySet="PersonalityResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_ExamId" Association="Self.FK_Question_ExamId">
+            <End Role="Exam" EntitySet="Exam" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_VideoId" Association="Self.FK_Question_VideoId">
+            <End Role="Video" EntitySet="Video" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypingSpeed_ExamId" Association="Self.FK_TypingSpeed_ExamId">
+            <End Role="Exam" EntitySet="Exam" />
+            <End Role="TypingSpeed" EntitySet="TypingSpeed" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClaims_Users" Association="Self.FK_UserClaims_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClaims" EntitySet="UserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLogins_Users" Association="Self.FK_UserLogins_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserLogins" EntitySet="UserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInRoles_UserRoles" Association="Self.FK_UsersInRoles_UserRoles">
+            <End Role="UserRoles" EntitySet="UserRoles" />
+            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInRoles_Users" Association="Self.FK_UsersInRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Video_ExamId" Association="Self.FK_Video_ExamId">
+            <End Role="Exam" EntitySet="Exam" />
+            <End Role="Video" EntitySet="Video" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NorthOps.Portal.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="UserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserClaims_Users" FromRole="UserClaims" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserLogins_Users" FromRole="UserLogins" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="Self.UsersInRoles" FromRole="UserRoles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CivilStatus" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TownCity" Type="Int32" />
+          <Property Name="Cellular" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Height" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Weight" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Religion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Citizenship" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Languages" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Resume" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ResumeFileType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserClaims" Relationship="Self.FK_UserClaims_Users" FromRole="Users" ToRole="UserClaims" />
+          <NavigationProperty Name="UserLogins" Relationship="Self.FK_UserLogins_Users" FromRole="Users" ToRole="UserLogins" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.UsersInRoles" FromRole="Users" ToRole="UserRoles" />
+          <Property Name="HireDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="JobApplications" Relationship="NorthOps.Portal.Model.FK_JobApplications_Users" FromRole="User" ToRole="JobApplication" />
+          <Property Name="Skills" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApplicantAnswers" Relationship="NorthOps.Portal.Model.FK_ApplicantAnswer_UserId" FromRole="User" ToRole="ApplicantAnswer" />
+          <NavigationProperty Name="Applicants" Relationship="NorthOps.Portal.Model.FK_Applicants_UserId" FromRole="User" ToRole="Applicant" />
+          <Property Name="ReApply" Type="Int32" />
+          <NavigationProperty Name="PersonalityResults" Relationship="NorthOps.Portal.Model.FK_PersonalityResult_UserId" FromRole="User" ToRole="PersonalityResult" />
+        </EntityType>
+        <Association Name="FK_UserClaims_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserClaims" Type="Self.UserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLogins_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLogins" Type="Self.UserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsersInRoles">
+          <End Role="UserRoles" Type="Self.UserRole" Multiplicity="*" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="NorthOpsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserClaims" EntityType="Self.UserClaim" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogin" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_UserClaims_Users" Association="Self.FK_UserClaims_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClaims" EntitySet="UserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLogins_Users" Association="Self.FK_UserLogins_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserLogins" EntitySet="UserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="UsersInRoles" Association="Self.UsersInRoles">
+            <End Role="UserRoles" EntitySet="UserRoles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="JobApplications" EntityType="NorthOps.Portal.Model.JobApplication" />
+          <AssociationSet Name="FK_JobApplications_Users" Association="NorthOps.Portal.Model.FK_JobApplications_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="JobApplication" EntitySet="JobApplications" />
+          </AssociationSet>
+          <EntitySet Name="AddressStateProvinces" EntityType="NorthOps.Portal.Model.AddressStateProvince" />
+          <EntitySet Name="AddressTownCities" EntityType="NorthOps.Portal.Model.AddressTownCity" />
+          <AssociationSet Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" Association="NorthOps.Portal.Model.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
+            <End Role="AddressStateProvince" EntitySet="AddressStateProvinces" />
+            <End Role="AddressTownCity" EntitySet="AddressTownCities" />
+          </AssociationSet>
+          <EntitySet Name="ApplicantAnswers" EntityType="NorthOps.Portal.Model.ApplicantAnswer" />
+          <EntitySet Name="Applicants" EntityType="NorthOps.Portal.Model.Applicant" />
+          <EntitySet Name="Categories" EntityType="NorthOps.Portal.Model.Category" />
+          <EntitySet Name="Choices" EntityType="NorthOps.Portal.Model.Choice" />
+          <AssociationSet Name="FK_ApplicantAnswer_ChoiceId" Association="NorthOps.Portal.Model.FK_ApplicantAnswer_ChoiceId">
+            <End Role="Choice" EntitySet="Choices" />
+            <End Role="ApplicantAnswer" EntitySet="ApplicantAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicantAnswer_UserId" Association="NorthOps.Portal.Model.FK_ApplicantAnswer_UserId">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ApplicantAnswer" EntitySet="ApplicantAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_UserId" Association="NorthOps.Portal.Model.FK_Applicants_UserId">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Applicant" EntitySet="Applicants" />
+          </AssociationSet>
+          <EntitySet Name="PersonalityResults" EntityType="NorthOps.Portal.Model.PersonalityResult" />
+          <AssociationSet Name="FK_PersonalityResult_UserId" Association="NorthOps.Portal.Model.FK_PersonalityResult_UserId">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PersonalityResult" EntitySet="PersonalityResults" />
+          </AssociationSet>
+          <EntitySet Name="Questions" EntityType="NorthOps.Portal.Model.Question" />
+          <AssociationSet Name="FK_ApplicantAnswer_QuestionId" Association="NorthOps.Portal.Model.FK_ApplicantAnswer_QuestionId">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="ApplicantAnswer" EntitySet="ApplicantAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Choice_Question" Association="NorthOps.Portal.Model.FK_Choice_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Choice" EntitySet="Choices" />
+          </AssociationSet>
+          <EntitySet Name="TypingSpeeds" EntityType="NorthOps.Portal.Model.TypingSpeed" />
+          <EntitySet Name="Exams" EntityType="NorthOps.Portal.Model.Exam" />
+          <EntitySet Name="Videos" EntityType="NorthOps.Portal.Model.Video" />
+          <AssociationSet Name="FK_Applicants_ExamId" Association="NorthOps.Portal.Model.FK_Applicants_ExamId">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="Applicant" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exam_CategoryId" Association="NorthOps.Portal.Model.FK_Exam_CategoryId">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Exam" EntitySet="Exams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_ExamId" Association="NorthOps.Portal.Model.FK_Question_ExamId">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TypingSpeed_ExamId" Association="NorthOps.Portal.Model.FK_TypingSpeed_ExamId">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="TypingSpeed" EntitySet="TypingSpeeds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Video_ExamId" Association="NorthOps.Portal.Model.FK_Video_ExamId">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="Video" EntitySet="Videos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_VideoId" Association="NorthOps.Portal.Model.FK_Question_VideoId">
+            <End Role="Video" EntitySet="Videos" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="JobApplication">
+          <Key>
+            <PropertyRef Name="JobApplicationId" />
+          </Key>
+          <Property Name="JobApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Resume" Type="Boolean" />
+          <Property Name="PhoneInterview" Type="Boolean" />
+          <Property Name="PersonalInterview" Type="Boolean" />
+          <Property Name="Training" Type="Boolean" />
+          <Property Name="OnBoarding" Type="Boolean" />
+          <Property Name="Contract" Type="Boolean" />
+          <NavigationProperty Name="User" Relationship="NorthOps.Portal.Model.FK_JobApplications_Users" FromRole="JobApplication" ToRole="User" />
+          <Property Name="ExamScore" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="PhoneInterviewDate" Type="DateTime" Precision="3" />
+          <Property Name="PersonalInterviewDate" Type="DateTime" Precision="3" />
+          <Property Name="TrainingDate" Type="DateTime" Precision="3" />
+          <Property Name="OnBoardingDate" Type="DateTime" Precision="3" />
+          <Property Name="ContractDate" Type="DateTime" Precision="3" />
+          <Property Name="Exam" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_JobApplications_Users">
+          <End Type="NorthOps.Portal.Model.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NorthOps.Portal.Model.JobApplication" Role="JobApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JobApplication">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AddressStateProvince">
+          <Key>
+            <PropertyRef Name="StateProvinceId" />
+          </Key>
+          <Property Name="StateProvinceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AddressTownCities" Relationship="NorthOps.Portal.Model.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" FromRole="AddressStateProvince" ToRole="AddressTownCity" />
+        </EntityType>
+        <EntityType Name="AddressTownCity">
+          <Key>
+            <PropertyRef Name="TownCityId" />
+          </Key>
+          <Property Name="TownCityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="StateProvinceId" Type="Int32" Nullable="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AddressStateProvince" Relationship="NorthOps.Portal.Model.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" FromRole="AddressTownCity" ToRole="AddressStateProvince" />
+        </EntityType>
+        <Association Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
+          <End Type="NorthOps.Portal.Model.AddressStateProvince" Role="AddressStateProvince" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NorthOps.Portal.Model.AddressTownCity" Role="AddressTownCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressStateProvince">
+              <PropertyRef Name="StateProvinceId" />
+            </Principal>
+            <Dependent Role="AddressTownCity">
+              <PropertyRef Name="StateProvinceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ApplicantAnswer">
+          <Key>
+            <PropertyRef Name="ApplicantAnswerId" />
+          </Key>
+          <Property Name="ApplicantAnswerId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="QuestionId" Type="Guid" />
+          <Property Name="ChoiceId" Type="Guid" />
+          <NavigationProperty Name="Choice" Relationship="NorthOps.Portal.Model.FK_ApplicantAnswer_ChoiceId" FromRole="ApplicantAnswer" ToRole="Choice" />
+          <NavigationProperty Name="User" Relationship="NorthOps.Portal.Model.FK_ApplicantAnswer_UserId" FromRole="ApplicantAnswer" ToRole="User" />
+          <NavigationProperty Name="Question" Relationship="NorthOps.Portal.Model.FK_ApplicantAnswer_QuestionId" FromRole="ApplicantAnswer" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="ApplicantId" />
+          </Key>
+          <Property Name="ApplicantId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ExamId" Type="Guid" />
+          <Property Name="Result" Type="Int32" />
+          <Property Name="DateTimeTaken" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="User" Relationship="NorthOps.Portal.Model.FK_Applicants_UserId" FromRole="Applicant" ToRole="User" />
+          <Property Name="IsTaken" Type="Boolean" />
+          <NavigationProperty Name="Exam" Relationship="NorthOps.Portal.Model.FK_Applicants_ExamId" FromRole="Applicant" ToRole="Exam" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Guid" Nullable="false" />
+          <Property Name="CategoryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Exams" Relationship="NorthOps.Portal.Model.FK_Exam_CategoryId" FromRole="Category" ToRole="Exam" />
+        </EntityType>
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="ChoiceId" />
+          </Key>
+          <Property Name="ChoiceId" Type="Guid" Nullable="false" />
+          <Property Name="QuestionId" Type="Guid" />
+          <Property Name="Choice1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsAnswer" Type="Boolean" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="ApplicantAnswers" Relationship="NorthOps.Portal.Model.FK_ApplicantAnswer_ChoiceId" FromRole="Choice" ToRole="ApplicantAnswer" />
+          <Property Name="ChoiceLetter" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Question" Relationship="NorthOps.Portal.Model.FK_Choice_Question" FromRole="Choice" ToRole="Question" />
+        </EntityType>
+        <Association Name="FK_ApplicantAnswer_ChoiceId">
+          <End Type="NorthOps.Portal.Model.Choice" Role="Choice" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.ApplicantAnswer" Role="ApplicantAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Choice">
+              <PropertyRef Name="ChoiceId" />
+            </Principal>
+            <Dependent Role="ApplicantAnswer">
+              <PropertyRef Name="ChoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicantAnswer_UserId">
+          <End Type="NorthOps.Portal.Model.User" Role="User" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.ApplicantAnswer" Role="ApplicantAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicantAnswer">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_UserId">
+          <End Type="NorthOps.Portal.Model.User" Role="User" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.Applicant" Role="Applicant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applicant">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PersonalityResult">
+          <Key>
+            <PropertyRef Name="PersonalityResultId" />
+          </Key>
+          <Property Name="PersonalityResultId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="E" Type="Int32" />
+          <Property Name="I" Type="Int32" />
+          <Property Name="S" Type="Int32" />
+          <Property Name="N" Type="Int32" />
+          <Property Name="T" Type="Int32" />
+          <Property Name="F" Type="Int32" />
+          <Property Name="J" Type="Int32" />
+          <Property Name="P" Type="Int32" />
+          <Property Name="DateTaken" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="User" Relationship="NorthOps.Portal.Model.FK_PersonalityResult_UserId" FromRole="PersonalityResult" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_PersonalityResult_UserId">
+          <End Type="NorthOps.Portal.Model.User" Role="User" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.PersonalityResult" Role="PersonalityResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonalityResult">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <Property Name="ExamId" Type="Guid" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Number" Type="Int32" />
+          <Property Name="Question1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="ApplicantAnswers" Relationship="NorthOps.Portal.Model.FK_ApplicantAnswer_QuestionId" FromRole="Question" ToRole="ApplicantAnswer" />
+          <NavigationProperty Name="Choices" Relationship="NorthOps.Portal.Model.FK_Choice_Question" FromRole="Question" ToRole="Choice" />
+          <Property Name="VideoId" Type="Guid" />
+          <NavigationProperty Name="Exam" Relationship="NorthOps.Portal.Model.FK_Question_ExamId" FromRole="Question" ToRole="Exam" />
+          <NavigationProperty Name="Video" Relationship="NorthOps.Portal.Model.FK_Question_VideoId" FromRole="Question" ToRole="Video" />
+        </EntityType>
+        <Association Name="FK_ApplicantAnswer_QuestionId">
+          <End Type="NorthOps.Portal.Model.Question" Role="Question" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.ApplicantAnswer" Role="ApplicantAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="ApplicantAnswer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Choice_Question">
+          <End Type="NorthOps.Portal.Model.Question" Role="Question" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NorthOps.Portal.Model.Choice" Role="Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TypingSpeed">
+          <Key>
+            <PropertyRef Name="TypingId" />
+          </Key>
+          <Property Name="TypingId" Type="Guid" Nullable="false" />
+          <Property Name="ExamId" Type="Guid" />
+          <Property Name="Paragraph" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TypingLevel" Type="Int32" />
+          <NavigationProperty Name="Exam" Relationship="NorthOps.Portal.Model.FK_TypingSpeed_ExamId" FromRole="TypingSpeed" ToRole="Exam" />
+        </EntityType>
+        <EntityType Name="Exam">
+          <Key>
+            <PropertyRef Name="ExamId" />
+          </Key>
+          <Property Name="ExamId" Type="Guid" Nullable="false" />
+          <Property Name="CategoryId" Type="Guid" />
+          <Property Name="ExamName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ExamType" Type="Int32" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsFinish" Type="Boolean" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <Property Name="IsRandom" Type="Boolean" />
+          <Property Name="Percentage" Type="Int32" />
+          <Property Name="Items" Type="Int32" />
+          <NavigationProperty Name="Applicants" Relationship="NorthOps.Portal.Model.FK_Applicants_ExamId" FromRole="Exam" ToRole="Applicant" />
+          <NavigationProperty Name="Category" Relationship="NorthOps.Portal.Model.FK_Exam_CategoryId" FromRole="Exam" ToRole="Category" />
+          <NavigationProperty Name="Questions" Relationship="NorthOps.Portal.Model.FK_Question_ExamId" FromRole="Exam" ToRole="Question" />
+          <NavigationProperty Name="TypingSpeeds" Relationship="NorthOps.Portal.Model.FK_TypingSpeed_ExamId" FromRole="Exam" ToRole="TypingSpeed" />
+          <NavigationProperty Name="Videos" Relationship="NorthOps.Portal.Model.FK_Video_ExamId" FromRole="Exam" ToRole="Video" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="VideoId" />
+          </Key>
+          <Property Name="VideoId" Type="Guid" Nullable="false" />
+          <Property Name="ExamId" Type="Guid" />
+          <Property Name="VideoName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="VideoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Video1" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Extension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Exam" Relationship="NorthOps.Portal.Model.FK_Video_ExamId" FromRole="Video" ToRole="Exam" />
+          <NavigationProperty Name="Questions" Relationship="NorthOps.Portal.Model.FK_Question_VideoId" FromRole="Video" ToRole="Question" />
+        </EntityType>
+        <Association Name="FK_Applicants_ExamId">
+          <End Type="NorthOps.Portal.Model.Exam" Role="Exam" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NorthOps.Portal.Model.Applicant" Role="Applicant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Applicant">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exam_CategoryId">
+          <End Type="NorthOps.Portal.Model.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.Exam" Role="Exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Exam">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_ExamId">
+          <End Type="NorthOps.Portal.Model.Exam" Role="Exam" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NorthOps.Portal.Model.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypingSpeed_ExamId">
+          <End Type="NorthOps.Portal.Model.Exam" Role="Exam" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.TypingSpeed" Role="TypingSpeed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="TypingSpeed">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Video_ExamId">
+          <End Type="NorthOps.Portal.Model.Exam" Role="Exam" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.Video" Role="Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_VideoId">
+          <End Type="NorthOps.Portal.Model.Video" Role="Video" Multiplicity="0..1" />
+          <End Type="NorthOps.Portal.Model.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="VideoId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="VideoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NorthOpsPortalModelStoreContainer" CdmEntityContainer="NorthOpsEntities">
+          <EntitySetMapping Name="UserClaims">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.UserClaim">
+              <MappingFragment StoreEntitySet="UserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ReApply" ColumnName="ReApply" />
+                <ScalarProperty Name="Skills" ColumnName="Skills" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="CivilStatus" ColumnName="CivilStatus" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="TownCity" ColumnName="TownCity" />
+                <ScalarProperty Name="Cellular" ColumnName="Cellular" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+                <ScalarProperty Name="Languages" ColumnName="Languages" />
+                <ScalarProperty Name="Resume" ColumnName="Resume" />
+                <ScalarProperty Name="ResumeFileType" ColumnName="ResumeFileType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UsersInRoles" TypeName="NorthOps.Portal.Model.UsersInRoles" StoreEntitySet="UsersInRoles">
+            <EndProperty Name="UserRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="JobApplications">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.JobApplication">
+              <MappingFragment StoreEntitySet="JobApplications">
+                <ScalarProperty Name="Exam" ColumnName="Exam" />
+                <ScalarProperty Name="ContractDate" ColumnName="ContractDate" />
+                <ScalarProperty Name="OnBoardingDate" ColumnName="OnBoardingDate" />
+                <ScalarProperty Name="TrainingDate" ColumnName="TrainingDate" />
+                <ScalarProperty Name="PersonalInterviewDate" ColumnName="PersonalInterviewDate" />
+                <ScalarProperty Name="PhoneInterviewDate" ColumnName="PhoneInterviewDate" />
+                <ScalarProperty Name="ExamScore" ColumnName="ExamScore" />
+                <ScalarProperty Name="Contract" ColumnName="Contract" />
+                <ScalarProperty Name="OnBoarding" ColumnName="OnBoarding" />
+                <ScalarProperty Name="Training" ColumnName="Training" />
+                <ScalarProperty Name="PersonalInterview" ColumnName="PersonalInterview" />
+                <ScalarProperty Name="PhoneInterview" ColumnName="PhoneInterview" />
+                <ScalarProperty Name="Resume" ColumnName="Resume" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="JobApplicationId" ColumnName="JobApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AddressStateProvinces">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.AddressStateProvince">
+              <MappingFragment StoreEntitySet="AddressStateProvinces">
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StateProvinceId" ColumnName="StateProvinceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AddressTownCities">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.AddressTownCity">
+              <MappingFragment StoreEntitySet="AddressTownCities">
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="StateProvinceId" ColumnName="StateProvinceId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TownCityId" ColumnName="TownCityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicantAnswers">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.ApplicantAnswer">
+              <MappingFragment StoreEntitySet="ApplicantAnswer">
+                <ScalarProperty Name="ChoiceId" ColumnName="ChoiceId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicantAnswerId" ColumnName="ApplicantAnswerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Applicants">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.Applicant">
+              <MappingFragment StoreEntitySet="Applicants">
+                <ScalarProperty Name="IsTaken" ColumnName="IsTaken" />
+                <ScalarProperty Name="DateTimeTaken" ColumnName="DateTimeTaken" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicantId" ColumnName="ApplicantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Choices">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.Choice">
+              <MappingFragment StoreEntitySet="Choice">
+                <ScalarProperty Name="ChoiceLetter" ColumnName="ChoiceLetter" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsAnswer" ColumnName="IsAnswer" />
+                <ScalarProperty Name="Choice1" ColumnName="Choice" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="ChoiceId" ColumnName="ChoiceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalityResults">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.PersonalityResult">
+              <MappingFragment StoreEntitySet="PersonalityResult">
+                <ScalarProperty Name="DateTaken" ColumnName="DateTaken" />
+                <ScalarProperty Name="P" ColumnName="P" />
+                <ScalarProperty Name="J" ColumnName="J" />
+                <ScalarProperty Name="F" ColumnName="F" />
+                <ScalarProperty Name="T" ColumnName="T" />
+                <ScalarProperty Name="N" ColumnName="N" />
+                <ScalarProperty Name="S" ColumnName="S" />
+                <ScalarProperty Name="I" ColumnName="I" />
+                <ScalarProperty Name="E" ColumnName="E" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PersonalityResultId" ColumnName="PersonalityResultId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="VideoId" ColumnName="VideoId" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Question1" ColumnName="Question" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypingSpeeds">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.TypingSpeed">
+              <MappingFragment StoreEntitySet="TypingSpeed">
+                <ScalarProperty Name="TypingLevel" ColumnName="TypingLevel" />
+                <ScalarProperty Name="Paragraph" ColumnName="Paragraph" />
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
+                <ScalarProperty Name="TypingId" ColumnName="TypingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exams">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.Exam">
+              <MappingFragment StoreEntitySet="Exam">
+                <ScalarProperty Name="Items" ColumnName="Items" />
+                <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+                <ScalarProperty Name="IsRandom" ColumnName="IsRandom" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsFinish" ColumnName="IsFinish" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="ExamType" ColumnName="ExamType" />
+                <ScalarProperty Name="ExamName" ColumnName="ExamName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Videos">
+            <EntityTypeMapping TypeName="NorthOps.Portal.Model.Video">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="Video1" ColumnName="Video" />
+                <ScalarProperty Name="VideoPath" ColumnName="VideoPath" />
+                <ScalarProperty Name="VideoName" ColumnName="VideoName" />
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
+                <ScalarProperty Name="VideoId" ColumnName="VideoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

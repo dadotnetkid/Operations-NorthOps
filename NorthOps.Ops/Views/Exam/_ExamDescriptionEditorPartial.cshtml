@@ -1,0 +1,13 @@
+@using NorthOps.Ops.Controllers;
+@model NorthOps.Ops.Models.Exam 
+@Html.DevExpress().HtmlEditor(settings => {
+    settings.Name = "ExamDescriptionEditor";
+    settings.CallbackRouteValues = new { Controller = "Exam", Action = "ExamDescriptionEditorPartial" };
+    settings.Width = 500;
+	settings.ToolbarMode = HtmlEditorToolbarMode.Menu;
+
+
+			settings.Settings.AllowHtmlView = false;
+			settings.Settings.AllowPreview = false;
+
+	}).GetHtml()

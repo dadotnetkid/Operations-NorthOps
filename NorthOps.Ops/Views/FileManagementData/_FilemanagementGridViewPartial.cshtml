@@ -1,0 +1,58 @@
+@using NorthOps.Ops.Models;
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "FilemanagementGridView";
+        settings.CallbackRouteValues = new { Controller = "FileManagementData", Action = "FilemanagementGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "FileManagementData", Action = "FilemanagementGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "FileManagementData", Action = "FilemanagementGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "FileManagementData", Action = "FilemanagementGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader= true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "FileManagementId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "FileManagementDataType";
+            col.Caption = "Type";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.ValueType = typeof(int);
+            cbo.ValueField = "Key";
+            cbo.TextField = "Value";
+            cbo.DataSource = Enum.GetValues(typeof(ProfileDataType)).Cast<ProfileDataType>().Select(m => new { Key = m, Value = m.ToString() });
+        });
+        settings.Columns.Add("FileManagementDataValue");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateCreated";
+            col.Caption = "Date Created";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

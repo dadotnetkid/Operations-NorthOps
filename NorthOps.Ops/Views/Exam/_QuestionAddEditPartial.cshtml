@@ -1,0 +1,73 @@
+﻿@model Questions
+@using System.Web.UI.WebControls;
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = ViewBag.ExamId;
+
+    settings.Width = Unit.Percentage(100);
+    var groupItem = settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Question";
+        groupSettings.ShowCaption = DefaultBoolean.True;
+        groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
+        groupSettings.ColCount = 4;
+
+    });
+
+    groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+    groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Top;
+
+
+    groupItem.Items.Add(m => m.Title, col =>
+    {
+        col.Caption = "Title";
+        col.SetNestedContent(() =>
+        {
+            Html.DevExpress().TextBoxFor(m => m.Title, txt => { txt.Width = Unit.Percentage(100); }).GetHtml();
+        });
+    });
+    
+    groupItem.Items.Add(m => m.Question, col =>
+    {
+        col.Caption = "Question";
+        col.SetNestedContent(() =>
+        {
+            Html.DevExpress().TextBoxFor(m => m.Question, txt =>
+            {
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+
+        });
+
+    });
+    groupItem.Items.Add(m => m.Number, col =>
+    {
+        col.Caption = "Number";
+        col.SetNestedContent(() =>
+        {
+            Html.DevExpress().TextBoxFor(m => m.Number, txt => { txt.Width = Unit.Percentage(100); }).GetHtml();
+        });
+    });
+    groupItem.Items.Add(m => m.VideoId, col =>
+    {
+        col.Caption = "Video";
+        col.SetNestedContent(() =>
+        {
+            Html.DevExpress().ComboBoxFor(m => m.VideoId, cbo =>
+            {
+                cbo.Width = Unit.Percentage(100);
+                cbo.Properties.ValueField = "Id";
+                cbo.Properties.TextField = "Name";
+            }).BindList(Model.VideoList.Select(m => new { Id = m.VideoId, Name = m.VideoName })).GetHtml();
+        });
+    });
+    groupItem.Items.Add(col =>
+    {
+        col.ShowCaption = DefaultBoolean.True;
+        col.Caption = "";
+        col.SetNestedContent(() =>
+        {
+           
+        });
+    });
+}).GetHtml()

@@ -1,0 +1,11 @@
+﻿@model  Applicants
+    @{
+        Html.DevExpress().Button(btn =>
+        {
+            btn.Name = "Resum1e";
+            btn.Enabled = Model != null ? false : true;
+            btn.Text = Model != null ? "Closed" : "Open";
+            btn.UseSubmitBehavior = true;
+        }).Render();
+      
+    }

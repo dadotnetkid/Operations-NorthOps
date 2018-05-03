@@ -1,0 +1,174 @@
+@using NorthOps.Ops.Repository;
+@using Microsoft.AspNet.Identity;
+@using NorthOps.Ops.Models;
+@{
+    var cardView = Html.DevExpress().CardView(settings =>
+    {
+        settings.Name = "ExamsGrid";
+        settings.CallbackRouteValues = new { Controller = "ApplicantExam", Action = "ExamsGridPartial" };
+
+        settings.SettingsEditing.AddNewCardRouteValues = new { Controller = "ApplicantExam", Action = "ExamsGridPartialAddNew" };
+        settings.SettingsEditing.UpdateCardRouteValues = new { Controller = "ApplicantExam", Action = "ExamsGridPartialUpdate" };
+        settings.SettingsEditing.DeleteCardRouteValues = new { Controller = "ApplicantExam", Action = "ExamsGridPartialDelete" };
+        settings.SettingsEditing.Mode = CardViewEditingMode.EditForm;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.KeyFieldName = "Exam.ExamId";
+        settings.SettingsBehavior.AllowFocusedCard = true;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowCardHeader = true;
+        settings.Settings.ShowCardFooter = true;
+
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowSelectByCardClick = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.SetCardTemplateContent(m =>
+        {
+
+            ViewContext.Writer.Write("<div class='row margin-top-10' style='margin:10px'> " + Bootstrap.colLg12);
+            Html.DevExpress().Label(lbl =>
+            {
+                lbl.Name = "lbl" + DataBinder.Eval(m.DataItem, "ExamId").ToString();
+                lbl.Style.Add(HtmlTextWriterStyle.FontSize, "16px");
+                lbl.Style.Add("text-transform", "uppercase");
+            }).Bind(DataBinder.Eval(m.DataItem, "Exam.ExamName")).GetHtml();
+
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.endDiv);
+            ViewContext.Writer.Write("<div class='row margin-top-10' style='margin:10px'> " + Bootstrap.colLg12);
+            Html.DevExpress().Label(lbl =>
+            {
+                lbl.Text = ExamType.value(Convert.ToInt32(DataBinder.Eval(m.DataItem, "Exam.ExamType")));
+
+            }).GetHtml();
+
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.endDiv);
+
+        });
+
+        settings.Styles.FocusedCard.Border.BorderColor = System.Drawing.Color.Orange;
+        settings.Styles.Card.Width = System.Web.UI.WebControls.Unit.Percentage(30);
+        settings.Styles.Card.Height = System.Web.UI.WebControls.Unit.Percentage(25);
+
+        settings.CardLayoutProperties.Items.AddEditModeCommandItem();
+        // settings.CardLayoutProperties.Items.Add("ExamName");
+
+        //settings.CardLayoutProperties.Items.Add("Duration");
+        settings.SetCardFooterTemplateContent(m =>
+        {
+            /*  var UserId = User.Identity.GetUserId();
+              var ExamId = Guid.Parse(DataBinder.Eval(m.DataItem, "ExamId").ToString());
+              if (new UnitOfWork().Applicant.Get(filter: c => c.ExamId ==ExamId && c.UserId == UserId).Count() <= 0)
+              {
+
+              }*/
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btn_" + DataBinder.Eval(m.DataItem, "ExamId").ToString();
+                btn.Text = "Start Exam";
+                btn.Style.Add(HtmlTextWriterStyle.Margin, "10px");
+
+                btn.ClientSideEvents.Click = "function(s,e){ViewDescription('" + DataBinder.Eval(m.DataItem, "Exam.ExamId").ToString() + "');}";
+            }).Render();
+
+        });
+        settings.SetCardHeaderTemplateContent(m =>
+        {
+            m.CardView.Style.Add(HtmlTextWriterStyle.Padding, "10px");
+
+        });
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        cardView.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+
+
+@Html.DevExpress().PageControl(settings =>
+{
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Name = "ExamTab";
+    settings.ShowTabs = false;
+    settings.TabPages.Add("Tab 0").SetContent(() =>
+    {
+        cardView.Bind(Model).GetHtml();
+    });
+    settings.TabPages.Add("Tab 1").SetContent(() =>
+    {
+        ViewContext.Writer.Write("<div id='tab-description'></div>");
+
+        Html.DevExpress().Button(btn =>
+        {
+            btn.Name = "btnStart";
+            btn.Text = "Start";
+            btn.Style.Add(HtmlTextWriterStyle.Margin, "10px");
+            btn.ClientSideEvents.Click = "function(s,e){StartExam();}";
+        }).Render();
+        Html.DevExpress().Button(btn =>
+        {
+            btn.Name = "btnCancel";
+            btn.Text = "Cancel";
+            btn.Style.Add(HtmlTextWriterStyle.Margin, "10px");
+            btn.ClientSideEvents.Click = "function(s,e){ExamTab.SetActiveTabIndex(0) ;}";
+        }).Render();
+    });
+    settings.TabPages.Add("Tab 2").SetContent(() =>
+    {
+        ViewContext.Writer.Write("<div id='tab-exam'></div>");
+
+
+    });
+}).GetHtml()
+
+
+@Html.DevExpress().LoadingPanel(settings =>
+{
+    settings.Name = "LoadingPanel";
+    settings.Modal = true;
+}).GetHtml()
+
+
+
+<script>
+    var ExamId = "";
+    function ViewDescription(ExamId) {
+        this.ExamId = ExamId;
+        ExamTab.SetActiveTabIndex(1);
+        $.ajax({
+            url: '@Url.Action("ExamDescriptionPartial", "applicantexam")',
+            data: { ExamId: ExamId },
+            type: 'POST',
+            beforeSend: function () {
+                LoadingPanel.Show();
+            }
+            ,success: function (e) {
+                $('#tab-description').html(e);
+
+            },
+            complete: function () {
+                LoadingPanel.Hide()
+            }
+        });
+    }
+    function StartExam() {
+
+        ExamTab.SetActiveTabIndex(2);
+        $.ajax({
+            url: '@Url.Action("TakeExam")',
+            data: { ExamId: ExamId },
+            type: 'POST',
+            beforeSend: function () {
+                LoadingPanel.Show();
+            }
+            ,success: function (e) {
+                $('#tab-exam').html(e);
+            },
+            complete: function () {
+                LoadingPanel.Hide()
+            }
+        });
+    }
+</script>
+

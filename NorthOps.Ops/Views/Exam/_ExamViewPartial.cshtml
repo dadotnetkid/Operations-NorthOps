@@ -1,0 +1,228 @@
+@using NorthOps.Ops.Models;
+@using NorthOps.Ops.Repository;
+@using NorthOps.Ops.Controllers;
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+
+
+        settings.Name = "ExamView";
+
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Exam", Action = "ExamViewPartial" };
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Exam", Action = "ExamViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Exam", Action = "ExamViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Exam", Action = "ExamViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+
+        settings.KeyFieldName = "ExamId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.Columns.Add("Category.CategoryName");
+        settings.Columns.Add("ExamName");
+        settings.Columns.Add(m =>
+        {
+            m.FieldName = "ExamType";
+            m.Caption = "Exam Type";
+            m.ColumnType = MVCxGridViewColumnType.ComboBox;
+            ComboBoxProperties cbo = m.PropertiesEdit as ComboBoxProperties;
+            cbo.ValueType = typeof(ExamTypes);
+            cbo.ValueField = "Id";
+            cbo.TextField = "Name";
+            cbo.DataSource = Enum.GetValues(typeof(ExamTypes)).Cast<ExamTypes>().Select(x => new { Id = x, Name = x.ToString() });
+        });
+        settings.Columns.Add("Duration");
+        settings.Columns.Add(col =>
+        {
+            col.Caption = "Upload Question";
+            col.SetDataItemTemplateContent(s =>
+            {
+
+                using (Html.BeginForm("ExportUploadUpload", "Exam",new { Name= "ExportUpload" + DataBinder.Eval(s.DataItem, "ExamId").ToString() }, FormMethod.Post))
+                {
+                    Html.DevExpress().UploadControl(u =>
+                    {
+                        u.Name = "ExportUpload" + DataBinder.Eval(s.DataItem, "ExamId").ToString();
+                        u.CallbackRouteValues = new { Controller = "Exam", Action = "ExportUploadUpload", ExamId = DataBinder.Eval(s.DataItem, "ExamId").ToString(),Name=  "ExportUpload" + DataBinder.Eval(s.DataItem, "ExamId").ToString() };
+
+
+                        u.ShowUploadButton = true;
+                        u.ShowProgressPanel = true;
+                        u.ValidationSettings.Assign(NorthOps.Ops.Models.ExportUploadSettings.UploadValidationSettings);
+                    }).GetHtml();
+                }
+
+            });
+
+        });
+        settings.SetEditFormTemplateContent(c =>
+        {
+            var item = ViewData["item"] != null ? ViewData["item"] : c.DataItem;
+            var id = DataBinder.Eval(item, "ExamId") ?? Guid.NewGuid();
+
+            Html.DevExpress().PopupControl(m =>
+            {
+
+                m.Name = "UploadModal";
+                m.Text = "Upload";
+                m.AllowResize = true;
+                m.MinWidth = 800;
+                m.AutoUpdatePosition = true;
+                m.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+                m.ScrollBars = System.Web.UI.WebControls.ScrollBars.Auto;
+                m.CloseAction = CloseAction.CloseButton;
+                //m.ContentUrl = Url.Action("index", "filemanager");
+                m.SetContent(() =>
+                {
+                    Html.RenderAction("index", "filemanager");
+                });
+            }).Render();
+
+
+            var category = new NorthOps.Ops.Repository.UnitOfWork().CategoryRepo.Get().Select(x => new { Id = x.CategoryId, Name = x.CategoryName }).OrderBy(x => x.Name);
+            //first row
+            //first col
+            ViewContext.Writer.Write("<div class='row'><div class=\"editform col-md-3\" style='float:left;'>");
+            Html.DevExpress().TextBox(cfg =>
+            {
+                cfg.Name = "ExamName";
+                cfg.Properties.NullText = cfg.Name;
+                cfg.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            }).Bind(DataBinder.Eval(item, "ExamName")).GetHtml();
+            //second col
+            ViewContext.Writer.Write("</div><div class=\"editform col-md-3\" style='float:left;'>");
+            Html.DevExpress().ComboBox(cfg =>
+            {
+                cfg.Name = "CategoryId";
+                cfg.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                cfg.Properties.ValueField = "Id";
+                cfg.Properties.TextField = "Name";
+                cfg.Properties.ValueType = typeof(Guid);
+                cfg.Properties.DropDownRows = 6;
+                cfg.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+                cfg.Properties.DropDownStyle = DropDownStyle.DropDownList;
+                cfg.Properties.NullText = "Category"; cfg.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            }).BindList(category).Bind(DataBinder.Eval(item, "CategoryId")).GetHtml();
+            //third col
+            ViewContext.Writer.Write("</div><div class=\"editform col-md-3\" style='float:left;'>");
+            Html.DevExpress().TextBox(m =>
+            {
+                m.Name = "VideoPath";
+                m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                m.Properties.NullText = m.Name;
+                m.Properties.ClientSideEvents.GotFocus = "function(s, e) { UploadModal.Show(); }";
+
+            }).Bind(DataBinder.Eval(item, "VideoPath")).Render();
+            ViewContext.Writer.Write("</div><div class=\"editform col-md-3\" style='float:left;'>");
+            Html.DevExpress().TextBox(txt =>
+            {
+                txt.Name = "Duration";
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.Properties.NullText = "Duration";
+            }).Bind(DataBinder.Eval(item, "Duration")).GetHtml();
+            ViewContext.Writer.Write("</div></div>");
+
+
+
+
+            //second Row
+            //first
+            ViewContext.Writer.Write("<div class='row margin-top-10'> <div class='editform col-md-3 col-lg-3 col-sm-3' style='float;'>");
+            var types = Enum.GetValues(typeof(ExamTypes)).Cast<ExamTypes>().Select(x => new { Id = x, Name = x.ToString() });
+
+            Html.DevExpress().ComboBox(cfg =>
+            {
+
+                cfg.Name = "ExamType";
+                cfg.Properties.ValueField = "Id";
+                cfg.Properties.TextField = "Name";
+                cfg.Properties.ValueType = typeof(int);
+                cfg.Properties.DropDownRows = 6;
+                cfg.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+                cfg.Properties.DropDownStyle = DropDownStyle.DropDownList;
+                cfg.Properties.NullText = "Exam Type";
+                cfg.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            }).BindList(types).Bind(DataBinder.Eval(item, "ExamType")).Render();
+            //second col
+                        ViewContext.Writer.Write("</div><div class='editform col-md-3' style='float:left;'>");
+            Html.DevExpress().TextBox(cfg =>
+            {
+                cfg.Name = "Percentage";
+                cfg.Properties.NullText = cfg.Name;
+                cfg.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            }).Bind(DataBinder.Eval(item, "Percentage")).GetHtml();
+            ViewContext.Writer.Write("</div><div class='editform col-md-3' style='float:left;'>");
+            Html.DevExpress().CheckBox(m =>
+            {
+                m.Name = "IsRandom";
+                m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                m.Text = "Is Random Choice";
+
+            }).Bind(DataBinder.Eval(item, "IsRandom")).Render();
+            ViewContext.Writer.Write("</div></div>");
+            //third row
+
+            ViewContext.Writer.Write("<div class='row'> <div class='editform col-md-12 margin-top-10' style='float:left;'>");
+
+
+            Html.DevExpress().HtmlEditor(editor =>
+            {
+                editor.Name = "Description";
+                editor.CallbackRouteValues = new { Controller = "Exam", Action = "ExamDescriptionEditorrPartial" };
+                editor.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                editor.ToolbarMode = DevExpress.Web.ASPxHtmlEditor.HtmlEditorToolbarMode.Menu;
+
+                editor.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "Exam", Action = "ExamDescriptionEditorrPartialImageUpload" };
+                editor.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = ExamControllerExamDescriptionEditorSettings.ImageUploadDirectory;
+                editor.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(ExamControllerExamDescriptionEditorSettings.ImageUploadValidationSettings);
+
+
+                editor.SettingsDialogs.InsertImageDialog.SettingsImageSelector.Assign(ExamControllerExamDescriptionEditorSettings.ImageSelectorSettings);
+            }).Bind(DataBinder.Eval(item, "Description")).GetHtml();
+
+            ViewContext.Writer.Write("</div></div>");
+            //4 row
+            ViewContext.Writer.Write("<div class='row'> <div class='editform col-md-4 margin-top-10' style='float:left;'>");
+
+            Html.DevExpress().Button(m =>
+            {
+                m.Name = "BtnUpdate";
+                m.Text = "Update";
+
+                m.ClientSideEvents.Click = "function(s,e){ ExamView.UpdateEdit();  }";
+            }).Render();
+
+            Html.DevExpress().Button(m =>
+            {
+                m.Name = "BtnCancel";
+                m.Text = "Cancel";
+                m.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+                m.ClientSideEvents.Click = "function(s,e){  ExamView.CancelEdit();}";
+            }).Render();
+            ViewContext.Writer.Write("</div></div>");
+
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+
+

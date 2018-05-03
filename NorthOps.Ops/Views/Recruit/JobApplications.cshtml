@@ -1,0 +1,16 @@
+﻿@using NorthOps.Ops.Controllers
+@{
+    ViewBag.Title = "JOB APPLICATIONS"; ViewBag.Description = "RECRUITMENT";
+}
+
+
+
+
+@Html.Action("JobApplicationGridPartial")
+@{ 
+Html.DevExpress().LoadingPanel(ldp => {
+ldp.Name = "ldpRecruitmentLoading";
+ldp.Modal = true;
+       
+}).GetHtml();
+}

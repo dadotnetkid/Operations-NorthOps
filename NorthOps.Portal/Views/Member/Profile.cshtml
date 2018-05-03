@@ -1,0 +1,28 @@
+﻿@model Users
+
+@{
+    ViewBag.Title = "PROFILE"; ViewBag.Description = "MEMBERSHIP";
+}
+
+<div class="alert alert-info alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-info"></i> Information</h4>
+    <p>
+        Please complete your profile information. You will be able to move on to the next hiring stage when this has been completed and verified on our end.<br>
+        Ensure that your <u>email address is correct</u>, updates are sent to your email once we have processed part of your application. Check your dashboard often.
+    </p>
+</div>
+@if (Model.EmailConfirmed)
+{
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p>Check in your inbox folder or spam folder     </p>
+    </div>
+}
+
+@using (Ajax.BeginForm(actionName: "Profile", controllerName: "member", routeValues: new { Id = Model.Id }, ajaxOptions: new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "form-profile", InsertionMode = InsertionMode.Replace, OnBegin = "LoadingSubmit.Show()", OnSuccess = "LoadingSubmit.Hide()" }, htmlAttributes: new { id = "form-profile" }))
+{
+    @Html.Partial("_ProfileViewPartial", Model)
+}
+
+

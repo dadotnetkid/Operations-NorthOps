@@ -1,0 +1,8 @@
+﻿@using NorthOps.Ops.Controllers
+
+@foreach (var i in new NorthOps.Ops.Repository.UnitOfWork().ExamRepo.Get())
+{
+    <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(ApplicantExamController.Index).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "applicantexam"? "active" : "")">
+        <a href="@Url.Action("index", "applicantexam",new { id=i.ExamId})"><i class="fa fa-bars"></i> <span> @i.ExamName</span></a>
+    </li>
+}

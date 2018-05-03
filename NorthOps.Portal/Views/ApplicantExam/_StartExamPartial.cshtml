@@ -1,0 +1,47 @@
+﻿@model Exams
+
+
+@using System.Web.UI.WebControls;
+@{
+    Layout = null;
+}
+@{
+    if ((ExamTypes)Model.ExamType == ExamTypes.Multiple || (ExamTypes)Model.ExamType == ExamTypes.MBTI)
+    {
+        Html.RenderPartial("_multiplechoiceexampartial", Model);
+    }
+    else if ((ExamTypes)Model.ExamType == ExamTypes.Listening)
+    {
+        Html.RenderPartial("_listeningexampartial", Model);
+    }
+    else if ((ExamTypes)Model.ExamType == ExamTypes.TypingSkills)
+    {
+        Html.DevExpress().PageControl(setting =>
+        {
+            setting.Name = "TypingPageControl";
+            setting.Width = Unit.Percentage(100);
+            setting.ShowTabs = false;
+            setting.TabPages.Add("TypingSkills", "TypingSkills").SetContent(() =>
+            {
+                Html.RenderAction("TypingSpeedPartial");
+            });
+            setting.TabPages.Add("Thankyou Tab", "Thankyou Tab").SetContent(() =>
+            {
+                ViewContext.Writer.Write("<div style='text-align:center'>");
+                ViewContext.Writer.Write("<h2 style='text-align:center'>Thank You</h2>");
+                ViewContext.Writer.Write("<br/>");
+                Html.DevExpress().HyperLink(s =>
+                {
+                    s.Name = "lnkBacktoHome";
+                    s.NavigateUrl = Url.Action("Index", "ApplicantExam");
+                    s.Properties.Text = "Back to Exam List";
+
+                }).GetHtml();
+                ViewContext.Writer.Write(" </div>");
+
+            });
+        }).GetHtml();
+
+    }
+}
+

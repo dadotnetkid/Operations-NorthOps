@@ -1,0 +1,30 @@
+﻿@model NorthOps.Ops.Models.UserRole
+@{
+    Html.DevExpress().FormLayout(settings =>
+    {
+        settings.Name = "FormLayout";
+
+        var groupItem = settings.Items.AddGroupItem(groupSettings =>
+        {
+            groupSettings.Caption = "User Roles";
+            groupSettings.ShowCaption = DefaultBoolean.True;
+            groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        });
+
+        groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+        groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+
+        groupItem.Items.Add(m => m.Name);
+        groupItem.Items.Add(m => m.Description, c =>
+        {
+            c.NestedExtension().TextBox(txt=> {
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+
+            });
+        });
+    }).GetHtml();
+}
+

@@ -1,0 +1,290 @@
+﻿
+@model Users
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <div class="pull-left">
+            @{
+                Html.DevExpress().Button(m =>
+                {
+                    m.Text = "Update";
+                    m.ClientSideEvents.Click = "function(s,e){UserGridView.UpdateEdit()}";
+                    m.Name = "btnSubmit";
+
+                }).GetHtml();
+                Html.DevExpress().Button(m =>
+                {
+                    m.Text = "Cancel";
+                    m.ClientSideEvents.Click = "function(s,e){UserGridView.CancelEdit()}";
+                    m.Name = "btnCancel";
+
+                }).GetHtml();
+            }
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+@{
+
+
+
+}
+<div class="row">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.Email).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.Email, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+            }).GetHtml();
+        }
+
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.UserName).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.UserName, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+            }).GetHtml();
+        }
+
+    </div>
+</div>
+<div class="row margin-top-5">
+
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.Password).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.Password, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.Properties.Password = true;
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+            }).GetHtml();
+        }
+
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.FirstName).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.FirstName, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+            }).GetHtml();
+        }
+
+    </div>
+</div>
+<div class="row margin-top-5">
+
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.MiddleName).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.MiddleName, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+            }).GetHtml();
+        }
+
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.LastName).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.LastName, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+            }).GetHtml();
+        }
+
+    </div>
+</div>
+<div class="row margin-top-5">
+
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.CivilStatus).GetHtml();
+            Html.DevExpress().ComboBoxFor(m => m.CivilStatus, cbo =>
+            {
+                cbo.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                cbo.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                cbo.ShowModelErrors = true;
+                cbo.Properties.ValidationSettings.Display = Display.Dynamic;
+                cbo.Properties.ValueField = "Id";
+                cbo.Properties.TextField = "Name";
+            }).BindList(
+                Enum.GetValues(typeof(CivilStatus)).Cast<CivilStatus>().Select(x => new { Name = x.ToString(), Id = x })
+            ).GetHtml();
+        }
+
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.Gender).GetHtml();
+            Html.DevExpress().ComboBoxFor(m => m.Gender, cbo =>
+            {
+                cbo.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                cbo.ShowModelErrors = true;
+                cbo.Properties.ValidationSettings.Display = Display.Dynamic;
+                cbo.Properties.ValueField = "Id";
+                cbo.Properties.TextField = "Name";
+            }).BindList(
+            Enum.GetValues(typeof(Gender)).Cast<Gender>().Select(x => new { Name = x.ToString(), Id = x })
+            ).GetHtml();
+        }
+
+    </div>
+</div>
+<div class="row margin-top-5">
+
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.BirthDate).GetHtml();
+            Html.DevExpress().DateEditFor(m => m.BirthDate, dt =>
+            {
+                dt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                dt.ShowModelErrors = true;
+                dt.Properties.ValidationSettings.Display = Display.Dynamic;
+
+            }).GetHtml();
+        }
+
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.AddressLine1).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.AddressLine1, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+
+            }).GetHtml();
+        }
+
+    </div>
+</div>
+<div class="row margin-top-5">
+
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.AddressLine2).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.AddressLine2, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+
+            }).GetHtml();
+        }
+
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.TownCity).GetHtml();
+            @Html.Action("SelectTownCityPartial", new { TownCityId = Model == null ? null : Model.TownCity })
+        }
+
+    </div>
+</div>
+<div class="row margin-top-5">
+
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.Cellular).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.Cellular, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+
+            }).GetHtml();
+        }
+
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.Religion).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.Religion, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+
+            }).GetHtml();
+        }
+
+    </div>
+</div>
+
+<div class="row margin-top-5">
+
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.Citizenship).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.Citizenship, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+
+            }).GetHtml();
+        }
+    </div>
+    @*<div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.CampaignId).GetHtml();
+            Html.DevExpress().ComboBoxFor(m => m.CampaignId, txt =>
+            {
+                txt.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                txt.ShowModelErrors = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.ValueField = "CampaignId";
+                txt.Properties.TextField = "CampaignName";
+
+            }).BindList(new UnitOfWork().CampaignRepo.Get()).GetHtml();
+        }
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().Label(lbl => { lbl.AssociatedControlName = "UserRolesValue"; lbl.Text = "User Roles"; }).GetHtml();
+            Html.DevExpress().RadioButtonList(cbl =>
+            {
+                cbl.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                cbl.Name = "UserRolesValue";
+                cbl.Properties.ValueField = "Name";
+                cbl.Properties.TextField = "Name";
+                cbl.Properties.RepeatLayout = System.Web.UI.WebControls.RepeatLayout.Table;
+                cbl.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Vertical;
+                cbl.Properties.RepeatColumns = 1;
+                cbl.Width = System.Web.UI.WebControls.Unit.Pixel(260);
+                cbl.PreRender = (sender, e) =>
+                {
+                    if (Model != null)
+                    {
+                        ASPxRadioButtonList cblb = (ASPxRadioButtonList)sender;
+                        foreach (ListEditItem listItem in cblb.Items)
+                        {
+                            if (Model.UserRoles.Where(u => u.Name == listItem.Text).Count() > 0)
+                                listItem.Selected = true;
+                        }
+                    }
+                };
+            }).BindList(new UnitOfWork().RoleRepository.Fetch().Select(x => new { Id = x.Id, Name = x.Name }).ToList()).GetHtml();
+        }
+
+    </div>*@
+
+</div>

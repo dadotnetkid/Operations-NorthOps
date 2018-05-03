@@ -1,0 +1,49 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Width = Unit.Percentage(100);
+        settings.Name = "NotificationsTemplatesGridView";
+        settings.CallbackRouteValues = new { Controller = "NotificationTemplate", Action = "NotificationsTemplatesGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "NotificationTemplate", Action = "NotificationsTemplatesGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "NotificationTemplate", Action = "NotificationsTemplatesGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "NotificationTemplate", Action = "NotificationsTemplatesGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Type";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.TextField = "Name";
+            cbo.ValueField = "Id";
+            cbo.ValueType = typeof(NotificationType);
+            cbo.DataSource = Enum.GetValues(typeof(NotificationType)).Cast<NotificationType>().Select(x => new { Id = x, Name = x.ToString() });
+        });
+        settings.Columns.Add("Template");
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

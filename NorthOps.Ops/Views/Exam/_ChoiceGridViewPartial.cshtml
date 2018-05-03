@@ -1,0 +1,45 @@
+@using System.Web.UI.WebControls;
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "ChoiceGridView_" + ViewBag.QuestionId;
+        settings.CallbackRouteValues = new { Controller = "Exam", Action = "ChoiceGridViewPartial", QuestionId = ViewBag.QuestionId, ExamId = ViewBag.ExamId };
+        settings.SettingsDetail.MasterGridName = "QuestionGrid_" + ViewBag.ExamId;
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Exam", Action = "ChoiceGridViewPartialAddNew", QuestionId = ViewBag.QuestionId, ExamId = ViewBag.ExamId };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Exam", Action = "ChoiceGridViewPartialUpdate", QuestionId = ViewBag.QuestionId, ExamId = ViewBag.ExamId };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Exam", Action = "ChoiceGridViewPartialDelete", QuestionId = ViewBag.QuestionId, ExamId = ViewBag.ExamId };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = Unit.Percentage(100);
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "ChoiceId";
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 100;
+        settings.Columns.Add("ChoiceLetter");
+        settings.Columns.Add("Choice").Caption="Choice";
+        settings.Columns.Add(col=> {
+
+            col.FieldName = "IsAnswer";
+            col.ColumnType = MVCxGridViewColumnType.CheckBox;
+        });
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,99 @@
+﻿@model Exams
+
+@{
+    var items = 0;
+    var tab = Html.DevExpress().PageControl(setting =>
+    {
+        setting.Name = "QuestionPageControl";
+        setting.Width = Unit.Percentage(100);
+        setting.ShowTabs = false;
+        foreach (var i in Model.QuestionsList)
+        {
+
+            using (Html.BeginForm("TakeExamPartialUpdate", "applicantexam", new { QuestionId = i.QuestionId }, FormMethod.Post, new { id = "ajaxForm_" + i.QuestionId }))
+                ViewContext.Writer.Write(Html.AntiForgeryToken().ToHtmlString());
+            setting.TabPages.Add(i.QuestionId.ToString(), i.QuestionId.ToString()).SetContent(() =>
+            {
+                Html.DevExpress().Label(lbl =>
+                {
+                    items++;
+                    lbl.Name = i.QuestionId + "-label";
+                    lbl.Text = items + "." + i.Question;
+                    lbl.Style.Add("font-size", "20px");
+                    lbl.Style.Add(HtmlTextWriterStyle.MarginBottom, "20px");
+
+                }).Render();
+                foreach (var choice in i.Choices.OrderBy(m => m.Choice))
+                {
+                    Html.DevExpress().RadioButton(rdo =>
+                    {
+                        rdo.Name = choice.ChoiceId.ToString();
+                        rdo.Text = choice.Choice;
+                        rdo.GroupName = "Choice";
+                        rdo.Style.Add(HtmlTextWriterStyle.MarginTop, "20px");
+                        rdo.Style.Add(HtmlTextWriterStyle.FontSize, "18px");
+                        rdo.Properties.ClientSideEvents.CheckedChanged = "function(s,e){startTimer(s,e);ChoiceId= s.name; }";
+                    }).Render();
+                }
+                Html.DevExpress().Button(m =>
+                {
+                    m.Text = "Next";
+                    m.Name = $"btn-{i.QuestionId + ""}";
+                    m.Style.Add(HtmlTextWriterStyle.MarginTop, "20px");
+                    m.ClientSideEvents.Click = "function(s,e){performAjax( $('#ajaxForm_" + i.QuestionId + "')); }";
+
+                }).GetHtml();
+            });
+        }
+
+
+
+
+        setting.TabPages.Add("Thankyou Tab", "Thankyou Tab").SetContent(() =>
+        {
+            ViewContext.Writer.Write("<div style='text-align:center'>");
+            ViewContext.Writer.Write("<h2 style='text-align:center'>Thank You</h2>");
+            ViewContext.Writer.Write("<br/>");
+            Html.DevExpress().HyperLink(s =>
+            {
+                s.Name = "lnkBacktoHome";
+                s.NavigateUrl = Url.Action("Index", "ApplicantExam");
+                s.Properties.Text = "Back to Exam List";
+            }).GetHtml();
+            ViewContext.Writer.Write(" </div>");
+        });
+
+
+    });
+
+    ViewContext.Writer.Write("<div class='panel panel-default'><div class='panel-body '>");
+    Html.DevExpress().Label(m =>
+    {
+        m.Name = "lbltimer";
+        m.Text = "00:00:00";
+        m.Style.Add(HtmlTextWriterStyle.FontSize, "45px");
+        m.Style.Add(HtmlTextWriterStyle.TextAlign, "center");
+        m.Width = Unit.Percentage(100);
+
+    }).Render();
+
+
+    @Html.DevExpress().LoadingPanel(s =>
+            {
+                s.Name = "loadingPanel";
+                s.Modal = true;
+                s.ContainerElementID = "validationForm";
+                s.ControlStyle.BackColor = System.Drawing.Color.White;
+
+            }).GetHtml()
+}
+@tab.GetHtml()
+<script>
+    var duration = parseInt(@Model.Duration);
+    var tabs = parseInt(@Model.QuestionsList.Count());
+    console.log(tabs);
+</script>
+<script src="~/Content/js/TakingExam.js">
+    
+</script>
+

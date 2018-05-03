@@ -1,0 +1,7 @@
+﻿
+@Html.Action("ExamsGridPartial")
+@Html.DevExpress().LoadingPanel(ldp =>
+{
+    ldp.Name = "LoadingOpenExam";
+    ldp.Modal = true;
+}).GetHtml()

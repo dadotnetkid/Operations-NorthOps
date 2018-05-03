@@ -1,0 +1,75 @@
+﻿@model NorthOps.Ops.Models.Campaign
+<div class="row">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.CampaignName, lbl => { lbl.Text = "Campaign Name"; }).GetHtml();
+            Html.DevExpress().TextBoxFor(txt => txt.CampaignName, m =>
+            {
+                m.Properties.NullText = "Campaign Name";
+                m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.CampaignDescription, lbl => { lbl.Text = "Campaign Description"; }).GetHtml();
+            Html.DevExpress().TextBoxFor(txt => txt.CampaignDescription, m =>
+            {
+                m.Properties.NullText = "Campaign Description";
+                m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.DateTimePeriodFrom, lbl => { lbl.Text = "Campaign Period From"; }).GetHtml();
+            Html.DevExpress().DateEditFor(txt => txt.DateTimePeriodFrom, m =>
+            {
+                m.Properties.NullText = "Campaign Period From";
+                m.Properties.TimeSectionProperties.Visible = true;
+                m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().LabelFor(m => m.DateTimePeriodTo, lbl => { lbl.Text = "Campaign Period To"; }).GetHtml();
+            Html.DevExpress().DateEditFor(txt => txt.DateTimePeriodTo, m =>
+            {
+                m.Properties.NullText = "Campaign Period To";
+                m.Properties.TimeSectionProperties.Visible = true;
+                m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().Label(lbl => { lbl.Name = "labelUserId"; lbl.AssociatedControlName = "UserId"; lbl.Text = "Employees in Campaign"; }).GetHtml();
+            Html.RenderAction("UserTokenPartial", new { _CampaignId =ViewBag.CampaignId } );
+        }
+
+
+    </div>
+    
+
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-6">
+        @{
+            <button class="btn btn-primary" onclick="UpdateCampaign()">
+                @(Model == null ? "New" : "Update")
+            </button>
+            <button class="btn btn-primary" onclick="UpdateCampaign()">
+Cancel
+            </button>
+        }
+    </div>
+
+
+</div>

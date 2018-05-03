@@ -1,0 +1,99 @@
+﻿@model  Exams
+@using System.Web.UI.WebControls;
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "ExamFormLayout";
+    settings.Width = Unit.Percentage(100);
+
+    var groupItem = settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Exam";
+        groupSettings.ShowCaption = DefaultBoolean.True;
+        groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
+        groupSettings.ColCount = 3;
+    });
+    groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+    groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Top;
+
+
+    groupItem.Items.Add(m => m.CategoryId, col =>
+    {
+        col.Caption = "Category";
+        col.SetNestedContent(() =>
+        {
+            Html.DevExpress().ComboBoxFor(m => m.CategoryId, cbo =>
+            {
+                cbo.Width = Unit.Percentage(100);
+                cbo.Properties.TextField = "Name";
+                cbo.Properties.ValueField = "Id";
+            }).BindList(new UnitOfWork().CategoryRepo.Fetch().Select(x=>new { Name=x.CategoryName,Id=x.CategoryId}).ToList()).GetHtml();
+        });
+    });
+    groupItem.Width = Unit.Percentage(100);
+    groupItem.Items.Add(m => m.ExamName, col =>
+    {
+        col.Width = Unit.Percentage(100); col.SetNestedContent(() =>
+        {
+            Html.DevExpress().TextBoxFor(m => m.ExamName, txt =>
+            {
+                txt.Width = Unit.Percentage(100);
+                txt.Properties.NullText = "Exam Name";
+            }).GetHtml();
+        });
+    });
+    groupItem.Items.Add(m => m.ExamType, col =>
+    {
+    col.SetNestedContent(() =>
+    {
+    Html.DevExpress().ComboBoxFor(m => m.ExamType, cbo =>
+    {
+        cbo.Width = Unit.Percentage(100);
+        cbo.Properties.TextField = "Name";
+        cbo.Properties.ValueField = "Id";
+    }).BindList(Enum.GetValues(typeof(ExamTypes)).Cast<ExamTypes>().Select(x => new { Id = x, Name = x.ToString() })).GetHtml();
+        });
+    });
+    groupItem.Items.Add(m => m.Duration, col => { col.Width = Unit.Percentage(100); });
+
+    groupItem.Items.Add(m => m.Percentage, col => { col.Width = Unit.Percentage(100); });
+    groupItem.Items.Add(m => m.Items, col => { col.Width = Unit.Percentage(100); });
+    groupItem.Items.Add(m => m.IsRandom, col => { col.Width = Unit.Percentage(100); });
+
+    groupItem.Items.Add(m => m.Description, col =>
+    {
+        col.ColSpan = 3;
+        col.SetNestedContent(() =>
+        {
+
+            Html.DevExpress().HtmlEditor(editor =>
+            {
+                editor.Name = "Description";
+                editor.CallbackRouteValues = new { Controller = "Exam", Action = "ExamDescriptionEditorPartial" };
+                editor.Width = Unit.Percentage(100);
+                editor.ToolbarMode = DevExpress.Web.ASPxHtmlEditor.HtmlEditorToolbarMode.Menu;
+
+
+                editor.Settings.AllowHtmlView = false;
+                editor.Settings.AllowPreview = false;
+
+            }).Bind(Model.Description).GetHtml();
+
+
+        });
+
+
+    });
+    groupItem.Items.Add( col =>
+    {
+        col.ShowCaption = DefaultBoolean.False;
+        col.SetNestedContent(() =>
+        {
+
+            Html.DevExpress().Button(btn => { btn.Name = "btnSave"; btn.Text = "Save"; btn.ClientSideEvents.Click = "function(s,e){ExamGrid.UpdateEdit();}"; }).GetHtml();
+            Html.DevExpress().Button(btn => { btn.Name = "btnCancel"; btn.Text = "Cancel"; btn.ClientSideEvents.Click = "function(s,e){ExamGrid.CancelEdit();}"; btn.Style.Add(HtmlTextWriterStyle.MarginLeft,"10px"); }).GetHtml();
+
+        });
+
+
+    });
+}).GetHtml()

@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - NorthOps</title>
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/jquery")
+
+
+
+    @Html.DevExpress().GetStyleSheets(
+                    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+                    new StyleSheet { ExtensionSuite = ExtensionSuite.Editors }
+                )
+    @Html.DevExpress().GetScripts(
+                    new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+                    new Script { ExtensionSuite = ExtensionSuite.Editors }
+                )
+
+
+
+    @Scripts.Render("~/bundles/js")
+
+
+
+</head>
+    <body class="hold-transition login-page">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="~/content/img/logo-portal.png" />
+                @*<a href="../../index2.html"><b>Admin</b>LTE</a>*@
+            </div>
+            <!-- /.login-logo -->
+            <section>
+                @RenderBody()
+            </section>
+            <!-- /.login-box-body -->
+        </div>
+        <!-- /.login-box -->
+
+
+        @RenderSection("scripts", required: false)
+
+
+    </body>
+</html>

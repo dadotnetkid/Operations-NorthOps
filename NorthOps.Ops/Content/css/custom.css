@@ -1,0 +1,14 @@
+﻿.margin-top-5{
+    margin-top:5px !important;
+}
+
+
+
+
+.hidden { visibility: hidden; }
+.fl { float:left; }
+.resumeLink { display: block;float: left; }
+
+.dxgvEditFormDisplayRow_Moderno td.dxgv, .dxgvInlineEditRow_Moderno td.dxgv,
+.dxgvDetailCell_Moderno td.dxgv, .dxgvDataRow_Moderno td.dxgv,
+.dxgvDetailRow_Moderno.dxgvADR td.dxgvAIC { overflow: hidden; border-top-width: 0; border-left-width: 0; border-bottom: 1px Solid #d1d1d1; border-right: 1px Solid #d1d1d1; padding: 8px 10px 9px; vertical-align: top !important; }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a7017d7d13c545d6920553dd9204bdc3" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.UserClaim" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.UserLogin" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.UserRole" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.User" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_UserClaims_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_UserLogins_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="NorthOps.Portal.Model.UsersInRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.JobApplication" Width="1.5" PointX="5.25" PointY="9" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_JobApplications_Users" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.AddressStateProvince" Width="1.5" PointX="7.375" PointY="1" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.AddressTownCity" Width="1.5" PointX="9.625" PointY="0.875" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.ApplicantAnswer" Width="1.5" PointX="16.375" PointY="7.375" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.Applicant" Width="1.5" PointX="11.875" PointY="4.5" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.Category" Width="1.5" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.Choice" Width="1.5" PointX="14.125" PointY="13.625" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_ApplicantAnswer_ChoiceId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_ApplicantAnswer_UserId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_Applicants_UserId" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.PersonalityResult" Width="1.5" PointX="5.25" PointY="14.25" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_PersonalityResult_UserId" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.Question" Width="1.5" PointX="11.875" PointY="8.25" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_ApplicantAnswer_QuestionId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_Choice_Question" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.TypingSpeed" Width="1.5" PointX="11.875" PointY="11.875" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.Exam" Width="1.5" PointX="9.625" PointY="15.5" />
+        <EntityTypeShape EntityType="NorthOps.Portal.Model.Video" Width="1.5" PointX="11.875" PointY="16.25" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_Applicants_ExamId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_Exam_CategoryId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_Question_ExamId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_TypingSpeed_ExamId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_Video_ExamId" />
+        <AssociationConnector Association="NorthOps.Portal.Model.FK_Question_VideoId" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

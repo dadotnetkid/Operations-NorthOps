@@ -1,0 +1,20 @@
+﻿@model object
+@using NorthOps.Ops.Repository;
+@{
+
+    #region First Row
+    ViewContext.Writer.Write(Bootstrap.beginRow);
+    ViewContext.Writer.Write(Bootstrap.colLg4);
+    Html.DevExpress().TextBox(m =>
+    {
+        m.Properties.NullText = "Title";
+        m.Name = "Question1";
+
+    }).Bind(DataBinder.Eval(Model, "Question1")).GetHtml();
+    ViewContext.Writer.Write(Bootstrap.endDiv);
+    ViewContext.Writer.Write(Bootstrap.endDiv);
+
+    #endregion
+
+
+}

@@ -1,0 +1,117 @@
+﻿@model Exams
+
+
+@{
+    var tab = Html.DevExpress().PageControl(setting =>
+    {
+        setting.Name = "QuestionPageControl";
+        setting.Width = Unit.Percentage(100);
+        setting.ShowTabs = false;
+
+        foreach (var i in new UnitOfWork().VideoRepo.GetNew(filter: m => m.ExamId == m.ExamId).Select(x => new { VideoId = x.VideoId }))
+        {
+
+            setting.TabPages.Add("HasVideo", i.VideoId.ToString()).SetContent(() =>
+            {
+                ViewContext.Writer.Write("<h2 style='text-align:center'>Playing audio</h2>");
+                ViewContext.Writer.Write(@"<h3 style='text-align:center' onclick='playAudio(this,""" + i.VideoId.ToString() + @""")'><span class='fa fa-play'></span></h3>");
+                ViewContext.Writer.Write("<audio id='#audio-" + i.VideoId.ToString() + "' preload='auto' style='margin:0 auto;float:none;width:50%!important;margin:0 auto !important;float:none'><source src='" + Url.Content("~") + "api/video/" + i.VideoId + "'></audio>");
+
+
+                Html.DevExpress().Button(m =>
+                {
+                    m.Text = "Next";
+                    m.Name = "btnNext" + i.VideoId;
+                    m.Style.Add(HtmlTextWriterStyle.MarginTop, "20px");
+                    m.ClientSideEvents.Click = "function(s,e){NextTab(); }";
+
+                }).GetHtml();
+            });
+
+            foreach (var m in Model.RandomQuestion.Where(x => x.VideoId == i.VideoId))
+            {
+                using (Html.BeginForm("TakeExamPartialUpdate", "applicantexam", new { QuestionId = m.QuestionId }, FormMethod.Post, new { id = "ajaxForm_" + m.QuestionId }))
+                    ViewContext.Writer.Write(Html.AntiForgeryToken().ToHtmlString());
+                setting.TabPages.Add(m.QuestionId.ToString(), m.QuestionId.ToString()).SetContent(() =>
+                {
+                    Html.DevExpress().Label(lbl =>
+                    {
+                        lbl.Name = m.QuestionId + "-label";
+                        lbl.Text = m.Question1;
+                        lbl.Style.Add("font-size", "20px");
+                        lbl.Style.Add(HtmlTextWriterStyle.MarginBottom, "20px");
+
+                    }).GetHtml();
+                    foreach (var choice in m.Choices.OrderBy(x => x.Choice1))
+                    {
+                        Html.DevExpress().RadioButton(rdo =>
+                        {
+                            rdo.Name = choice.ChoiceId.ToString();
+                            rdo.Text = choice.Choice1;
+                            rdo.GroupName = "Choice";
+                            rdo.Style.Add(HtmlTextWriterStyle.MarginTop, "20px");
+                            rdo.Style.Add(HtmlTextWriterStyle.FontSize, "18px");
+                            rdo.Properties.ClientSideEvents.CheckedChanged = "function(s,e){startTimer(s,e);ChoiceId= s.name }";
+                        }).GetHtml();
+                    }
+                    Html.DevExpress().Button(btn =>
+                    {
+                        btn.Text = "Next";
+                        btn.Name = $"btn-{m.QuestionId + ""}";
+                        btn.Style.Add(HtmlTextWriterStyle.MarginTop, "20px");
+                        btn.ClientSideEvents.Click = "function(s,e){performAjax( $('#ajaxForm_" + m.QuestionId + "')); }";
+
+                    }).GetHtml();
+                });
+
+
+            }
+
+        }
+        setting.TabPages.Add("Thankyou Tab", "Thankyou Tab").SetContent(() =>
+        {
+            ViewContext.Writer.Write("<div style='text-align:center'>");
+            ViewContext.Writer.Write("<h2 style='text-align:center'>Thank You</h2>");
+            ViewContext.Writer.Write("<br/>");
+            Html.DevExpress().HyperLink(s =>
+            {
+                s.Name = "lnkBacktoHome";
+                s.NavigateUrl = Url.Action("Index", "ApplicantExam");
+                s.Properties.Text = "Back to Exam List";
+            }).GetHtml();
+            ViewContext.Writer.Write(" </div>");
+        });
+    });
+
+    ViewContext.Writer.Write("<div class='panel panel-default'><div class='panel-body '>");
+    Html.DevExpress().Label(m =>
+    {
+        m.Name = "lbltimer";
+        m.Text = "00:00:00";
+        m.Style.Add(HtmlTextWriterStyle.FontSize, "45px");
+        m.Style.Add(HtmlTextWriterStyle.TextAlign, "center");
+        m.Width = Unit.Percentage(100);
+
+    }).Render();
+}
+
+@tab.GetHtml()
+@Html.DevExpress().LoadingPanel(s =>
+        {
+            s.Name = "loadingPanel";
+            s.Modal = true;
+            s.ContainerElementID = "validationForm";
+            s.ControlStyle.BackColor = System.Drawing.Color.White;
+
+        }).GetHtml()
+
+
+<script>
+    var duration = parseInt(@Model.Duration);
+    var tabs = parseInt('@Model.Questions.Count()-1') + parseInt('@(new UnitOfWork().VideoRepo.GetNew(filter: m => m.ExamId == m.ExamId).Select(x => new { VideoId = x.VideoId }).Count()-1)');
+    var TabHasVideo = 0;
+
+</script>
+<script src="~/Content/js/TakingExam.js">
+
+</script>

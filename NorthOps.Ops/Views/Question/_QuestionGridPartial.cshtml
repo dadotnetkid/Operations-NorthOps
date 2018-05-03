@@ -1,0 +1,122 @@
+@using NorthOps.Ops.Repository;
+@using NorthOps.Ops.Models;
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "QuestionGrid";
+        settings.CallbackRouteValues = new { Controller = "Question", Action = "QuestionGridPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.SettingsEditing.AddNewRowRouteValues = Url.Action("QuestionGridPartialAddNew", "Question", new { QuestionId = Guid.NewGuid(), DateCreated = DateTime.Now });
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Question", Action = "QuestionGridPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Question", Action = "QuestionGridPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+
+        settings.KeyFieldName = "QuestionId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+        settings.Columns.Add("Exam.ExamName");
+        settings.Columns.Add(m=> { m.FieldName = "Title"; m.VisibleIndex = 0; });
+        settings.Columns.Add("Question1").Caption = "Question";
+        settings.Columns.Add("DateCreated");
+
+        settings.ClientSideEvents.Init = "function(s,e){console.log(s);}";
+
+
+        settings.SetEditFormTemplateContent(s =>
+        {
+            object item = ViewData["item"] != null ? ViewData["item"] : s.DataItem;
+            var exams = new UnitOfWork().ExamRepo.Get().Select(x => new { Id = x.ExamId, Name = x.ExamName });
+            ViewContext.Writer.Write(Bootstrap.beginRow + Bootstrap.colLg4);
+            Html.DevExpress().TextBox(m =>
+            {
+                m.Properties.NullText = "Title";
+                m.Name = "Title";
+                m.Width = Bootstrap.FullWidth;
+
+            }).Bind(DataBinder.Eval(item, "Title")).GetHtml();
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.colLg4);
+            Html.DevExpress().TextBox(m =>
+            {
+                m.Name = "Question1";
+                m.Properties.NullText = "Question";
+                m.Width = Bootstrap.FullWidth;
+            }).Bind(DataBinder.Eval(item, "Question1")).GetHtml();
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.colLg4);
+            Html.DevExpress().ComboBox(m =>
+            {
+                m.Properties.ValueField = "Id";
+                m.Properties.TextField = "Name";
+                m.Name = "ExamId";
+                m.Properties.ValueType = typeof(Guid);
+                m.Width = Bootstrap.FullWidth;
+            }).BindList(exams).Bind(DataBinder.Eval(item, "ExamId")).GetHtml();
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.endDiv);
+            ViewContext.Writer.Write("<div class='row margin-top-10'>" + Bootstrap.colLg4);
+
+            Html.DevExpress().Button(m =>
+            {
+                m.ClientSideEvents.Click = "function(s,e){QuestionGrid.UpdateEdit()}";
+                m.Name = "btnUpdate";
+                m.Text = ViewData["item"] != null ? "Update" : "Add";
+            }).Render();
+            Html.DevExpress().Button(m =>
+            {
+                m.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+                m.ClientSideEvents.Click = "function(s,e){QuestionGrid.CancelEdit()}";
+                m.Name = "btnCancel";
+                m.Text = "Cancel";
+
+            }).Render();
+            ViewContext.Writer.Write(Bootstrap.endDiv + Bootstrap.endDiv);
+            try
+            {
+                ViewContext.Writer.Write("<div class='row'><div class='col-lg-12 col-md-12 col-sm-12'>");
+                ViewContext.Writer.Write("<label>Choices</label>");
+                Html.RenderAction("ChoicesGridPartial", new { QuestionId = DataBinder.Eval(s.DataItem, "QuestionId") });
+                ViewContext.Writer.Write("</div></div>");
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+
+
+
+
+
+        });
+
+    });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+
+<script>
+    var Grid;
+    function Update(s, e) {
+        //Grid.UpdateEdit();
+
+    }
+</script>

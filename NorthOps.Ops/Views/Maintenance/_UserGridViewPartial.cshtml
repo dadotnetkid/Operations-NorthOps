@@ -1,0 +1,52 @@
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Users";
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "UserGridView";
+        settings.CallbackRouteValues = new { Controller = "Maintenance", Action = "UserGridViewPartial" };
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Maintenance", Action = "UserGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Maintenance", Action = "UserGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Maintenance", Action = "UserGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+        settings.Columns.Add("Email");
+        settings.Columns.Add("FullName");
+        settings.Columns.Add("MemberRoles");
+        settings.SetEditFormTemplateContent(c =>
+        {
+
+            if (ViewData["model"] != null)
+            {
+                Html.RenderPartial("_useraddeditpartial", ViewData["model"]);
+            }
+            else
+            {
+                Html.RenderAction("UserAddEditPartial", new { Id = DataBinder.Eval( ViewData["item"]?? c.DataItem, "Id") });
+            }
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

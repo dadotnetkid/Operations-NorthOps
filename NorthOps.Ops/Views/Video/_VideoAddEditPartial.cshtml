@@ -1,0 +1,71 @@
+﻿@model NorthOps.Ops.Models.Video
+
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "VideoFormLayout";
+
+    var groupItem = settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.Caption = "Video";
+        groupSettings.ShowCaption = DefaultBoolean.True;
+        groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
+        groupSettings.ColCount = 3;
+
+    });
+
+    groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+    groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Top;
+    groupItem.Items.Add(m => m.ExamId, c =>
+    {
+        c.SetNestedContent(() =>
+        {
+            Html.DevExpress().ComboBoxFor(m => m.ExamId, cbo => { cbo.Properties.TextField = "ExamName"; cbo.Properties.ValueField = "ExamId"; }).BindList(Model.Exams).GetHtml();
+        });
+    });
+    groupItem.Items.Add(m => m.VideoName);
+    groupItem.Items.Add(m => m.Video1, c =>
+    {
+        c.SetNestedContent(() =>
+        {
+
+            using (Html.BeginForm("VideoUploadControlUpload", "Video", FormMethod.Post))
+            {
+                Html.DevExpress().UploadControl(file =>
+                {
+                    file.Name = "VideoUploadControl";
+                    file.CallbackRouteValues = new { Controller = "Video", Action = "VideoUploadControlUpload" };
+
+                    file.AdvancedModeSettings.EnableFileList = true;
+
+
+                    file.ShowProgressPanel = true;
+                    file.AutoStartUpload = true;
+                    file.ValidationSettings.Assign(NorthOps.Ops.Controllers.VideoControllerVideoUploadControlSettings.UploadValidationSettings);
+                }).GetHtml();
+
+           }
+
+        });
+
+    });
+    groupItem.Items.Add(c =>
+    {
+        c.ShowCaption = DefaultBoolean.False;
+        c.SetNestedContent(() =>
+        {
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnSave";
+                btn.Text = "Save";
+                btn.ClientSideEvents.Click = "function(s,e){VideoGridView.UpdateEdit();}";
+            }).GetHtml();
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnCancel";
+                btn.Text = "Cancel";
+                btn.ClientSideEvents.Click = "function(s,e){VideoGridView.CancelEdit();}";
+                btn.Style.Add(HtmlTextWriterStyle.MarginLeft, "10px");
+            }).GetHtml();
+        });
+    });
+}).GetHtml()

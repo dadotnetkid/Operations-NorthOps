@@ -1,0 +1,12 @@
+﻿@using NorthOps.Ops.Controllers
+
+@{ ViewBag.Title = "EXAM MANAGEMENT"; ViewBag.Description = "CATEGORIES"; }
+
+
+@(ViewContext.RouteData.Values["Action"].ToString().ToLower())<br />
+<label for="male">@nameof(ExamController.Categories).ToLower()</label><br />
+@ViewContext.RouteData.Values["Controller"].ToString().ToLower()
+
+@Html.Action("CategoryViewPartial")
+
+

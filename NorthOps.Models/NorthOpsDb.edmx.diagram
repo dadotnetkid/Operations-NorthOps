@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="094b08693cd7459295a9f21a5b871251" Name="Diagram1">
+        <EntityTypeShape EntityType="northopsModel.AddressStateProvinces" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.AddressTownCities" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.ApplicantAnswers" Width="1.5" PointX="5.25" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.Applicants" Width="1.5" PointX="8.25" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.Categories" Width="1.5" PointX="1.5" PointY="24.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.Choices" Width="1.5" PointX="3" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.Exams" Width="1.5" PointX="1.5" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.JobApplications" Width="1.5" PointX="5.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.PersonalityResults" Width="1.5" PointX="5.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.Questions" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.TypingSpeeds" Width="1.5" PointX="3.75" PointY="29.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.UserClaims" Width="1.5" PointX="5.25" PointY="23.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.UserLogins" Width="1.5" PointX="5.25" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.UserRoles" Width="1.5" PointX="0.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.Users" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="northopsModel.Videos" Width="1.5" PointX="1.5" PointY="27" IsExpanded="true" />
+        <AssociationConnector Association="northopsModel.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_ApplicantAnswer_ChoiceId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_ApplicantAnswer_QuestionId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_ApplicantAnswer_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_Applicants_ExamId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_Applicants_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_Exam_CategoryId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_Choice_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_Question_ExamId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_TypingSpeed_ExamId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_Video_ExamId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_JobApplications_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_PersonalityResult_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_Question_VideoId" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_UserClaims_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.FK_UserLogins_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="northopsModel.UsersInRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="northopsModel.EmployeeNotications" Width="1.5" PointX="5.25" PointY="5.125" />
+        <AssociationConnector Association="northopsModel.FK_EmployeeNotications_Users" />
+        <EntityTypeShape EntityType="northopsModel.NotificationsTemplates" Width="1.5" PointX="7.375" PointY="3.875" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

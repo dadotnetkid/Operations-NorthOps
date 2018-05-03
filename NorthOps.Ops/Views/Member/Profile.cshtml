@@ -1,0 +1,22 @@
+﻿@model Users
+
+@{
+
+}
+
+@using (Ajax.BeginForm(actionName: "Profile", controllerName: "member", routeValues: new { Id = Model.Id }, ajaxOptions: new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "form-profile", InsertionMode = InsertionMode.Replace, OnBegin = "LoadingSubmit.Show()", OnSuccess = "LoadingSubmit.Hide()" }, htmlAttributes: new { id = "form-profile" }))
+{
+
+
+    Html.Partial("_ProfileViewPartial", Model);
+
+}
+
+
+@Html.DevExpress().LoadingPanel(settings =>
+{
+settings.Name = "LoadingSubmit";
+settings.Modal = true;
+
+
+}).GetHtml()

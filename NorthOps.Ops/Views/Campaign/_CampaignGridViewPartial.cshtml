@@ -1,0 +1,66 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "CampaignGridView";
+        settings.CallbackRouteValues = new { Controller = "Campaign", Action = "CampaignGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Campaign", Action = "CampaignGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Campaign", Action = "CampaignGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Campaign", Action = "CampaignGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "CampaignId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("CampaignName");
+        settings.Columns.Add("CampaignDescription");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateTimePeriodFrom";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var prop = col.PropertiesEdit as DateEditProperties;
+            prop.TimeSectionProperties.Visible = true;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateTimePeriodTo";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var prop = col.PropertiesEdit as DateEditProperties;
+            prop.TimeSectionProperties.Visible = true;
+        });
+        settings.SetEditFormTemplateContent(col =>
+        {
+            var item = ViewData["item"] ?? col.DataItem;
+            var model = item as NorthOps.Ops.Models.Campaign;
+    /*var id = DataBinder.Eval(item, "CampaignId");
+    var model = new NorthOps.Ops.Models.Campaign() { CampaignId = id == null ? "" : id.ToString() };*/
+            var id = DataBinder.Eval(item, "CampaignId");
+
+            Html.RenderAction("CampaignAddEditGridViewPartial", new { _CampaignId = id });
+
+
+    });
+
+});
+if (ViewData["EditError"] != null)
+{
+grid.SetEditErrorText((string) ViewData["EditError"]);
+}
+}
+@grid.Bind(Model).GetHtml()
