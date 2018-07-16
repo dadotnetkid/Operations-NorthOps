@@ -1,0 +1,25 @@
+@using NorthOps.Services.Helpers
+
+@{
+    var scheduler = Html.DevExpress().Scheduler(settings =>
+    {
+        settings.Name = "Scheduler";
+        settings.CallbackRouteValues = new { Controller = "Schedules", Action = "SchedulerPartial", UserId = ViewBag.UserId };
+        settings.EditAppointmentRouteValues = new { Controller = "Campaigns", Action = "SchedulerPartialEditAppointment" };
+        settings.ActiveViewType = SchedulerViewType.Month;
+        settings.Storage.EnableReminders = false;
+        settings.Storage.Appointments.Assign(CampaignsControllerSchedulerSettings.AppointmentStorage);
+        settings.OptionsView.ShowOnlyResourceAppointments = false;
+
+
+        settings.Start = new DateTime(2018, 1, 1);
+        settings.Views.WeekView.AppointmentDisplayOptions.StartTimeVisibility = AppointmentTimeVisibility.Always;
+        settings.Views.WeekView.AppointmentDisplayOptions.EndTimeVisibility = AppointmentTimeVisibility.Always;
+        settings.Views.WeekView.AppointmentDisplayOptions.ShowRecurrence = true;
+    });
+    if (ViewData["SchedulerErrorText"] != null)
+    {
+        scheduler.SetErrorText((string)ViewData["SchedulerErrorText"]);
+    }
+}
+@scheduler.Bind(Model).GetHtml()

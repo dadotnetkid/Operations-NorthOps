@@ -45,3 +45,14 @@
     }
 }
 
+<script>
+    $(document).ready(function() {
+        
+    });
+    window.addEventListener("beforeunload", function (e) {
+        var message = "Please do not close or refresh the browser while taking the exam. The exam was designed for 1 passing view only. Closing or refreshing the browser will interere with your score and may cause instant fail.";
+        e.returnValue = message;
+
+        return e.returnValue;
+    });
+</script>

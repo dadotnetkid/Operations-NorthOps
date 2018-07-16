@@ -18,13 +18,13 @@ function performAjax(ctrl) {
         },
         complete: function () {
             loadingPanel.Hide();
-            var indexTab = (QuestionPageControl.GetActiveTabIndex()) ;
+            var indexTab = (QuestionPageControl.GetActiveTabIndex());
             indexTab++;
             QuestionPageControl.SetActiveTabIndex(indexTab);
             if (indexTab >= tabs) {
                 stopTimer();
             }
-          
+
         }
     });
 }
@@ -102,9 +102,57 @@ $('#videoExam').mousedown(function (event) {
     }
 });
 var audio;
-function playAudio(ctrl, src) {
+var _audioLength;
+var _audioTimer;
+var _audioCountDown = 0;
+var _btnNextSrc;
+var _ctrl;
+function playAudio(ctrl, url, src) {
     audio = document.getElementById('#audio-' + src);
-    audio.play();
-    $(ctrl).html("<span class='fa fa-pause'></span>");
+    _ctrl = ctrl;
+   
+    _btnNextSrc = src;
+  
+  //  console.log(replaceAll(src, '-', ''));
+    
+    getDuration().then(function (l) {
+      audio.play();
+        $(_ctrl).html("<span class='fa fa-pause'></span>");
+        _audioLength = l;
+        console.log(_audioLength);
+        _audioTimer = setInterval(audioCountDown, 1000);
+        $('#h' + _btnNextSrc).text('Playing Audio');
+    });
 
+    //_audioLength = audio.duration;
+    //console.log(_audioLength);
+    //_audioTimer = setInterval(audioCountDown, 1000);
+}
+function audioCountDown() {
+
+    if (_audioCountDown > _audioLength) {
+        $(_ctrl).html("<span class='fa fa-stop'></span>");
+        eval('btnNext' + replaceAll(_btnNextSrc, '-', '')).SetEnabled(true);
+        clearInterval(_audioTimer);
+        audio.pause();
+        $('#h' + _btnNextSrc).text('Audio Stop');
+    }
+    console.log(_audioCountDown);
+    _audioCountDown++;
+}
+
+function getDuration(src) {
+    return new window.Promise(function (resolve) {
+
+        $(audio).on("loadedmetadata", function () {
+            resolve(audio.duration);
+        });
+
+    });
+}
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }

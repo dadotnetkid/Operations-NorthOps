@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NorthOps.AspIdentity;
 using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Services.EmailService;
 
 namespace NorthOps.Services.NotificationService.EmailService
 {
@@ -29,5 +30,7 @@ namespace NorthOps.Services.NotificationService.EmailService
             var emailTemplate = unitOfWork.NotificationTemplatesRepo.Find(m => m.Type == (int)notificationType)?.Template;
             await userManager.SendEmailAsync(userId, "NorthOps", emailTemplate);
         }
+
+     
     }
 }

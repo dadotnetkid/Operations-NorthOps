@@ -1,0 +1,13 @@
+﻿@{
+    Html.DevExpress().ComboBox(settings =>
+   {
+       settings.Name = "UserId";
+       settings.Width = Unit.Percentage(100);
+       settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+       settings.Properties.ValueField = "Id";
+       settings.Properties.TextField = "FullName";
+       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+     
+       settings.CallbackRouteValues = new { Controller = "Campaigns", Action = "cboEmployeesPartial" };
+   }).Bind(ViewBag.UserId).BindList(Model).GetHtml();
+}

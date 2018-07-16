@@ -32,8 +32,9 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
 
-        settings.Columns.Add("Exam.ExamName");
+        settings.Columns.Add("Exams.ExamName");
         settings.Columns.Add("VideoName");
+        settings.Columns.Add("Size");
         settings.SetEditFormTemplateContent(col =>
         {
             var item = ViewData["item"] ?? col.DataItem;

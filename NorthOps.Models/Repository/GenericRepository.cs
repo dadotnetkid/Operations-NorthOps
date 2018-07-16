@@ -128,6 +128,7 @@ namespace NorthOps.Models.Repository
         }
         public virtual void Insert(TEntity entity)
         {
+            
             dbSet.Add(entity);
         }
         public virtual void InsertRange(IEnumerable<TEntity> entity)

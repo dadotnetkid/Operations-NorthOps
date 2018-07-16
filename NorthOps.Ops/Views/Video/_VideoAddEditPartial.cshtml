@@ -1,5 +1,5 @@
-﻿@model NorthOps.Ops.Models.Video
-
+﻿
+@model Videos
 @Html.DevExpress().FormLayout(settings =>
 {
     settings.Name = "VideoFormLayout";
@@ -19,11 +19,11 @@
     {
         c.SetNestedContent(() =>
         {
-            Html.DevExpress().ComboBoxFor(m => m.ExamId, cbo => { cbo.Properties.TextField = "ExamName"; cbo.Properties.ValueField = "ExamId"; }).BindList(Model.Exams).GetHtml();
+            Html.DevExpress().ComboBoxFor(m => m.ExamId, cbo => { cbo.Properties.TextField = "ExamName"; cbo.Properties.ValueField = "ExamId"; }).BindList(Model.ExamsList).GetHtml();
         });
     });
     groupItem.Items.Add(m => m.VideoName);
-    groupItem.Items.Add(m => m.Video1, c =>
+    groupItem.Items.Add(m => m.VideoId, c =>
     {
         c.SetNestedContent(() =>
         {

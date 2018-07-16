@@ -1,0 +1,52 @@
+﻿@model Campaigns
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        @{
+            Html.DevExpress().LabelFor(m => m.CampaignName).GetHtml();
+            Html.DevExpress().TextBoxFor(m => m.CampaignName, txt =>
+            {
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        @{
+            Html.DevExpress().Label(lbl => { lbl.Text = "Shifts"; }).GetHtml();
+            Html.RenderAction("TokenBoxShiftPartial", new { CampaignId = Model?.Id });
+        }
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+
+        @{
+            Html.DevExpress().LabelFor(m => m.IsActive).GetHtml();
+            Html.DevExpress().CheckBoxFor(m => m.IsActive, txt =>
+            {
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+</div>
+
+<div class="row margin-top-5">
+    <div class="col-lg-12">
+        <div class="pull-right">
+            @{
+                Html.DevExpress().Button(btn =>
+                {
+                    btn.Text = "Save";
+                    btn.Name = "BtnSave";
+                    btn.ControlStyle.CssClass = "margin-r-5";
+                    btn.ClientSideEvents.Click = "function(s,e){CampaignsGridView.UpdateEdit();}";
+                }).GetHtml();
+                Html.DevExpress().Button(btn =>
+                {
+                    btn.Text = "Cancel";
+                    btn.Name = "BtnCancel";
+                    btn.ClientSideEvents.Click = "function(s,e){CampaignsGridView.CancelEdit();}";
+                }).GetHtml();
+            }
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+﻿@model Shifts
+<div class="grid-editor-wrapper">
+    <div class="row">
+        <div class="col-6 col-md-6 col-sm-12">
+            @{
+                Html.DevExpress().LabelFor(m => m.ShiftName).GetHtml();
+                Html.DevExpress().TextBoxFor(m => m.ShiftName, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-6 col-md-6 col-sm-12">
+            @{
+                Html.DevExpress().LabelFor(m => m.TimeIn).GetHtml();
+                Html.DevExpress().TimeEditFor(m => m.TimeIn, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+    </div>
+    <div class="row margin-top-5">
+        <div class="col-6 col-md-6 col-sm-12">
+            @{
+                Html.DevExpress().LabelFor(m => m.TimeOut).GetHtml();
+                Html.DevExpress().TimeEditFor(m => m.TimeOut, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-6 col-md-6 col-sm-12">
+            @{
+                Html.DevExpress().LabelFor(m => m.BreakTime).GetHtml();
+                Html.DevExpress().TextBoxFor(m => m.BreakTime, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+    </div>
+    <div class="row margin-top-5">
+        <div class="col-6 col-md-6 col-sm-12">
+            @{
+                Html.DevExpress().LabelFor(m => m.RegularTime).GetHtml();
+                Html.DevExpress().TextBoxFor(m => m.RegularTime, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-6 col-md-6 col-sm-12">
+            @{
+                Html.DevExpress().Label(lbl =>
+                {
+                    lbl.AssociatedControlName = "CampaignId";
+                    lbl.Text = "Campaigns";
+                }).GetHtml();
+                Html.RenderAction("TokenBoxCampaignPartial", new { ShiftId = Model?.Id });
+            }
+        </div>
+
+    </div>
+ 
+    <div class="row margin-top-5">
+        <div class="col-lg-12">
+            <div class="pull-right">
+                @{
+                    Html.DevExpress().Button(btn =>
+                    {
+                        btn.Text = "Save";
+                        btn.Name = "BtnSave";
+                        btn.ControlStyle.CssClass = "margin-r-5";
+                        btn.ClientSideEvents.Click = "function(s,e){ShiftsGridView.UpdateEdit();}";
+                    }).GetHtml();
+                    Html.DevExpress().Button(btn =>
+                    {
+                        btn.Text = "Cancel";
+                        btn.Name = "BtnCancel";
+                        btn.ClientSideEvents.Click = "function(s,e){ShiftsGridView.CancelEdit();}";
+                    }).GetHtml();
+                }
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

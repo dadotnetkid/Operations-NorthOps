@@ -6,15 +6,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using NorthOps.Models;
+using NorthOps.Models.Repository;
 
 namespace NorthOps.Portal.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
+        private UnitOfWork unitOfWork = new UnitOfWork();
+        private string _userId;
+
+        public string UserId
+        {
+            get
+            {
+
+                return User.Identity.GetUserId(); 
+
+            }
+     
+        }
+
         public ActionResult Index()
         {
+            
+            ViewBag.Notification = unitOfWork.EmployeeNoticationsRepo.Get(m=>m.Id==UserId);
             return View();
         }
         [HttpPost]

@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "UsersCampaignShift";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@Html.Action("UsersInCampaignShiftGridViewPartial")
+<script>
+
+
+    function CampaignOnValueChanged(s, e) {
+        ShiftId.PerformCallback({ CampaignId: s.GetValue() });
+    }
+</script>

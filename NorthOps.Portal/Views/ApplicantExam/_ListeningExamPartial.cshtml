@@ -2,29 +2,33 @@
 
 
 @{
+
     var tab = Html.DevExpress().PageControl(setting =>
     {
         setting.Name = "QuestionPageControl";
         setting.Width = Unit.Percentage(100);
         setting.ShowTabs = false;
 
-        foreach (var i in new UnitOfWork().VideoRepo.GetNew(filter: m => m.ExamId == m.ExamId).Select(x => new { VideoId = x.VideoId }))
+        foreach (var i in new UnitOfWork().VideoRepo.GetNew().Select(x => new { VideoId = x.VideoId }))
         {
 
             setting.TabPages.Add("HasVideo", i.VideoId.ToString()).SetContent(() =>
             {
-                ViewContext.Writer.Write("<h2 style='text-align:center'>Playing audio</h2>");
-                ViewContext.Writer.Write(@"<h3 style='text-align:center' onclick='playAudio(this,""" + i.VideoId.ToString() + @""")'><span class='fa fa-play'></span></h3>");
-                ViewContext.Writer.Write("<audio id='#audio-" + i.VideoId.ToString() + "' preload='auto' style='margin:0 auto;float:none;width:50%!important;margin:0 auto !important;float:none'><source src='" + Url.Content("~") + "api/video/" + i.VideoId + "'></audio>");
+                ViewContext.Writer.Write($"<h2 style='text-align:center' id='h{i.VideoId.ToString()}'>Play audio</h2>");
+                ViewContext.Writer.Write(@"<h3 style='text-align:center' onclick='playAudio(this,""" + Url.Content("~") + @""",""" + i.VideoId.ToString() + @""")'><span class='fa fa-play'></span></h3>");
+        //   ViewContext.Writer.Write(@"<h3 style='text-align:center' onclick='playAudio(this,""" + i.VideoId.ToString() + @""")'><span class='fa fa-play'></span></h3>");
+        ViewContext.Writer.Write("<audio id='#audio-" + i.VideoId.ToString() + "' preload='auto' style='margin:0 auto;float:none;width:50%!important;margin:0 auto !important;float:none'><source src='" + Url.Content("~") + "api/video/" + i.VideoId + "'></audio>");
 
 
                 Html.DevExpress().Button(m =>
                 {
                     m.Text = "Next";
-                    m.Name = "btnNext" + i.VideoId;
+                    m.Name = "btnNext" + i.VideoId.ToString().Replace("-", "");
+                    m.ControlStyle.CssClass = "btn-next-enabled";
                     m.Style.Add(HtmlTextWriterStyle.MarginTop, "20px");
                     m.ClientSideEvents.Click = "function(s,e){NextTab(); }";
-
+                    m.ClientEnabled = false;
+                    m.EnableClientSideAPI = true;
                 }).GetHtml();
             });
 
@@ -37,17 +41,17 @@
                     Html.DevExpress().Label(lbl =>
                     {
                         lbl.Name = m.QuestionId + "-label";
-                        lbl.Text = m.Question1;
+                        lbl.Text = m.Question;
                         lbl.Style.Add("font-size", "20px");
                         lbl.Style.Add(HtmlTextWriterStyle.MarginBottom, "20px");
 
                     }).GetHtml();
-                    foreach (var choice in m.Choices.OrderBy(x => x.Choice1))
+                    foreach (var choice in m.Choices.OrderBy(x => x.Choice))
                     {
                         Html.DevExpress().RadioButton(rdo =>
                         {
                             rdo.Name = choice.ChoiceId.ToString();
-                            rdo.Text = choice.Choice1;
+                            rdo.Text = choice.Choice;
                             rdo.GroupName = "Choice";
                             rdo.Style.Add(HtmlTextWriterStyle.MarginTop, "20px");
                             rdo.Style.Add(HtmlTextWriterStyle.FontSize, "18px");
@@ -108,8 +112,9 @@
 
 <script>
     var duration = parseInt(@Model.Duration);
-    var tabs = parseInt('@Model.Questions.Count()-1') + parseInt('@(new UnitOfWork().VideoRepo.GetNew(filter: m => m.ExamId == m.ExamId).Select(x => new { VideoId = x.VideoId }).Count()-1)');
+    var tabs = parseInt('@Model.Questions.Count()-1') + parseInt('@(new UnitOfWork().VideoRepo.GetNew().Select(x => new { VideoId = x.VideoId }).Count()-1)');
     var TabHasVideo = 0;
+
 
 </script>
 <script src="~/Content/js/TakingExam.js">

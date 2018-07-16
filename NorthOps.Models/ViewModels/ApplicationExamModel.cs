@@ -28,7 +28,7 @@ namespace NorthOps.Models.ViewModels
                 {
                     applicantAnswer.ChoiceId = choice.ChoiceId;
                     unitOfWork.ApplicantAnswer.Update(applicantAnswer);
-
+                    await AddScore(question, choice);
                 }
                 else
                 {
@@ -36,7 +36,7 @@ namespace NorthOps.Models.ViewModels
                     await AddScore(question, choice);
                 }
                 await unitOfWork.SaveAsync();
-                await AddScore(question, choice);
+               // await AddScore(question, choice);
 
             }
             return 0;

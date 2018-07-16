@@ -18,7 +18,7 @@ namespace NorthOps.Models
         }
         public IEnumerable<Questions> RandomQuestion
         {
-            get { return this.Questions.Where(m => m.Choices.Count() > 0).OrderBy(m => Guid.NewGuid()); }
+            get { return this.Questions.Skip(0).Take(50).Where(m => m.Choices.Any()).OrderBy(m => Guid.NewGuid()); }
         }
         public IEnumerable<Questions> QuestionsList
         {

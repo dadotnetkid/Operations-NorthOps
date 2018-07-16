@@ -1,0 +1,17 @@
+@using NorthOps.Ops.Controllers;
+
+@{
+    var scheduler = Html.DevExpress().Scheduler(settings => {
+        settings.Name = "Scheduler";
+        settings.CallbackRouteValues = new { Controller = "Attendance", Action = "SchedulerPartial" };
+        settings.EditAppointmentRouteValues = new { Controller = "Attendance", Action = "SchedulerPartialEditAppointment" };
+
+        settings.Storage.EnableReminders = false;
+		settings.Storage.Appointments.Assign(AttendanceControllerSchedulerSettings.AppointmentStorage);
+        settings.Storage.Resources.Assign(AttendanceControllerSchedulerSettings.ResourceStorage);
+    });
+    if (ViewData["SchedulerErrorText"] != null) {
+        scheduler.SetErrorText((string)ViewData["SchedulerErrorText"]);
+    }
+}
+@scheduler.Bind(ViewData["Appointments"], ViewData["Resources"]).GetHtml()

@@ -7,7 +7,7 @@
         {
             Controller = "Recruit",
             Action = "JobApplicationGridPartial"
-        };
+};
 
         settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialAddNew" };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialUpdate" };
@@ -42,6 +42,7 @@
             col.FieldName = "Users.CreatedDate";
             col.ColumnType = DevExpress.Web.Mvc.MVCxGridViewColumnType.DateEdit; col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
         });
+        settings.Columns.Add("Users.Email");
         settings.Columns.Add("Users.FullName");
 
 
@@ -57,7 +58,7 @@
                 //ch.Name = "cb_" + c.KeyValue.ToString();
                 //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Resume"));
                 //chk.ClientEnabled = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "IsRequiredRelationship")) != true;
-                //chk.ClientEnabled = false;
+                //chk.ClientEnabled = false;"IsExamReady"
                 Html.DevExpress().CheckBox(ch =>
                 {
                     ch.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Users.EmailConfirmed"));
@@ -66,6 +67,23 @@
                 }).Bind(DataBinder.Eval(c.DataItem, "Users.EmailConfirmed")).Render();
             });
 
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "IsExamReady";
+            col.Caption = "Is Exam Ready";
+            col.ColumnType = MVCxGridViewColumnType.CheckBox;
+            col.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().CheckBox(ch =>
+                {
+                    ch.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "IsExamReady"));
+                    ch.Name = "cbIsExamReady_" + c.KeyValue.ToString();
+                    ch.ReadOnly = true;
+                }).Bind(DataBinder.Eval(c.DataItem, "IsExamReady")).Render();
+
+            });
+           
         });
         settings.Columns.Add("ApplicantExamScore").Caption="Score";
         settings.Columns.Add(column =>
@@ -91,6 +109,10 @@
                 }).Bind(DataBinder.Eval(c.DataItem, "PhoneInterview")).Render();
             });
         });
+        settings.Columns.Add("Listening");
+        settings.Columns.Add("Typing");
+        settings.Columns.Add("Grammar");
+
         settings.Columns.Add(column =>
         {
             column.FieldName = "PersonalInterview";

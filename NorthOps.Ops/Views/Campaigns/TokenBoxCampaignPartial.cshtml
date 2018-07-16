@@ -1,0 +1,25 @@
+﻿@model Shifts
+@{
+    Html.DevExpress().TokenBox(settings =>
+    {
+        settings.Name = "CampaignId";
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.AllowCustomTokens = false;
+        settings.Properties.ShowDropDownOnFocus = ShowDropDownOnFocusMode.Always;
+        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "CampaignName";
+        settings.CallbackRouteValues = new { Controller = "Campaigns", Action = "TokenBoxCampaignPartial", ShiftId = ViewBag.ShiftId };
+        settings.PreRender = (s, e) =>
+        {
+            var tk = s as MVCxTokenBox;
+
+            if (Model != null)
+                foreach (var i in Model?.Campaigns)
+                {
+                    tk.Tokens.Add(i.CampaignName);
+                }
+        };
+    }).BindList(new UnitOfWork().CampaignsRepo.Get()).GetHtml();
+}

@@ -14,7 +14,7 @@ namespace NorthOps.Models
         private RequestContext requestContext;
         public ApplicantStatusModel()
         {
-            this. requestContext=HttpContext.Current.Request.RequestContext;
+            this.requestContext = HttpContext.Current.Request.RequestContext;
         }
         public bool? Done { get; set; }
         public string Field { get; set; }
@@ -26,8 +26,15 @@ namespace NorthOps.Models
         public IEnumerable<ApplicantStatusModel> applicantStatusModel()
         {
             var applicantStatus = new List<ApplicantStatusModel>();
-            bool? Resume = unitOfWork.UserRepository.Get(filter: m => m.FirstName != null && m.Id == UserId).Any() ? true : false;
-            applicantStatus.Add(new ApplicantStatusModel() { Field = "Resume", Done = Resume });
+            var user = unitOfWork.UserRepository.Find(filter: m => m.Id == UserId);
+            applicantStatus.Add(new ApplicantStatusModel()
+            {
+                Field = "Resume",
+                Done = user?.FirstName != null ? true : false,
+                Status = user?.FirstName != null ? user?.EmailConfirmed == true ? "Please wait for your exam" : "Please check your email for verification" : $"Please complete your profile information <a href='{new UrlHelper(requestContext).Action("Profile", "Member")}'>here</a>"
+
+            });
+
             foreach (var i in unitOfWork.JobApplicationRepo.Get(filter: m => m.UserId == this.UserId))
             {
                 applicantStatus.Add(new ApplicantStatusModel()

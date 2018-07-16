@@ -1,7 +1,57 @@
-﻿
+﻿<div class="alert alert-warning alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h3><i class="icon fa fa-exclamation"></i> Important</h3>
+    <p>
+        <b>Before you take the exam, please ensure that you are using a Desktop PC or Notebook and have a stable internet access. Interruptions in your internet connection will adversely affect the result of your exams. </b><br />
+        <b>Please do not close or refresh the browser while taking the exam. The exam was designed for 1 passing view only. Closing or refreshing the browser will interere with your score and may cause instant fail.</b>
+    </p>
+</div>
 @Html.Action("ExamsGridPartial")
 @Html.DevExpress().LoadingPanel(ldp =>
 {
     ldp.Name = "LoadingOpenExam";
     ldp.Modal = true;
 }).GetHtml()
+
+
+
+<script>
+    var ExamId = "";
+    function ViewDescription(ExamId) {
+        this.ExamId = ExamId;
+        ExamTab.SetActiveTabIndex(1);
+        $.ajax({
+            url: '@Url.Action("ExamDescriptionPartial", "applicantexam")',
+            data: { ExamId: ExamId },
+            type: 'POST',
+            beforeSend: function () {
+                LoadingPanel.Show();
+            }
+            ,success: function (e) {
+                $('#tab-description').html(e);
+
+            },
+            complete: function () {
+                LoadingPanel.Hide()
+            }
+        });
+    }
+    function StartExam() {
+
+        ExamTab.SetActiveTabIndex(2);
+        $.ajax({
+            url: '@Url.Action("StartExamPartial")',
+            data: { ExamId: ExamId },
+            type: 'POST',
+            beforeSend: function () {
+                LoadingPanel.Show();
+            }
+            ,success: function (e) {
+                $('#tab-exam').html(e);
+            },
+            complete: function () {
+                LoadingPanel.Hide()
+            }
+        });
+    }
+</script>

@@ -30,6 +30,10 @@ namespace NorthOps.Models
         public Nullable<System.DateTime> OnBoardingDate { get; set; }
         public Nullable<System.DateTime> ContractDate { get; set; }
         public Nullable<bool> IsPersonalInterviewPassed { get; set; }
+        public Nullable<bool> IsExamPassed { get; set; }
+        public Nullable<bool> IsPhoneInterviewPassed { get; set; }
+        public Nullable<bool> IsTrainingPassed { get; set; }
+        public Nullable<bool> IsOnBoardingPassed { get; set; }
     
         public virtual Users Users { get; set; }
     }

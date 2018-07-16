@@ -61,14 +61,21 @@
     <Reference Include="DevExpress.RichEdit.v16.2.Core, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Utils.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Web.ASPxHtmlEditor.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxScheduler.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Web.ASPxThemes.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Web.Mvc5.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Web.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraScheduler.v16.2.Core, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.zkemkeeper, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\ZKTeco.DTR\ZKTeco.SDKHelper\bin\Debug\Interop.zkemkeeper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -211,6 +218,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\ApplicantExamController.cs" />
+    <Compile Include="Controllers\AttendanceController.cs" />
+    <Compile Include="Controllers\CampaignsController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\FileManagerController.cs" />
@@ -221,6 +230,7 @@
     <Compile Include="Controllers\NotificationTemplateController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\RecruitController.cs" />
+    <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\VideoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -441,7 +451,7 @@
     <Content Include="Views\Question\_EditFormQuestion.cshtml" />
     <Content Include="Views\Question\_QuestionGridPartial.cshtml" />
     <Content Include="Views\Question\Index.cshtml" />
-    <Content Include="Views\Recruit\_BtnOpenExamPartial.cshtml" />
+    <Content Include="Views\Recruit\_btnOpenExamPartial.cshtml" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -476,15 +486,37 @@
     <Content Include="Views\Maintenance\_UserRoleAddEditPartial.cshtml" />
     <Content Include="Views\FileManagementData\ProfileData.cshtml" />
     <Content Include="Views\FileManagementData\_FilemanagementGridViewPartial.cshtml" />
-    <Content Include="Views\Campaign\Index.cshtml" />
-    <Content Include="Views\Campaign\_CampaignGridViewPartial.cshtml" />
-    <Content Include="Views\Campaign\_CampaignAddEditGridViewPartial.cshtml" />
     <Content Include="Views\Maintenance\_SelectTownCityPartial.cshtml" />
-    <Content Include="Views\Campaign\_UserTokenPartial.cshtml" />
     <Content Include="Views\NotificationTemplate\Index.cshtml" />
     <Content Include="Views\NotificationTemplate\_NotificationsTemplatesGridViewPartial.cshtml" />
     <Content Include="Views\NotificationTemplate\_AddEditNotificationsTemplatesPartial.cshtml" />
     <None Include="Properties\PublishProfiles\vps northops.pubxml" />
+    <Content Include="Views\Attendance\AttendanceLog.cshtml" />
+    <Content Include="Views\Attendance\_AttendanceLogGridViewPartial.cshtml" />
+    <Content Include="Views\Attendance\DTR.cshtml" />
+    <Content Include="Views\Attendance\_SchedulerPartial.cshtml" />
+    <Content Include="Views\Campaigns\Index.cshtml" />
+    <Content Include="Views\Campaigns\_CampaignsGridViewPartial.cshtml" />
+    <Content Include="Views\Campaigns\_ShiftsGridViewPartial.cshtml" />
+    <Content Include="Views\Campaigns\Shifts.cshtml" />
+    <Content Include="Views\Campaigns\TokenBoxCampaignPartial.cshtml" />
+    <Content Include="Views\Campaigns\AddEditShiftPartial.cshtml" />
+    <Content Include="Views\Campaigns\TokenBoxShiftPartial.cshtml" />
+    <Content Include="Views\Campaigns\AddEditCampaignPartial.cshtml" />
+    <Content Include="Views\Campaigns\TokenBoxUsersPartial.cshtml" />
+    <Content Include="Views\Schedules\_SchedulerPartial.cshtml" />
+    <Content Include="Views\Campaigns\_cboEmployeesPartial.cshtml" />
+    <Content Include="Views\Campaigns\UsersCampaignShift.cshtml" />
+    <Content Include="Views\Campaigns\_UsersInCampaignShiftGridViewPartial.cshtml" />
+    <Content Include="Views\Campaigns\_cboCampaignsPartial.cshtml" />
+    <Content Include="Views\Campaigns\_cboShiftsPartial.cshtml" />
+    <Content Include="Views\Campaigns\AddEditUsersInCampaignShiftPartial.cshtml" />
+    <Content Include="Views\Schedules\Index.cshtml" />
+    <Content Include="Views\Schedules\_cboEmployeesPartial.cshtml" />
+    <Content Include="Views\Schedules\GenerateSchedules.cshtml" />
+    <Content Include="Views\Campaigns\BulkAddEditUsersInCampaignPartial.cshtml" />
+    <Content Include="Views\Recruit\Resume.cshtml" />
+    <Content Include="Views\Recruit\_btnNotifyExamResultPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

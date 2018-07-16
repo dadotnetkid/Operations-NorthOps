@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="~/Content/img/favicon.png"/>
     <title>
         @if (!string.IsNullOrWhiteSpace(ViewBag.Title))
         {
@@ -30,7 +31,8 @@
         , new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
         new StyleSheet { ExtensionSuite = ExtensionSuite.CardView },
         new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor },
-        new StyleSheet { ExtensionSuite = ExtensionSuite.RichEdit }
+        new StyleSheet { ExtensionSuite = ExtensionSuite.RichEdit },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Scheduler }
     //, new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer }
     )
 
@@ -44,11 +46,13 @@
     , new Script { ExtensionSuite = ExtensionSuite.GridView },
     new Script { ExtensionSuite = ExtensionSuite.CardView },
     new Script { ExtensionSuite = ExtensionSuite.RichEdit },
-    new Script { ExtensionSuite = ExtensionSuite.HtmlEditor }
+    new Script { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new Script { ExtensionSuite = ExtensionSuite.Scheduler }
 //, new Script { ExtensionType = ExtensionType.WebDocumentViewer }
 )
 
     @Scripts.Render("~/bundles/js")
+ 
 
 </head>
 <body class="hold-transition skin-yellow sidebar-mini">

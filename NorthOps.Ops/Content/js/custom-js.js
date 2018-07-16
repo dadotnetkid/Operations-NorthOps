@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+
+
+
     
 });
 function UpdateCampaign() {
@@ -6,4 +9,8 @@ function UpdateCampaign() {
 }
 function CancelCampaign() {
     CampaignGridView.CancelEdit();
+}
+
+function NotifyExamResultCallback(s, e) {
+    console.log(s);
 }

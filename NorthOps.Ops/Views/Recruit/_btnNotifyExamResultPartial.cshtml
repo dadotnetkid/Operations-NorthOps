@@ -1,0 +1,27 @@
+﻿@model JobApplications
+@{
+    using (Ajax.BeginForm("NotifyExamResultPartial",null,new AjaxOptions() { UpdateTargetId = "form-notify-exam-result" },new {id= "form-notify-exam-result" }))
+    {
+        if (Model?.IsExamPassed == null)
+        {
+
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnPassed" + Model.UserId;
+                btn.Text = "Passed";
+                btn.UseSubmitBehavior = true;
+                btn.RouteValues = new { Controller = "Recruit", Action = "NotifyExamResultPartial", IsPassed = true, UserId = Model.UserId };
+
+            }).GetHtml();
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnFailed" + Model.UserId;
+                btn.Text = "Failed";
+                btn.UseSubmitBehavior = true;
+                btn.RouteValues = new { Controller = "Recruit", Action = "NotifyExamResultPartial", IsPassed = false, UserId = Model.UserId };
+
+            }).GetHtml();
+        }
+    }
+
+}

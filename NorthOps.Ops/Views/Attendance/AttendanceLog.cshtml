@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "AttendanceLog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+    Html.DevExpress().Button(settings =>
+    {
+        settings.Name = "btnRetrienveAttendance";
+        settings.UseSubmitBehavior = true;
+        settings.Text = "Retrieve Attendance";
+        settings.ClientSideEvents.Click = "function(s,e){AttendanceLogGridView.UpdateEdit();}";
+        settings.ControlStyle.CssClass = "pull-right margin-bottom-10";
+    }).GetHtml();
+}
+<div class="clearfix"></div>
+
+
+@Html.Action("AttendanceLogGridViewPartial")

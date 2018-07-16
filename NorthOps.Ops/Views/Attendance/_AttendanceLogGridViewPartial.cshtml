@@ -1,0 +1,59 @@
+@using ZKTeco.SDK.Model
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "AttendanceLogGridView";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Attendance", Action = "AttendanceLogGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Attendance", Action = "AttendanceLogGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Attendance", Action = "AttendanceLogGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Attendance", Action = "AttendanceLogGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = false;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add("Biometrics.Users.FullName");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "LogDateTime";
+        });
+       
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cprop = col.PropertiesEdit as ComboBoxProperties;
+            cprop.ValueType = typeof(InOutState);
+            cprop.DataSource = Enum.GetValues(typeof(InOutState)).Cast<InOutState>().Select(x => new { Name = x });
+            cprop.ValueField = "Name";
+            cprop.TextField = "Name";
+            col.FieldName = "InOutState";
+
+
+        });
+
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

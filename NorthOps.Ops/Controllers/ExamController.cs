@@ -143,7 +143,7 @@ namespace NorthOps.Ops.Controllers
         [ValidateInput(false)]
         public ActionResult ExamGridPartial()
         {
-            return PartialView("_ExamGridPartial", unitOfWork.ExamRepo.Get(filter:m=>m.ExamType!=(int)ExamTypes.TypingSkills,includeProperties: "Categories"));
+            return PartialView("_ExamGridPartial", unitOfWork.ExamRepo.Get(includeProperties: "Categories"));
         }
 
         [HttpPost, ValidateInput(false)]

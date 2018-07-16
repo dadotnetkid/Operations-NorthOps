@@ -34,7 +34,7 @@
 
         //settings.Columns.Add("TownCityId");
         settings.Columns.Add("Name");
-        settings.Columns.Add("AddressStateProvince.Name").Caption="Province";
+        settings.Columns.Add("AddressStateProvinces.Name").Caption="Province";
 
         settings.SetEditFormTemplateContent(c => {
             var item = ViewData["item"] != null ? ViewData["item"] : c.DataItem;

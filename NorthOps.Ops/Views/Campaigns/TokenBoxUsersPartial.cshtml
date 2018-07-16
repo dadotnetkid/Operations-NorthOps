@@ -1,0 +1,25 @@
+﻿@model Shifts
+@{
+    Html.DevExpress().TokenBox(settings =>
+    {
+        settings.Name = "UserId";
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.AllowCustomTokens = false;
+        settings.Properties.ShowDropDownOnFocus = ShowDropDownOnFocusMode.Always;
+        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "FullName";
+        settings.CallbackRouteValues = new { Controller = "Campaigns", Action = "TokenBoxUsersPartial", ShiftId = ViewBag.ShiftId };
+        settings.PreRender = (s, e) =>
+        {
+            var tk = s as MVCxTokenBox;
+
+            if (Model != null)
+                foreach (var i in Model?.UsersInCampaignShift)
+                {
+                    tk.Tokens.Add(i.Users?.FullName);
+                }
+        };
+    }).BindList(new UnitOfWork().UserRepository.Get()).GetHtml();
+}

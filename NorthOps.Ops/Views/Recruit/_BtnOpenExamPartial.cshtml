@@ -1,11 +1,22 @@
 ﻿@model  Applicants
-    @{
+@{
+    Html.DevExpress().Button(btn =>
+    {
+        btn.Name = "Resum1e";
+        btn.Enabled = Model != null ? false : true;
+        btn.Text = Model != null ? "Closed" : "Open";
+        btn.UseSubmitBehavior = true;
+    }).Render();
+    if (Model != null)
+    {
         Html.DevExpress().Button(btn =>
         {
-            btn.Name = "Resum1e";
-            btn.Enabled = Model != null ? false : true;
-            btn.Text = Model != null ? "Closed" : "Open";
+            btn.Name = "ResendExamination";
+            btn.Text = "Resend";
             btn.UseSubmitBehavior = true;
-        }).Render();
-      
+            btn.ClientSideEvents.Click = "ResendExaminationNotification";
+            btn.RouteValues = new { Action = "ResendExaminationNotification", Controller = "Recruit", UserId = Model.UserId };
+        }).GetHtml();
     }
+
+}

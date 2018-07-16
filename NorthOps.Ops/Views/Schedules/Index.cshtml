@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="row ">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        @Html.Action("cboEmployeesPartial")
+    </div>
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        @Html.Action("SchedulerPartial")
+    </div>
+</div>
+
+<script>
+    function cboEmployeeOnValueChanged(s, e) {
+        console.log(s.GetValue());
+        Scheduler.PerformCallback({ UserId: s.GetValue() });
+    }
+</script>

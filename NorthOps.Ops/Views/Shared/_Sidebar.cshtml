@@ -34,9 +34,9 @@
             <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(HomeController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
                 <a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span>Dash Board</span></a>
             </li>
-            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(ExamController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Exam" ? "active" : "")">
-                <a href="@Url.Action("profile", "member")"><i class="fa fa-user-o"></i> <span>Profile</span></a>
-            </li>
+            @*<li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(ExamController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Exam" ? "active" : "")">
+                    <a href="@Url.Action("profile", "member")"><i class="fa fa-user-o"></i> <span>Profile</span></a>
+                </li>*@
             @if (User.IsInRole("Administrator"))
             {
 
@@ -81,9 +81,7 @@
 
                 </li>
 
-                <li class="@("treeview " + (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "maintenance"
-                    ||ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "filemanagementdata"   
-                    ||ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "notificationtemplate"   ? "active" : ""))">
+                <li class="@("treeview " + (ControllerServices.IsControllerName("maintenance","filemanagementdata","notificationtemplate")   ? "active" : ""))">
                     <a href="#">
                         <i class="fa fa-gears"></i> <span>Maintenance</span>
                         <span class="pull-right-container">
@@ -92,24 +90,50 @@
                     </a>
                     <ul class="treeview-menu">
 
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "users" ? "active" : "")">
+                        <li class="@(ControllerServices.IsActionName("users")? "active" : "")">
                             <a href="@Url.Action("users", "maintenance")"><i class="fa fa-users"></i> <span> Users</span></a>
                         </li>
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "userroles" ? "active" : "")">
+                        <li class="@(ControllerServices.IsActionName("userroles") ? "active" : "")">
                             <a href="@Url.Action("userroles", "maintenance")"><i class="fa fa-user-secret"></i> <span> User Roles</span></a>
                         </li>
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "towncity" ? "active" : "")">
+                        <li class="@(ControllerServices.IsActionName("towncity") ? "active" : "")">
                             <a href="@Url.Action("TownCity", "maintenance")"><i class="fa fa-address-book"></i> <span> Town City</span></a>
                         </li>
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "index" ? "active" : "")">
+                        <li class="@(ControllerServices.IsControllerName("")&& ControllerServices.IsActionName("index") ? "active" : "")">
                             <a href="@Url.Action("index", "notificationtemplate")"><i class="fa fa-address-book"></i> <span> Notification Template</span></a>
                         </li>
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "profiledata" ? "active" : "")">
-                            <a href="@Url.Action("profiledata", "filemanagementdata")"><i class="fa fa-address-book"></i> <span> Profile Data</span></a>
+
+                        <li class="@(ControllerServices.IsControllerName("attendance")&& ControllerServices.IsActionName("AttendanceLog") ? "active" : "")">
+                            <a href="@Url.Action("AttendanceLog", "attendance")"><i class="fa fa-address-book"></i> <span> Attendance Log</span></a>
                         </li>
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == "index" ? "active" : "")">
-                            <a href="@Url.Action("index", "campaign")"><i class="fa fa-address-book"></i> <span> Campaign</span></a>
+
+
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-circle-o"></i> DTR
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+
+                                <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                    <a href="@Url.Action("index", "campaigns")"><i class="fa fa-circle-o"></i> <span> Campaigns</span></a>
+                                </li>
+                                <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("shifts") ? "active" : "")">
+                                    <a href="@Url.Action("shifts", "campaigns")"><i class="fa fa-circle-o"></i> <span> Shifts</span></a>
+                                </li>
+                                      <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                    <a href="@Url.Action("userscampaignshift", "campaigns")"><i class="fa fa-circle-o"></i> <span> Users in Campaign Shifts</span></a>
+                                </li>
+                                <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("schedules") ? "active" : "")">
+                                    <a href="@Url.Action("index", "schedules")"><i class="fa fa-circle-o"></i> Employees Schedules</a>
+                                </li>
+                                <li><a href="@Url.Action("index", "schedules")"><i class="fa fa-circle-o"></i> Generate Schedules</a></li>
+                            </ul>
                         </li>
+
                     </ul>
 
                 </li>

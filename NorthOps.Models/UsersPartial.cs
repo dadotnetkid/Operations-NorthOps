@@ -34,6 +34,7 @@ namespace NorthOps.Models
         public string MemberRoles { get { return string.Join(Environment.NewLine, this.UserRoles.Select(x => x.Name)); } }
         public IEnumerable<UserRoles> Rolelist { get { return new UnitOfWork().RoleRepository.Get(); } }
         public string userRole { get; set; }
+     
     }
     public enum Gender
     {

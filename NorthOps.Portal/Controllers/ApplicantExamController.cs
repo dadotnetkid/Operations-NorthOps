@@ -69,15 +69,16 @@ namespace NorthOps.Portal.Controllers
             var model = unitOfWork.TypingSpeedRepo.Get().FirstOrDefault();
             return PartialView("_typingspeed", model);
         }
-        public async Task<string> TypingSpeedUpdatePartial(int? Score, int? Error, Guid? ExamId, int Level = 1)
+        public async Task<string> TypingSpeedUpdatePartial(int? score, int? error,int? wordcounts, Guid? examId, int level = 1)
         {
-            var paragraph = await unitOfWork.TypingSpeedRepo.GetAsync(filter: m => m.TypingLevel == Level);
-            if (Score != null)
+            var paragraph = await unitOfWork.TypingSpeedRepo.GetAsync(filter: m => m.TypingLevel == level);
+            if (score != null)
             {
-                Score = Score > 50 ? 50 : Score;
-                var SubScore = (Score * 1.0) / unitOfWork.TypingSpeedRepo.Get().Count();
+               // score = (score - error);
+                score = score > 50 ? 50 : score;
+                var SubScore = (score * 1.0) / unitOfWork.TypingSpeedRepo.Get().Count();
                 var UserId = User.Identity.GetUserId();
-                var applicant = unitOfWork.Applicant.Get(filter: m => m.ExamId == ExamId && m.UserId == UserId).FirstOrDefault();
+                var applicant = unitOfWork.Applicant.Get(filter: m => m.ExamId == examId && m.UserId == UserId).FirstOrDefault();
                 applicant.Result = (applicant.Result ?? 0) + Convert.ToInt32(SubScore);
                 unitOfWork.Applicant.Update(applicant);
                 await unitOfWork.SaveAsync();

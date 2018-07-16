@@ -43,5 +43,13 @@ namespace NorthOps.Models
         public virtual DbSet<Videos> Videos { get; set; }
         public virtual DbSet<EmployeeNotications> EmployeeNotications { get; set; }
         public virtual DbSet<NotificationsTemplates> NotificationsTemplates { get; set; }
+        public virtual DbSet<Attendances> Attendances { get; set; }
+        public virtual DbSet<Biometrics> Biometrics { get; set; }
+        public virtual DbSet<RestDays> RestDays { get; set; }
+        public virtual DbSet<Schedules> Schedules { get; set; }
+        public virtual DbSet<Campaigns> Campaigns { get; set; }
+        public virtual DbSet<Shifts> Shifts { get; set; }
+        public virtual DbSet<UsersInCampaignShift> UsersInCampaignShift { get; set; }
+        public virtual DbSet<UsersDetails> UsersDetails { get; set; }
     }
 }

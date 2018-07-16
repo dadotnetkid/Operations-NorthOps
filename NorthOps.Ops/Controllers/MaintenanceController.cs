@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Services.Helpers;
 
 namespace NorthOps.Ops.Controllers
 {
@@ -18,6 +19,10 @@ namespace NorthOps.Ops.Controllers
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
 
+        public MaintenanceController()
+        {
+
+        }
         public ActionResult Index()
         {
             return View();
@@ -99,6 +104,13 @@ namespace NorthOps.Ops.Controllers
         #region User
         public ActionResult Users()
         {
+            //foreach (var i in new DummyAgentSeederHelper().GenerateAgent())
+            //{
+            //    var res = UserManager.Create(i, "123321");
+            //    if (res.Succeeded)
+            //        UserManager.AddToRole(i.Id, "Agent");
+
+            //}
             return View();
         }
 
@@ -182,9 +194,9 @@ namespace NorthOps.Ops.Controllers
                     await UserManager.UpdateAsync(user);
 
                     #region UpdateRole
-                   /* var roles = await UserManager.GetRolesAsync(user.Id);
-                    await UserManager.RemoveFromRolesAsync(user.Id, roles.ToArray());
-                    await UserManager.AddToRoleAsync(user.Id, item.userRole);*/
+                    /* var roles = await UserManager.GetRolesAsync(user.Id);
+                     await UserManager.RemoveFromRolesAsync(user.Id, roles.ToArray());
+                     await UserManager.AddToRoleAsync(user.Id, item.userRole);*/
                     #endregion
 
                     if (item.Password != null)
@@ -342,5 +354,7 @@ namespace NorthOps.Ops.Controllers
             else
                 return PartialView("_SelectTowncityPartial", new AddressTownCities() { TownCityId = TownCityId.Value });
         }
+
+
     }
 }

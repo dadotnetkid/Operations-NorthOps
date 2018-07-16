@@ -1,30 +1,28 @@
-﻿@model NorthOps.Ops.Models.UserRole
-@{
-    Html.DevExpress().FormLayout(settings =>
-    {
-        settings.Name = "FormLayout";
-
-        var groupItem = settings.Items.AddGroupItem(groupSettings =>
+﻿@model UserRoles
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        @Html.DevExpress().LabelFor(m => m.Name, settings =>
         {
-            groupSettings.Caption = "User Roles";
-            groupSettings.ShowCaption = DefaultBoolean.True;
-            groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
-        });
+            settings.Width = Unit.Percentage(100);
 
-        groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
-        groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
-
-
-        groupItem.Items.Add(m => m.Name);
-        groupItem.Items.Add(m => m.Description, c =>
+        }).GetHtml()
+        @Html.DevExpress().TextBoxFor(m => m.Name, settings =>
         {
-            c.NestedExtension().TextBox(txt=> {
-                txt.ShowModelErrors = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+            settings.Width = Unit.Percentage(100);
 
-            });
-        });
-    }).GetHtml();
-}
+        }).GetHtml()
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        @Html.DevExpress().LabelFor(m => m.Description, settings =>
+        {
+            settings.Width = Unit.Percentage(100);
+            
 
+        }).GetHtml()
+        @Html.DevExpress().TextBoxFor(m => m.Description, settings =>
+        {
+            settings.Width = Unit.Percentage(100);
+    
+        }).GetHtml()
+    </div>
+</div>

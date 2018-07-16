@@ -38,7 +38,7 @@ namespace NorthOps.Ops.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public async Task<ActionResult> NotificationsTemplatesGridViewPartialAddNew(NorthOps.Models.NotificationsTemplates item)
+        public async Task<ActionResult> NotificationsTemplatesGridViewPartialAddNew([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]NorthOps.Models.NotificationsTemplates item)
         {
             //   var model = new object[0];
             if (ModelState.IsValid)
@@ -59,8 +59,15 @@ namespace NorthOps.Ops.Controllers
             var model = unitOfWork.NotificationTemplatesRepo.Get();
             return PartialView("_NotificationsTemplatesGridViewPartial", model);
         }
+
         [HttpPost, ValidateInput(false)]
-        public async Task<ActionResult> NotificationsTemplatesGridViewPartialUpdate(NorthOps.Models.NotificationsTemplates item)
+        public Task<ActionResult> NotificationsTemplatesGridViewPartialUpdate()
+        {
+            return NotificationsTemplatesGridViewPartialUpdate(null);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> NotificationsTemplatesGridViewPartialUpdate([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]NorthOps.Models.NotificationsTemplates item)
         {
             // var model = new object[0];
             if (ModelState.IsValid)
@@ -81,7 +88,7 @@ namespace NorthOps.Ops.Controllers
             return PartialView("_NotificationsTemplatesGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult NotificationsTemplatesGridViewPartialDelete(System.String Template)
+        public ActionResult NotificationsTemplatesGridViewPartialDelete([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]System.String Template)
         {
             //   var model = new object[0];
             if (Template != null)

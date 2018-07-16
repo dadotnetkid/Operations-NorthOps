@@ -19,7 +19,7 @@ namespace NorthOps.Services.NotificationService
             this.notificationService = notificationService;
         }
 
-        public async Task NotifyApplicantStatus(string userId, bool isPassed)
+        public async Task NotifyPersonalInterviewStatus(string userId, bool isPassed)
         {
 
             if (isPassed)

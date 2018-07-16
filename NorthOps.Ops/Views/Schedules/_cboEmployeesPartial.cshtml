@@ -1,0 +1,12 @@
+﻿@{
+    Html.DevExpress().ComboBox(settings =>
+   {
+       settings.Name = "UserId";
+       settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+       settings.Properties.ValueField = "Id";
+       settings.Properties.TextField = "FullName";
+       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+       settings.Properties.ClientSideEvents.ValueChanged = "function(s,e){cboEmployeeOnValueChanged(s,e)}";
+       settings.CallbackRouteValues = new { Controller = "Schedules", Action = "cboEmployeesPartial" };
+   }).Bind(ViewBag.UserId).BindList(Model).GetHtml();
+}

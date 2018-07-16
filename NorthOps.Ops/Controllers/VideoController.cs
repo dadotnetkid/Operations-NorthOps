@@ -26,7 +26,7 @@ namespace NorthOps.Ops.Controllers
         public ActionResult VideoGridViewPartial()
         {
             var model = new object[0];
-            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exam"));
+            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exams"));
         }
 
         [HttpPost, ValidateInput(false)]
@@ -50,7 +50,7 @@ namespace NorthOps.Ops.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exam"));
+            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exams"));
         }
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> VideoGridViewPartialUpdate(Videos item)
@@ -72,7 +72,7 @@ namespace NorthOps.Ops.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exam"));
+            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exams"));
         }
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> VideoGridViewPartialDelete(System.Guid VideoId)
@@ -90,7 +90,7 @@ namespace NorthOps.Ops.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exam"));
+            return PartialView("_VideoGridViewPartial", unitOfWork.VideoRepo.Get(includeProperties: "Exams"));
         }
         public ActionResult VideoAddEditPartial(System.Nullable<System.Guid> VideoId)
         {

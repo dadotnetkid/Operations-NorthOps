@@ -1,0 +1,53 @@
+﻿@model  UsersInCampaignShift
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        @{
+            Html.DevExpress().Label(lbl =>
+            {
+                lbl.AssociatedControlName = "CampaignId";
+                lbl.Text = "Campaign";
+            }).GetHtml();
+            Html.RenderAction("cboCampaignsPartial", new { CampaignId = Model?.CampaignId });
+        }
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        @{
+            Html.DevExpress().Label(lbl =>
+            {
+                lbl.AssociatedControlName = "ShiftId";
+                lbl.Text = "Shifts";
+            }).GetHtml();
+            Html.RenderAction("cboShiftsPartial", new { ShiftId = Model?.ShiftId, CampaignId=Model?.CampaignId });
+        }
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        @{
+            Html.DevExpress().Label(lbl =>
+            {
+                lbl.AssociatedControlName = "UserId";
+                lbl.Text = "Employee";
+            }).GetHtml();
+            Html.RenderAction("cboEmployeesPartial", new { UserId = Model?.UserId });
+        }
+    </div>
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-12">
+        <div class="pull-right">
+            @Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnSave";
+                btn.ClientSideEvents.Click = "function(s,e){UsersInCampaignShiftGridView.UpdateEdit()}";
+                btn.Text = "Save";
+                btn.ControlStyle.CssClass = "margin-right-5";
+            }).GetHtml()
+            @Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnCancel";
+                btn.ClientSideEvents.Click = "function(s,e){UsersInCampaignShiftGridView.CancelEdit()}";
+                btn.Text = "Cancel";
+                btn.ControlStyle.CssClass = "margin-right-5";
+            }).GetHtml()
+        </div>
+    </div>
+</div>

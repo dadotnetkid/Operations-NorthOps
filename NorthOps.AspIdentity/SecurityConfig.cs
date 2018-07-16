@@ -117,19 +117,11 @@ namespace NorthOps.AspIdentity
 
     public class EmailService : IIdentityMessageService
     {
-
-        private string Password = "n0r+H0p$@$1@";
         private string Email = "careers@northops.asia";
-        private string Host = "secure.serverpanels.com";
-        private int Port = 587;
-        private bool Ssl = true;
         public Task SendAsync(IdentityMessage message)
         {
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient(host: Host, port: Port)
-            {
-                EnableSsl = Ssl,
-                Credentials = new System.Net.NetworkCredential(Email, Password),
-            };
+            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+           
             //initialization
             var mailMessage = new System.Net.Mail.MailMessage();
             //from
@@ -138,6 +130,8 @@ namespace NorthOps.AspIdentity
             mailMessage.To.Add(new System.Net.Mail.MailAddress(message.Destination));
             mailMessage.Body = message.Body;
             mailMessage.Subject = message.Subject;
+            mailMessage.IsBodyHtml = true;
+
             //client.SendAsync(mailMessage, null);
             Task task = Task.Run(new Action(async () =>
             {

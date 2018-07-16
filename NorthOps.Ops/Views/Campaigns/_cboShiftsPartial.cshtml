@@ -1,0 +1,13 @@
+﻿@{
+    @Html.DevExpress().ComboBox( settings =>{
+    settings.Name = "ShiftId";
+    settings.Width = Unit.Percentage(100);
+    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+    settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+    settings.CallbackRouteValues = new { Controller = "Campaigns", Action = "cboShiftsPartial" };
+    settings.Properties.CallbackPageSize = 50;
+    settings.Properties.ValueField = "Id";
+    settings.Properties.TextField = "ShiftName";
+    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+}).Bind(ViewBag.ShiftId).BindList(Model).GetHtml()
+}

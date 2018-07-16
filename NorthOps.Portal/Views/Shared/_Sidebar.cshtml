@@ -30,10 +30,10 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
 
-            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(HomeController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
+            <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("home") ? "active" : "")">
                 <a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span>Dash Board</span></a>
             </li>
-            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(MemberController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Exam" ? "active" : "")">
+            <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("member") ? "active" : "")">
                 <a href="@Url.Action("profile", "member")"><i class="fa fa-user-o"></i> <span>Profile</span></a>
             </li>
             @{
@@ -41,7 +41,7 @@
                 var userId = User.Identity.GetUserId();
                 if (new UnitOfWork().Applicant.Get(filter: m => m.UserId == userId && (m.IsTaken == null || m.IsTaken == false)).Count() > 0)
                 {
-                    <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(ApplicantExamController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "ApplicantExam" ? "active" : "")">
+                    <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("ApplicantExam") ? "active" : "")">
                         <a href="@Url.Action("index", "applicantexam")"><i class="fa fa-puzzle-piece"></i> <span>Exam</span></a>
                     </li>
                 }

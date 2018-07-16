@@ -1,0 +1,13 @@
+﻿@{
+    Html.DevExpress().ComboBox(settings =>
+    {
+        settings.Name = "CampaignId";
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.TextField = "CampaignName";
+        settings.Properties.ValueField = "Id";
+        settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+        settings.CallbackRouteValues = new { Controller = "Campaigns", Action = "cboCampaignsPartial" };
+        settings.Properties.ClientSideEvents.ValueChanged = "function(s,e){CampaignOnValueChanged(s,e);}";
+    }).Bind(ViewBag.CampaignId).BindList(Model).GetHtml();
+}

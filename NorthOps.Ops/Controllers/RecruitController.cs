@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using NorthOps.AspIdentity;
 using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Services.EmailService;
 using NorthOps.Services.NotificationService.EmailService;
 using NorthOps.Services.NotificationService;
 
@@ -50,7 +51,9 @@ namespace NorthOps.Ops.Controllers
         public ActionResult ApplicantGridViewPartial()
         {
             //var model = unitOfWork.UserRepository.Get(includeProperties: "UserRoles");
-            return PartialView("_ApplicantGridViewPartial", unitOfWork.UserRepository.Get(includeProperties: "UserRoles").Where(x => x.UserRoles.FirstOrDefault().Name == "Applicant"));
+            var model = unitOfWork.UserRepository.Get(includeProperties: "UserRoles")
+                .Where(x => x.UserRoles.FirstOrDefault()?.Name == "Applicant");
+            return PartialView("_ApplicantGridViewPartial", model);
             //return PartialView("_ApplicantGridViewPartial", unitOfWork.UserRepository.Get());
         }
 
@@ -67,7 +70,7 @@ namespace NorthOps.Ops.Controllers
         [ValidateInput(false)]
         public ActionResult JobApplicationGridPartial()
         {
-            var model = unitOfWork.JobApplicationRepo.Get(includeProperties: "Users").Where(x => x.Users.UserRoles.Any(u => u.Name == "Applicant"));
+            var model = unitOfWork.JobApplicationRepo.Get(includeProperties: "Users,Users.UserRoles").Where(x => x.Users.UserRoles.Any(u => u.Name == "Applicant"));
 
             return PartialView("_JobApplicationGridPartial", model);
         }
@@ -159,22 +162,74 @@ namespace NorthOps.Ops.Controllers
                     });
                     unitOfWork.Save();
                 }
-                await UserManager.SendEmailAsync(UserId, "Your exam is ready", "Your exam is ready");
+                await UserManager.SendEmailAsync(UserId, "Your exam is ready",$"Your exam is ready. Please log in to your NorthOps account and click the exam button to start your online exam.<br/> or click on the link below to proceed to your log in page. <br/> <a href='http://portal.northops.asia/applicant-exam/index'>click here</a>");
             }
             return PartialView("_btnOpenExamPartial", unitOfWork.Applicant.Get(filter: m => m.UserId == UserId).FirstOrDefault());
         }
+        [HttpPost]
+        public async Task<ActionResult> ResendExaminationNotification(string UserId)
+        {
+            await UserManager.SendEmailAsync(UserId, "Your exam is ready", $"Your exam is ready. Please log in to your NorthOps account and click the exam button to start your online exam.<br/> or click on the link below to proceed to your log in page. <br/> <a href='http://portal.northops.asia/applicant-exam/index'>click here</a>");
+            return PartialView("_btnOpenExamPartial", unitOfWork.Applicant.Get(filter: m => m.UserId == UserId).FirstOrDefault());
+        }
+
         #endregion
+
+        #region Notify Status in Exam
+
+        public async Task<ActionResult> NotifyExamResultPartial(string userId, bool? isPassed)
+        {
+            try
+            {
+                if (isPassed != null)
+                {
+                    var applicant = unitOfWork.JobApplicationRepo.Find(m => m.UserId == userId);
+                    applicant.IsExamPassed = isPassed;
+                    await unitOfWork.SaveAsync();
+                    var email = new EmailServices(new RecruitmentEmailService(UserManager, applicant));
+                    if (isPassed == true)
+                    {
+                        await email.SendApplicantStatus(userId, NotificationType.IsExamPassed);
+                    }
+                    else
+                    {
+                        await email.SendApplicantStatus(userId, NotificationType.IsExamFailed);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ViewData["EditError"] = e.Message;
+            }
+
+
+            var model = unitOfWork.JobApplicationRepo.Find(m => m.UserId == userId);
+            return PartialView("_btnNotifyExamResultPartial", model);
+        }
+
+        #endregion
+
         #region NotifyApplicatnt
 
         public async Task<HttpStatusCodeResult> NotifyApplicantPartial(string userId, bool isPassed)
         {
             var res = unitOfWork.JobApplicationRepo.Find(m => m.UserId == userId);
             res.IsPersonalInterviewPassed = isPassed;
-            await new NotificationService(new ApplicantStatusNotificationService()).NotifyApplicantStatus(userId, isPassed);
+            await new NotificationService(new ApplicantStatusNotificationService()).NotifyPersonalInterviewStatus(userId, isPassed);
             await new EmailServices(new ApplicantStatusEmailService(UserManager, res)).SendApplicantStatus(userId, isPassed);
             unitOfWork.Save();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+        #endregion
+
+        #region Resume
+
+        public ActionResult Resume(string Id)
+        {
+            var res = unitOfWork.UserRepository.Find(m => m.Id == Id);
+            return View(res);
+        }
+
         #endregion
     }
 }

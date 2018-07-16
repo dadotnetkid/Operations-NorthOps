@@ -10,7 +10,6 @@
 <textarea name="" id="input_text" cols="30" rows="10">@Model.Paragraph</textarea>
 </div>
 
-<script src="~/Content/js/TakingExam.js"></script>
 <script>
     /*
  * The animation at the start, made from my previous pen
@@ -32,7 +31,7 @@
         // If the current count is larger than the length of the string, then for goodness sake, stop
         if (current > input.length) {
             // Write Complete
-           
+
         }
         else {
             // console.log(current)
@@ -67,7 +66,7 @@
 
     $("#target").text(current_string);
     $(window).keypress(function (evt) {
-      
+
         if (!started) {
             start();
             started = true;
@@ -84,23 +83,27 @@
             current_string = letters.substring(index, index + character_length);
             $("#target").text(current_string);
             $("#your-attempt").append(charTyped);
-            if (index == letters.length) {
-                wordcount++;
-                //$("#wordcount").text(wordcount);
-                //$("#timer").text(timer);
-                if (timer == 0) {
-                    timer = 1;
-                }
-                wpm = Math.round(wordcount / (timer / 60));
-                $("#wpm").text(wpm);
-                stop();
-                finished();
-               
-            }
+
         } else {
             $("#your-attempt").append("<span class='wrong'>" + charTyped + "</span>");
             errors++;
-           // $("#errors").text(errors);
+            index++;
+            current_string = letters.substring(index, index + character_length);
+            $("#target").text(current_string);
+            // $("#errors").text(errors);
+        }
+        if (index == letters.length) {
+            wordcount++;
+            //$("#wordcount").text(wordcount);
+            //$("#timer").text(timer);
+            if (timer == 0) {
+                timer = 1;
+            }
+            wpm = Math.round(wordcount / (timer / 60));
+            $("#wpm").text(wpm);
+            stop();
+            finished();
+
         }
     });
 
@@ -131,7 +134,7 @@
             $("#timer").text(timer);
             wpm = Math.round(wordcount / (timer / 60));
             $("#wpm").text(wpm);
-            countDown();
+          //  countDown();
         }, 1000)
     }
 
@@ -160,7 +163,7 @@
     function GetNextLevel() {
         $.ajax({
             url: '@Url.Action("TypingSpeedUpdatePartial","applicantexam", new { ExamId=Model.ExamId})',
-            data: { Score: wpm, Level: Level },
+            data: { Score: wpm, Level: Level, Error: errors, wordcounts: wordcount },
             type: 'POST',
             success: function (e) {
                 if (parseInt(e)==0) {

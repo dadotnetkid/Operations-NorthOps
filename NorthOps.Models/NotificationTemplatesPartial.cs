@@ -20,6 +20,8 @@ namespace NorthOps.Models
         OnBoarding,
         Contract,
         IsPersonalInterviewPassed,
-        IsPersonalInterviewFailed
+        IsPersonalInterviewFailed,
+        IsExamPassed,
+        IsExamFailed
     }
 }

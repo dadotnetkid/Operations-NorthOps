@@ -1,14 +1,54 @@
-﻿.margin-top-5{
-    margin-top:5px !important;
+﻿.margin-top-5 {
+    margin-top: 5px !important;
 }
 
 
+.margin-bottom-10 {
+    margin-bottom: 10px !important;
+}
 
+.grid-editor-wrapper {
+    /*min-height:500px !important;*/
+}
 
-.hidden { visibility: hidden; }
-.fl { float:left; }
-.resumeLink { display: block;float: left; }
+    .grid-editor-wrapper .dxpcDropDown_Moderno.dxpclW.dxpc-ddSys {
+        position: initial !important;
+    }
+
+.hidden {
+    visibility: hidden;
+}
+
+.fl {
+    float: left;
+}
+
+.resumeLink {
+    display: block;
+    float: left;
+}
 
 .dxgvEditFormDisplayRow_Moderno td.dxgv, .dxgvInlineEditRow_Moderno td.dxgv,
 .dxgvDetailCell_Moderno td.dxgv, .dxgvDataRow_Moderno td.dxgv,
-.dxgvDetailRow_Moderno.dxgvADR td.dxgvAIC { overflow: hidden; border-top-width: 0; border-left-width: 0; border-bottom: 1px Solid #d1d1d1; border-right: 1px Solid #d1d1d1; padding: 8px 10px 9px; vertical-align: top !important; }
+.dxgvDetailRow_Moderno.dxgvADR td.dxgvAIC {
+    overflow: hidden;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-bottom: 1px Solid #d1d1d1;
+    border-right: 1px Solid #d1d1d1;
+    padding: 8px 10px 9px;
+    vertical-align: top !important;
+}
+.section-title {
+    font-size: 16px;
+}
+.empty-space-12 {
+    height: 12px;
+}
+.detail-margin {
+    margin: 10px auto;
+    color: #666;
+}
+.padding-all-10 {
+    padding:10px;
+}

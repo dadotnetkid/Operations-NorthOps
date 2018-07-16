@@ -222,31 +222,92 @@ namespace NorthOps.Models.Repository
             set { notificationTemplatesRepo = value; }
         }
 
-        //private GenericRepository<FileMange> fileManagementDataRepo;
 
-        //public GenericRepository<FileManagementData> FileManagementDataRepo
-        //{
-        //    get
-        //    {
-        //        if (this.fileManagementDataRepo == null)
-        //            this.fileManagementDataRepo = new GenericRepository<FileManagementData>(context);
-        //        return fileManagementDataRepo;
-        //    }
-        //    set { fileManagementDataRepo = value; }
-        //}
+        private GenericRepository<Attendances> _AttendancesRepo;
+        public GenericRepository<Attendances> AttendancesRepo
+        {
+            get
+            {
+                if (this._AttendancesRepo == null)
+                    this._AttendancesRepo = new GenericRepository<Attendances>(context);
+                return _AttendancesRepo;
+            }
+            set { _AttendancesRepo = value; }
+        }
+
+        private GenericRepository<Biometrics> _BiometricsRepo;
+        public GenericRepository<Biometrics> BiometricsRepo
+        {
+            get
+            {
+                if (this._BiometricsRepo == null)
+                    this._BiometricsRepo = new GenericRepository<Biometrics>(context);
+                return _BiometricsRepo;
+            }
+            set { _BiometricsRepo = value; }
+        }
+
+        private GenericRepository<Campaigns> _CampaignsRepo;
+        public GenericRepository<Campaigns> CampaignsRepo
+        {
+            get
+            {
+                if (this._CampaignsRepo == null)
+                    this._CampaignsRepo = new GenericRepository<Campaigns>(context);
+                return _CampaignsRepo;
+            }
+            set { _CampaignsRepo = value; }
+        }
+
+        private GenericRepository<Shifts> _ShiftsRepo;
+        public GenericRepository<Shifts> ShiftsRepo
+        {
+            get
+            {
+                if (this._ShiftsRepo == null)
+                    this._ShiftsRepo = new GenericRepository<Shifts>(context);
+                return _ShiftsRepo;
+            }
+            set { _ShiftsRepo = value; }
+        }
 
 
-        //private GenericRepository<Campaign> campaignRepo;
-        //public GenericRepository<Campaign> CampaignRepo
-        //{
-        //    get
-        //    {
-        //        if (this.campaignRepo == null)
-        //            this.campaignRepo = new GenericRepository<Campaign>(context);
-        //        return campaignRepo;
-        //    }
-        //    set { campaignRepo = value; }
-        //}
+        private GenericRepository<RestDays> _RestDaysRepo;
+        public GenericRepository<RestDays> RestDaysRepo
+        {
+            get
+            {
+                if (this._RestDaysRepo == null)
+                    this._RestDaysRepo = new GenericRepository<RestDays>(context);
+                return _RestDaysRepo;
+            }
+            set { _RestDaysRepo = value; }
+        }
+
+        private GenericRepository<Schedules> _SchedulesRepo;
+        public GenericRepository<Schedules> SchedulesRepo
+        {
+            get
+            {
+                if (this._SchedulesRepo == null)
+                    this._SchedulesRepo = new GenericRepository<Schedules>(context);
+                return _SchedulesRepo;
+            }
+            set { _SchedulesRepo = value; }
+        }
+
+       
+        private GenericRepository<UsersInCampaignShift> _UsersInCampaignShiftRepo;
+        public GenericRepository<UsersInCampaignShift> UsersInCampaignShiftRepo
+        {
+            get
+            {
+                if (this._UsersInCampaignShiftRepo == null)
+                    this._UsersInCampaignShiftRepo = new GenericRepository<UsersInCampaignShift>(context);
+                return _UsersInCampaignShiftRepo;
+            }
+            set { _UsersInCampaignShiftRepo = value; }
+        }
         public void Save()
         {
             context.SaveChanges();

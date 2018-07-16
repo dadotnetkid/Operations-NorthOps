@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NorthOps.AspIdentity;
+﻿using System.Threading.Tasks;
 using NorthOps.Models;
 
-namespace NorthOps.Services.NotificationService.EmailService
+namespace NorthOps.Services.EmailService
 {
-    public class EmailServices : IEmailServices
+    public class EmailServices 
     {
         private IEmailServices emailService;
 
@@ -30,10 +25,11 @@ namespace NorthOps.Services.NotificationService.EmailService
 
         }
 
-        public async Task Send(string userId, NotificationType notificationType)
+        public async Task SendApplicantStatus(string userId, NotificationType notificationType)
         {
             await emailService.Send(userId, notificationType);
         }
 
+       
     }
 }

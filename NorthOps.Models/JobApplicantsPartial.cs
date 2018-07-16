@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NorthOps.Models
 {
-   public partial class JobApplications
+    public partial class JobApplications
     {
         public string MBTIResult
         {
@@ -25,6 +25,38 @@ namespace NorthOps.Models
                 return result;
             }
         }
-    
+
+        public decimal? Listening
+        {
+            get
+            {
+                return this.Users.Applicants
+                    .FirstOrDefault(m => m.Exams.Categories.CategoryName == ("Listening Skills"))?.Result;
+            }
+        }
+        public decimal? Typing
+        {
+            get
+            {
+                return this.Users.Applicants
+                    .FirstOrDefault(m => m.Exams.Categories.CategoryName == ("Typing Skills"))?.Result;
+            }
+        }
+        public decimal? Grammar
+        {
+            get
+            {
+                return this.Users.Applicants
+                    .FirstOrDefault(m => m.Exams.Categories.CategoryName == ("Grammar and Vocabulary"))?.Result;
+            }
+        }
+
+        public bool? IsExamReady
+        {
+            get
+            {
+                return this.Users?.Applicants.Any();
+            }
+        }
     }
 }

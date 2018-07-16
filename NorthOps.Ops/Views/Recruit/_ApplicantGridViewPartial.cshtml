@@ -12,13 +12,13 @@
                 <label>Resume</label>
             </div>
             <div class="col-lg-1">
-                @Html.DevExpress().CheckBox(chk => { chk.ReadOnly = true; chk.Checked = Model.Users.EmailConfirmed != true ? false : true; chk.Name = "chk_" + Model.UserId; }).GetHtml()
+                @Html.DevExpress().CheckBox(chk => { chk.ReadOnly = true; chk.Checked = Model.Users.EmailConfirmed == true; chk.Name = "chk_" + Model.UserId; }).GetHtml()
             </div>
             <div class="col-lg-2" style="padding-top:5px">
                 @{
                     Html.DevExpress().HyperLink(h =>
                     {
-                        h.NavigateUrl = Url.Action("profile", "member", new { id = Model.Users.Id });
+                        h.NavigateUrl = Url.Action("resume", "recruit", new { id = Model.Users.Id });
                         h.Name = "lnk_" + Model.UserId;
                         h.Properties.Text = "Resume";
                         h.Properties.Target = "_blank";
@@ -38,11 +38,14 @@
                                     txt.Properties.ValidationSettings.Display = Display.Dynamic;
                                 }).GetHtml(); }
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-3">
                 @using (Ajax.BeginForm("OpenExamPartial", new { UserId = Model.UserId, Open = true }, new AjaxOptions() { HttpMethod = "POST", OnBegin = "ldpRecruitmentLoading.Show()", OnComplete = "ldpRecruitmentLoading.Hide()", UpdateTargetId = "form-openexampartial" }, new { id = "form-openexampartial" }))
                 {
                     Html.RenderAction("OpenExamPartial", new { UserId = Model.UserId });
                 }
+            </div>
+            <div class="col-lg-3">
+                @Html.Action("NotifyExamResultPartial",new{UserId=Model.UserId})
             </div>
         </div>
         <div class="row margin-top-5">

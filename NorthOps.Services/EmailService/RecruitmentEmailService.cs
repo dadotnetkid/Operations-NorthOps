@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using NorthOps.AspIdentity;
 using NorthOps.Models;
 using NorthOps.Models.Repository;
 
-namespace NorthOps.Services.NotificationService.EmailService
+namespace NorthOps.Services.EmailService
 {
     public class RecruitmentEmailService : IEmailServices
     {
@@ -58,8 +55,12 @@ namespace NorthOps.Services.NotificationService.EmailService
                         .Replace("@TimeFrom", this.jobApplications.ContractDate?.ToString("hh:mm tt"))
                         .Replace("@TimeTo", this.jobApplications.ContractDate?.AddHours(2).ToString("hh:mm tt"));
                     break;
-                case NotificationType.IsPersonalInterviewPassed:
 
+                case NotificationType.IsExamFailed:
+                    
+
+                case NotificationType.IsPersonalInterviewPassed:
+                
 
                     break;
                 default:
@@ -69,6 +70,11 @@ namespace NorthOps.Services.NotificationService.EmailService
         }
 
         public Task Send(string userId, NotificationType notificationType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SendExamStatus(string userId, NotificationType notificationType)
         {
             throw new NotImplementedException();
         }

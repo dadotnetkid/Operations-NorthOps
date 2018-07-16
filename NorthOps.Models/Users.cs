@@ -25,6 +25,10 @@ namespace NorthOps.Models
             this.UserLogins = new HashSet<UserLogins>();
             this.UserRoles = new HashSet<UserRoles>();
             this.EmployeeNotications = new HashSet<EmployeeNotications>();
+            this.Biometrics = new HashSet<Biometrics>();
+            this.RestDays = new HashSet<RestDays>();
+            this.Schedules = new HashSet<Schedules>();
+            this.UsersInCampaignShift = new HashSet<UsersInCampaignShift>();
         }
     
         public string Id { get; set; }
@@ -80,5 +84,14 @@ namespace NorthOps.Models
         public virtual ICollection<UserRoles> UserRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeNotications> EmployeeNotications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Biometrics> Biometrics { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RestDays> RestDays { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Schedules> Schedules { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UsersInCampaignShift> UsersInCampaignShift { get; set; }
+        public virtual UsersDetails UsersDetails { get; set; }
     }
 }
