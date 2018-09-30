@@ -14,11 +14,19 @@ namespace NorthOps.Models
     
     public partial class AddressTownCities
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public AddressTownCities()
+        {
+            this.Users = new HashSet<Users>();
+        }
+    
         public int TownCityId { get; set; }
         public string Name { get; set; }
         public int StateProvinceId { get; set; }
         public int SortOrder { get; set; }
     
         public virtual AddressStateProvinces AddressStateProvinces { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Users> Users { get; set; }
     }
 }

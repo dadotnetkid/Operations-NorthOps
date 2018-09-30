@@ -18,6 +18,8 @@ namespace NorthOps.Models
         public string UserId { get; set; }
         public Nullable<System.Guid> QuestionId { get; set; }
         public Nullable<System.Guid> ChoiceId { get; set; }
+        public string SessionId { get; set; }
+        public string Answer { get; set; }
     
         public virtual Choices Choices { get; set; }
         public virtual Questions Questions { get; set; }

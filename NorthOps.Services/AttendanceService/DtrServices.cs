@@ -15,7 +15,7 @@ namespace NorthOps.Services.DTRService
         private UnitOfWork unitOfWork = new UnitOfWork();
         public Task<List<Transactions>> AttendanceLog()
         {
-            STDDevComm devComm = new STDDevComm(new Machines(ip: "192.168.5.150"));
+            STDDevComm devComm = new STDDevComm(new Machines(ip: "10.10.20.150"));
             var transaction = new List<Transactions>();
             devComm.GetAllTransaction(out transaction);
             return Task.FromResult(transaction);

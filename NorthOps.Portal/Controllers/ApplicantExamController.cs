@@ -13,14 +13,15 @@ using NorthOps.Models.ViewModels;
 
 namespace NorthOps.Portal.Controllers
 {
-    [RoutePrefix("applicant-exam")]
     [Authorize(Roles = "Applicant,Administrator")]
+    [RoutePrefix("applicant-exam")]
     public class ApplicantExamController : Controller
     {
         UnitOfWork unitOfWork = new UnitOfWork();
-        [Route("index")]
-        public ActionResult Index()
+        [Route("index/{ExamType?}")]
+        public ActionResult Index(int ExamTypes = 0)
         {
+            ViewBag.ExamTypes = ExamTypes;
             return View();
         }
 
@@ -35,10 +36,9 @@ namespace NorthOps.Portal.Controllers
 
         #region List of Exam Available
         [ValidateInput(false)]
-        public ActionResult ExamsGridPartial()
+        public ActionResult ExamsGridPartial(int ExamTypes = 0)
         {
             var userId = User.Identity.GetUserId();
-
             return PartialView("_ExamsGridPartial", unitOfWork.Applicant.Get(filter: m => m.UserId == userId && (m.IsTaken == null || m.IsTaken == false), includeProperties: "Exams"));
         }
 
@@ -69,12 +69,12 @@ namespace NorthOps.Portal.Controllers
             var model = unitOfWork.TypingSpeedRepo.Get().FirstOrDefault();
             return PartialView("_typingspeed", model);
         }
-        public async Task<string> TypingSpeedUpdatePartial(int? score, int? error,int? wordcounts, Guid? examId, int level = 1)
+        public async Task<string> TypingSpeedUpdatePartial(int? score, int? error, int? wordcounts, Guid? examId, int level = 1)
         {
             var paragraph = await unitOfWork.TypingSpeedRepo.GetAsync(filter: m => m.TypingLevel == level);
             if (score != null)
             {
-               // score = (score - error);
+                // score = (score - error);
                 score = score > 50 ? 50 : score;
                 var SubScore = (score * 1.0) / unitOfWork.TypingSpeedRepo.Get().Count();
                 var UserId = User.Identity.GetUserId();
@@ -102,5 +102,98 @@ namespace NorthOps.Portal.Controllers
             return PartialView("_StartExamPartial", unitOfWork.ExamRepo.GetByID(ExamId));
         }
 
+        public ActionResult AudioPartial([ModelBinder(typeof(DevExpressEditorsBinder))]Guid AudioId)
+        {
+
+            return PartialView("_AudioPartial", new Videos() { VideoId = AudioId });
+        }
+        [HttpPost]
+        public ActionResult IdentificationExamPartial([ModelBinder(typeof(DevExpressEditorsBinder))] IdentificationExamViewModel vm)
+        {
+            var Score = 0;
+            try
+            {
+                
+                var userId = User.Identity.GetUserId();
+
+                var item = unitOfWork.QuestionRepo.Find(m => m.QuestionId == vm.QuestionId);
+                var applicants = unitOfWork.Applicant.Find(m => m.UserId == userId && (ExamTypes)m.Exams.ExamType == ExamTypes.Identification);
+
+                if (item.Choices.Any(m => m.Choice == vm.Choice.ToUpper()))
+                {
+
+                    if (applicants == null)
+                    {
+                        unitOfWork.Applicant.Insert(new Applicants()
+                        {
+                            ApplicantId = Guid.NewGuid(),
+                            ExamId = item.ExamId,
+                            DateTimeTaken = DateTime.Now,
+                            Result = 1,
+                            UserId = userId,
+                            IsTaken = true
+                        });
+                    }
+                    else
+                    {
+                        if (applicants.Result == null)
+                            applicants.Result = 0;
+                        applicants.Result++;
+                    }
+
+
+                    unitOfWork.Save();
+                }
+                else
+                {
+                    vm.CorrectAnswer = item.Choices?.FirstOrDefault()?.Choice;
+                }
+
+                Score = applicants.Result ?? 0;
+                unitOfWork.ApplicantAnswer.Insert(new ApplicantAnswers()
+                {
+                    ApplicantAnswerId = Guid.NewGuid(),
+                    QuestionId = item.QuestionId,
+                    SessionId = vm.SessionId,
+                    UserId = User.Identity.GetUserId()
+
+                });
+                unitOfWork.Save();
+           
+            }
+
+            catch (Exception e)
+            {
+
+            }
+            vm.Item++;
+            vm.Score = Score;
+            List<Guid?> question = unitOfWork.ApplicantAnswer.Fetch(m => m.SessionId == vm.SessionId).Select(x => x.QuestionId).ToList();
+            vm.Questions = new UnitOfWork().QuestionRepo.Fetch()
+                   .OrderBy(m => Guid.NewGuid()).Where(m => !question.Contains(m.QuestionId)).FirstOrDefault(m => (ExamTypes)m.Exams.ExamType == ExamTypes.Identification);
+
+
+            return PartialView("_IdentificationExamPartial", vm);
+        }
+
+        public ActionResult IdentificationExamPartial()
+        {
+            IdentificationExamViewModel vm = new IdentificationExamViewModel();
+            var userId = User.Identity.GetUserId();
+
+            vm.Questions = new UnitOfWork().QuestionRepo.Fetch()
+                .OrderBy(m => Guid.NewGuid()).FirstOrDefault(m => (ExamTypes)m.Exams.ExamType == ExamTypes.Identification);
+            vm.SessionId = Guid.NewGuid().ToString();
+            vm.Item = 1;
+            var applicants = unitOfWork.Applicant.Find(m => m.UserId == userId && (ExamTypes)m.Exams.ExamType == ExamTypes.Identification);
+            if (applicants != null)
+            {
+                applicants.Result = 0;
+                unitOfWork.Save();
+            }
+
+
+            return PartialView("_IdentificationExamPartial", vm);
+        }
     }
 }

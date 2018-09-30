@@ -1,0 +1,27 @@
+﻿
+@model JobApplications
+@if (Model.PersonalInterviewDate != null)
+{
+    if (Model.IsPersonalInterviewPassed == null)
+    {
+        using (Ajax.BeginForm(actionName: "btnNotifyPersonalResultPartial", controllerName: "recruit", routeValues: null, ajaxOptions: new AjaxOptions() { UpdateTargetId = "form-btnNotifyPersonalResultPartial" }, htmlAttributes: new { id = "form-btnNotifyPersonalResultPartial" }))
+        {
+
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnbtnNotifyPersonalResultPassed";
+                settings.UseSubmitBehavior = true;
+                settings.RouteValues = new { Action = "btnNotifyPersonalResultPartial", Controller = "Recruit", UserId = Model.UserId, IsPassed = true };
+                settings.Text = "Passed";
+            }).GetHtml();
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnbtnNotifyPersonalResultFailed";
+                settings.UseSubmitBehavior = true;
+                settings.RouteValues = new { Action = "btnNotifyPersonalResultPartial", Controller = "Recruit", UserId = Model.UserId, IsPassed = false };
+                settings.Text = "Failed";
+            }).GetHtml();
+        }
+    }
+
+}

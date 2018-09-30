@@ -33,6 +33,13 @@
             <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("home") ? "active" : "")">
                 <a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span>Dash Board</span></a>
             </li>
+            @if (User.IsInRole("Employee"))
+            {
+                <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("recording") ? "active" : "")">
+                    <a href="@Url.Action("Index", "recording")"><i class="fa fa-music"></i> <span>Recording</span></a>
+                </li>
+            }
+            
             <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("member") ? "active" : "")">
                 <a href="@Url.Action("profile", "member")"><i class="fa fa-user-o"></i> <span>Profile</span></a>
             </li>

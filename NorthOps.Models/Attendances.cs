@@ -15,7 +15,7 @@ namespace NorthOps.Models
     public partial class Attendances
     {
         public int Id { get; set; }
-        public string BiometricId { get; set; }
+        public int BiometricId { get; set; }
         public string ModifiedBy { get; set; }
         public Nullable<System.DateTime> LogDateTime { get; set; }
         public int InOutState { get; set; }

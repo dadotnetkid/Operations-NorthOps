@@ -28,6 +28,30 @@ function performAjax(ctrl) {
         }
     });
 }
+function performIdentificationAjax(ctrl) {
+    $.ajax({
+        url: ctrl.attr('action'),
+        type: 'POST',
+        data: {
+            choice: choice.GetValue(),
+            sessionId: $('#SessionId').val(),
+            questionId: $('#QuestionId').val(),
+            item: $('#Item').val()
+        },
+
+        beforeSend: function () {
+            LoadingOpenExam.Show();
+        },
+        success: function(e) {
+            $('#frm_identification_exam').html(e);
+        },
+        complete: function (data) {
+            LoadingOpenExam.Hide();
+           
+           
+        }
+    });
+}
 function NextTab() {
     var indexTab = (QuestionPageControl.GetActiveTabIndex());
     indexTab++;
@@ -110,18 +134,20 @@ var _ctrl;
 function playAudio(ctrl, url, src) {
     audio = document.getElementById('#audio-' + src);
     _ctrl = ctrl;
-   
+    LoadingOpenExam.Show();
     _btnNextSrc = src;
-  
-  //  console.log(replaceAll(src, '-', ''));
-    
-    getDuration().then(function (l) {
-      audio.play();
+
+    //  console.log(replaceAll(src, '-', ''));
+
+    getDuration(url).then(function (audio1) {
+        LoadingOpenExam.Hide();
+        audio1.play();
         $(_ctrl).html("<span class='fa fa-pause'></span>");
-        _audioLength = l;
+        _audioLength = audio1.duration;
         console.log(_audioLength);
         _audioTimer = setInterval(audioCountDown, 1000);
-        $('#h' + _btnNextSrc).text('Playing Audio');
+        $('#h_' + _btnNextSrc).text('Playing Audio');
+        $(ctrl).attr('onclick', '');
     });
 
     //_audioLength = audio.duration;
@@ -134,20 +160,21 @@ function audioCountDown() {
         $(_ctrl).html("<span class='fa fa-stop'></span>");
         eval('btnNext' + replaceAll(_btnNextSrc, '-', '')).SetEnabled(true);
         clearInterval(_audioTimer);
-        audio.pause();
-        $('#h' + _btnNextSrc).text('Audio Stop');
+        _audio.pause();
+        $('#h_' + _btnNextSrc).text('Audio Stop');
     }
     console.log(_audioCountDown);
     _audioCountDown++;
 }
 
+var _audio;
 function getDuration(src) {
     return new window.Promise(function (resolve) {
-
-        $(audio).on("loadedmetadata", function () {
-            resolve(audio.duration);
+        _audio = new Audio();
+        $(_audio).on("loadedmetadata", function () {
+            resolve(_audio);
         });
-
+        _audio.src = src;
     });
 }
 function escapeRegExp(str) {

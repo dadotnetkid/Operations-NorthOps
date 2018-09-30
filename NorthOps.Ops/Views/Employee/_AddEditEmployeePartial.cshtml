@@ -1,0 +1,32 @@
+﻿@model Users
+
+<div class="row">
+    <div class="col-lg-3">
+        @Html.Action("cboEmployeePartial", new { UserId = Model?.Id })
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.RenderAction("TokenUserRolesPartial", new { UserId = Model?.Id });
+        }
+    </div>
+    
+    @Html.Partial("_AddEditCallbackEmployeePartial")
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-6">
+        @Html.DevExpress().Button(btn =>
+        {
+            btn.Name = "btnUpdate";
+            btn.ClientSideEvents.Click = "function(s,e){EmployeesGridView.UpdateEdit()}";
+            btn.Text = "Update";
+            btn.ControlStyle.CssClass = "margin-left-10";
+        }).GetHtml()
+        @Html.DevExpress().Button(btn =>
+        {
+            btn.Name = "btnCancel";
+            btn.ClientSideEvents.Click = "function(s,e){EmployeesGridView.CancelEdit()}";
+            btn.Text = "Cancel";
+            btn.ControlStyle.CssClass = "margin-left-10";
+        }).GetHtml()
+    </div>
+</div>

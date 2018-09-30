@@ -17,7 +17,7 @@ namespace ZKTeco.SDK.Model
 
         public InOutState InOutState { get; set; }
 
-        public string Pin { get; set; }
+        public int Pin { get; set; }
 
         public DateTime LogDateTime { get; set; }
 

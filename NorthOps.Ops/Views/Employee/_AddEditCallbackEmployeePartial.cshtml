@@ -1,0 +1,13 @@
+﻿@model Users
+@{
+    @Html.DevExpress().CallbackPanel(settings =>
+    {
+
+        settings.Name = "cbpAddEditEmployeePartial";
+        settings.CallbackRouteValues = new {Controller = "Employee", Action = "AddEditCallbackEmployeePartial"};
+        settings.SetContent(() =>
+        {
+            Html.RenderPartial("_AddEditCallbackEmployeeContentPartial", Model);
+        });
+    }).GetHtml()
+}

@@ -5,14 +5,14 @@
 
 
 
+@Html.Action("PcRecruitmentCallbackPartial")
+@{
+    Html.DevExpress().LoadingPanel(ldp =>
+    {
+        ldp.Name = "ldpRecruitmentLoading";
+        ldp.Modal = true;
 
-@Html.Action("JobApplicationGridPartial")
-@{ 
-Html.DevExpress().LoadingPanel(ldp => {
-ldp.Name = "ldpRecruitmentLoading";
-ldp.Modal = true;
-       
-}).GetHtml();
+    }).GetHtml();
 }
 
 <script>

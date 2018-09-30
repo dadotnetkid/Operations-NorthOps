@@ -19,19 +19,26 @@ namespace NorthOps.Models
         {
             this.ApplicantAnswers = new HashSet<ApplicantAnswers>();
             this.Applicants = new HashSet<Applicants>();
+            this.Biometrics = new HashSet<Biometrics>();
+            this.EducationAttainments = new HashSet<EducationAttainments>();
+            this.EmployeeNotications = new HashSet<EmployeeNotications>();
+            this.EmploymentHistories = new HashSet<EmploymentHistories>();
             this.JobApplications = new HashSet<JobApplications>();
             this.PersonalityResults = new HashSet<PersonalityResults>();
-            this.UserClaims = new HashSet<UserClaims>();
-            this.UserLogins = new HashSet<UserLogins>();
-            this.UserRoles = new HashSet<UserRoles>();
-            this.EmployeeNotications = new HashSet<EmployeeNotications>();
-            this.Biometrics = new HashSet<Biometrics>();
             this.RestDays = new HashSet<RestDays>();
             this.Schedules = new HashSet<Schedules>();
+            this.UserClaims = new HashSet<UserClaims>();
+            this.UserLogins = new HashSet<UserLogins>();
             this.UsersInCampaignShift = new HashSet<UsersInCampaignShift>();
+            this.UserRoles = new HashSet<UserRoles>();
+            this.Inventory = new HashSet<Inventory>();
+            this.Recordings = new HashSet<Recordings>();
         }
     
         public string Id { get; set; }
+        public Nullable<int> DivisionId { get; set; }
+        public Nullable<int> DepartmentId { get; set; }
+        public Nullable<int> BranchId { get; set; }
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
@@ -67,31 +74,60 @@ namespace NorthOps.Models
         public Nullable<System.DateTime> HireDate { get; set; }
         public string Skills { get; set; }
         public Nullable<int> ReApply { get; set; }
+        public Nullable<int> Position { get; set; }
+        public string CostCenter { get; set; }
+        public string TaxStatus { get; set; }
+        public string TinNo { get; set; }
+        public string SSSNo { get; set; }
+        public string PhilHealthNo { get; set; }
+        public string HDMFNo { get; set; }
+        public string BankAccountNo { get; set; }
+        public Nullable<bool> MinimumWage { get; set; }
+        public string Region { get; set; }
+        public Nullable<int> PayPeriod { get; set; }
+        public Nullable<int> PayType { get; set; }
+        public Nullable<decimal> DailyRate { get; set; }
+        public string ECola { get; set; }
+        public string Method { get; set; }
+        public Nullable<decimal> TaxRate { get; set; }
+        public Nullable<bool> isActive { get; set; }
+        public Nullable<int> ZipCode { get; set; }
     
+        public virtual AddressTownCities AddressTownCities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ApplicantAnswers> ApplicantAnswers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Applicants> Applicants { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JobApplications> JobApplications { get; set; }
+        public virtual ICollection<Biometrics> Biometrics { get; set; }
+        public virtual Branch Branch { get; set; }
+        public virtual Departments Departments { get; set; }
+        public virtual Divisions Divisions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonalityResults> PersonalityResults { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserClaims> UserClaims { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserLogins> UserLogins { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserRoles> UserRoles { get; set; }
+        public virtual ICollection<EducationAttainments> EducationAttainments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeNotications> EmployeeNotications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Biometrics> Biometrics { get; set; }
+        public virtual ICollection<EmploymentHistories> EmploymentHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JobApplications> JobApplications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonalityResults> PersonalityResults { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RestDays> RestDays { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedules> Schedules { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserClaims> UserClaims { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserLogins> UserLogins { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UsersInCampaignShift> UsersInCampaignShift { get; set; }
-        public virtual UsersDetails UsersDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRoles> UserRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Recordings> Recordings { get; set; }
     }
 }

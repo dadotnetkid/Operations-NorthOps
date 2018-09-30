@@ -1,0 +1,31 @@
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "EducationalAttainmentGridViewPartial";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Recruit", Action = "EducationalAttainmentGridViewPartial", UserId = ViewBag.UserId };
+
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = false;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.Columns.Add("SchoolName");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "SchoolFrom";
+            col.PropertiesEdit.DisplayFormatString = "MM/dd/yyy";
+        });
+        settings.Columns.Add(
+            col => { col.FieldName = "SchoolTo"; col.PropertiesEdit.DisplayFormatString = "MM/dd/yyy"; });
+    });
+}
+@grid.Bind(Model).GetHtml()

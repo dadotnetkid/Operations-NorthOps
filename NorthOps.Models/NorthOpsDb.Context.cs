@@ -29,27 +29,37 @@ namespace NorthOps.Models
         public virtual DbSet<AddressTownCities> AddressTownCities { get; set; }
         public virtual DbSet<ApplicantAnswers> ApplicantAnswers { get; set; }
         public virtual DbSet<Applicants> Applicants { get; set; }
+        public virtual DbSet<Attendances> Attendances { get; set; }
+        public virtual DbSet<Biometrics> Biometrics { get; set; }
+        public virtual DbSet<Branch> Branch { get; set; }
+        public virtual DbSet<Campaigns> Campaigns { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Choices> Choices { get; set; }
+        public virtual DbSet<Departments> Departments { get; set; }
+        public virtual DbSet<Divisions> Divisions { get; set; }
+        public virtual DbSet<EducationAttainments> EducationAttainments { get; set; }
+        public virtual DbSet<EmployeeNotications> EmployeeNotications { get; set; }
+        public virtual DbSet<EmploymentHistories> EmploymentHistories { get; set; }
+        public virtual DbSet<Equivalents> Equivalents { get; set; }
         public virtual DbSet<Exams> Exams { get; set; }
         public virtual DbSet<JobApplications> JobApplications { get; set; }
+        public virtual DbSet<NotificationsTemplates> NotificationsTemplates { get; set; }
         public virtual DbSet<PersonalityResults> PersonalityResults { get; set; }
+        public virtual DbSet<Positions> Positions { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
+        public virtual DbSet<RestDays> RestDays { get; set; }
+        public virtual DbSet<Schedules> Schedules { get; set; }
+        public virtual DbSet<Shifts> Shifts { get; set; }
         public virtual DbSet<TypingSpeeds> TypingSpeeds { get; set; }
         public virtual DbSet<UserClaims> UserClaims { get; set; }
         public virtual DbSet<UserLogins> UserLogins { get; set; }
         public virtual DbSet<UserRoles> UserRoles { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Videos> Videos { get; set; }
-        public virtual DbSet<EmployeeNotications> EmployeeNotications { get; set; }
-        public virtual DbSet<NotificationsTemplates> NotificationsTemplates { get; set; }
-        public virtual DbSet<Attendances> Attendances { get; set; }
-        public virtual DbSet<Biometrics> Biometrics { get; set; }
-        public virtual DbSet<RestDays> RestDays { get; set; }
-        public virtual DbSet<Schedules> Schedules { get; set; }
-        public virtual DbSet<Campaigns> Campaigns { get; set; }
-        public virtual DbSet<Shifts> Shifts { get; set; }
         public virtual DbSet<UsersInCampaignShift> UsersInCampaignShift { get; set; }
-        public virtual DbSet<UsersDetails> UsersDetails { get; set; }
+        public virtual DbSet<Videos> Videos { get; set; }
+        public virtual DbSet<Inventory> Inventory { get; set; }
+        public virtual DbSet<Items> Items { get; set; }
+        public virtual DbSet<ItemTypes> ItemTypes { get; set; }
+        public virtual DbSet<Recordings> Recordings { get; set; }
     }
 }

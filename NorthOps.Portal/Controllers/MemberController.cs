@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using DevExpress.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
@@ -97,6 +98,11 @@ namespace NorthOps.Portal.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult cboTownCityPartial(string UserId)
+        {
+            var model = unitOfWork.UserRepository.Find(m => m.Id == UserId);
+            return PartialView("_cboTownCityPartial", model);
+        }
 
         #region Email Verifications
         [AllowAnonymous, Route("confirm-email")]
@@ -311,13 +317,222 @@ namespace NorthOps.Portal.Controllers
 
         private byte[] MissingImage()
         {
-            var webClient = new WebClient();
-            byte[] imageBytes = webClient.DownloadData("http://portal.northops.asia/content/img/user.png");
-            return imageBytes;
+            try
+            {
+                var webClient = new WebClient();
+                byte[] imageBytes = webClient.DownloadData("http://portal.northops.asia/content/img/user.png");
+                return imageBytes;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
         }
 
 
         #endregion
 
+
+
+        #region Education Attainment
+        [ValidateInput(false)]
+        public ActionResult EducationalAttainmentGridViewPartial(string UserId)
+        {
+            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.Id == UserId);
+            ViewBag.UserId = UserId;
+            return PartialView("_EducationalAttainmentGridViewPartial", model);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> EducationalAttainmentGridViewPartialAddNew(NorthOps.Models.EducationAttainments item)
+        {
+            ViewBag.UserId = item.UserId;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    unitOfWork.EducationAttainmentsRepo.Insert(item);
+                    await unitOfWork.SaveAsync();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.UserId == item.UserId);
+            return PartialView("_EducationalAttainmentGridViewPartial", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> EducationalAttainmentGridViewPartialUpdate(NorthOps.Models.EducationAttainments item)
+        {
+            ViewBag.UserId = item.UserId;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    unitOfWork.EducationAttainmentsRepo.Update(item);
+                    await unitOfWork.SaveAsync();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.UserId == item.UserId);
+            return PartialView("_EducationalAttainmentGridViewPartial", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> EducationalAttainmentGridViewPartialDelete([ModelBinder(typeof(DevExpressEditorsBinder))]System.String Id, [ModelBinder(typeof(DevExpressEditorsBinder))] string UserId)
+        {
+            ViewBag.UserId = Id;
+            if (Id != null)
+            {
+                try
+                {
+                    unitOfWork.EducationAttainmentsRepo.Delete(
+                        unitOfWork.EducationAttainmentsRepo.Find(m => m.UserId == Id));
+                    await unitOfWork.SaveAsync();
+
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.UserId == UserId);
+            return PartialView("_EducationalAttainmentGridViewPartial", model);
+        }
+
+
+        #endregion
+
+        public ActionResult ButtonTabProfilePartial(string buttonName)
+        {
+            ViewBag.buttonName = buttonName;
+            return PartialView("_btnNextTabProfilePartial");
+        }
+
+        #region Employment History
+
+        [ValidateInput(false)]
+        public ActionResult EmploymentHistoryGridViewPartial(string UserId)
+        {
+            var model = unitOfWork.EmploymentHistoriesRepo.Get(m => m.UserId == UserId);
+            ViewBag.UserId = UserId;
+            return PartialView("_EmploymentHistoryGridViewPartial", model);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> EmploymentHistoryGridViewPartialAddNew(NorthOps.Models.EmploymentHistories item)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    unitOfWork.EmploymentHistoriesRepo.Insert(item);
+                    await unitOfWork.SaveAsync();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            var model = unitOfWork.EmploymentHistoriesRepo.Get(m => m.UserId == item.UserId);
+            ViewBag.UserId = item.UserId;
+            return PartialView("_EmploymentHistoryGridViewPartial", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> EmploymentHistoryGridViewPartialUpdate(NorthOps.Models.EmploymentHistories item)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    unitOfWork.EmploymentHistoriesRepo.Update(item);
+                    await unitOfWork.SaveAsync();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            var model = unitOfWork.EmploymentHistoriesRepo.Get(m => m.UserId == item.UserId);
+            ViewBag.UserId = item.UserId;
+            return PartialView("_EmploymentHistoryGridViewPartial", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> EmploymentHistoryGridViewPartialDelete([ModelBinder(typeof(DevExpressEditorsBinder))]System.String Id, [ModelBinder(typeof(DevExpressEditorsBinder))]string UserId)
+        {
+
+            if (Id != null)
+            {
+                try
+                {
+                    unitOfWork.EmploymentHistoriesRepo.Delete(unitOfWork.EmploymentHistoriesRepo.Find(m => m.Id == Id));
+                    await unitOfWork.SaveAsync();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            var model = unitOfWork.EmploymentHistoriesRepo.Get(m => m.UserId == UserId);
+            ViewBag.UserId = UserId;
+            return PartialView("_EmploymentHistoryGridViewPartial", model);
+        }
+
+
+        #endregion
+
+
+
+
+        #region Forgot Password
+        [AllowAnonymous, Route("change-password")]
+
+        public ActionResult ChangeForgotPasswordViewPartial(string Email, string Token)
+        {
+            ViewBag.Email = Email;
+            ViewBag.Token = Token;
+            return View();
+        }
+        [HttpPost, AllowAnonymous, Route("change-password")]
+        public async Task<ActionResult> ChangeForgotPasswordViewPartial(ForgotPassword forgotPassword)
+        {
+            var user = await UserManager.FindByEmailAsync(forgotPassword.EmailAddress);
+            var res = await UserManager.ResetPasswordAsync(user.Id, forgotPassword.Token, forgotPassword.NewPassword);
+            return PartialView("ChangeForgotPasswordViewPartial");
+        }
+
+        [AllowAnonymous, HttpPost]
+
+        public async Task<ActionResult> ForgotPassword(string EmailAddress)
+        {
+            var user = await UserManager.FindByEmailAsync(EmailAddress);
+            var Token = await UserManager.GeneratePasswordResetTokenAsync(user?.Id);
+            var confirmationlink = $"<h3>Forgot Password</h3><br/><a href='{Url.Action("ChangeForgotPasswordViewPartial", "Member", new { Email = user.Email, Token = Token }, Request.Url.Scheme)}'>Click here to change your Password</a>";
+            await UserManager.SendEmailAsync(userId: user.Id, subject: "Forgot Password", body: confirmationlink);
+            ViewBag.result = "Please check your email for change password link, Thank You";
+            return PartialView("_forgotPasswordContentPartial");
+        }
+        [AllowAnonymous]
+        public ActionResult PopControlForgotPasswordPartial()
+        {
+            return PartialView("_PcForgotPasswordPartial");
+        }
+        #endregion
     }
 }

@@ -19,6 +19,7 @@ namespace NorthOps.Models
         {
             this.UsersInCampaignShift = new HashSet<UsersInCampaignShift>();
             this.Shifts = new HashSet<Shifts>();
+            this.Recordings = new HashSet<Recordings>();
         }
     
         public string Id { get; set; }
@@ -29,5 +30,7 @@ namespace NorthOps.Models
         public virtual ICollection<UsersInCampaignShift> UsersInCampaignShift { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Shifts> Shifts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Recordings> Recordings { get; set; }
     }
 }

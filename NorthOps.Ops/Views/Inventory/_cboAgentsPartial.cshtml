@@ -1,0 +1,11 @@
+﻿@{
+    Html.DevExpress().ComboBox(cbo =>
+    {
+        cbo.CallbackRouteValues = new { Controller = "Inventory", Action = "CboAgentsPartial" };
+        cbo.Name = "cboAgents";
+        cbo.Properties.TextField = "FullName";
+        cbo.Properties.ValueField = "Id";
+        cbo.Properties.CallbackPageSize = 10;
+        cbo.Properties.Caption = "Agent";
+    }).BindList(Model).GetHtml();
+}

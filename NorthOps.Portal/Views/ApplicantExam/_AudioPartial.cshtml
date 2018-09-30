@@ -1,0 +1,15 @@
+﻿@model Videos
+<h2 style='text-align:center' id="h_@Model.VideoId">Play audio</h2>
+<h3 style='text-align: center' onclick="playAudio(this,'@Url.Action("index","audio",new{audioId=Model.VideoId})','@Model.VideoId')">
+    <span class='fa fa-play'></span>
+</h3>
+
+
+
+
+@{
+    //ViewContext.Writer.Write($"<h2 style='text-align:center' id='h{i.VideoId.ToString()}'>Play audio</h2>");
+    //ViewContext.Writer.Write(@"<h3 style='text-align:center' onclick='playAudio(this,""" + Url.Content("~") + @""",""" + i.VideoId.ToString() + @""")'><span class='fa fa-play'></span></h3>");
+    //   ViewContext.Writer.Write(@"<h3 style='text-align:center' onclick='playAudio(this,""" + i.VideoId.ToString() + @""")'><span class='fa fa-play'></span></h3>");
+    //ViewContext.Writer.Write("<audio id='#audio-" + i.VideoId.ToString() + "' preload='auto' style='margin:0 auto;float:none;width:50%!important;margin:0 auto !important;float:none'><source src='" + Url.Action("index","audio",new{AudioId=i.VideoId.ToString()})+"'></audio>");
+}

@@ -6,7 +6,75 @@
         <b>Please do not close or refresh the browser while taking the exam. The exam was designed for 1 passing view only. Closing or refreshing the browser will interere with your score and may cause instant fail.</b>
     </p>
 </div>
-@Html.Action("ExamsGridPartial")
+@if (ViewBag.ExamTypes == 0)
+{
+    @Html.Action("ExamsGridPartial")
+}
+else
+{
+    var userId = User.Identity.GetUserId();
+
+    Html.DevExpress().PageControl(settings =>
+    {
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Name = "ExamTab";
+        settings.ShowTabs = false;
+        //if (!new UnitOfWork().Applicant.Fetch(m => m.UserId == userId && (ExamTypes) m.Exams.ExamType == ExamTypes.Identification).Any())
+        //{
+        //    settings.TabPages.Add("Thankyou Tab", "Thankyou Tab").SetContent(() =>
+        //    {
+        //        ViewContext.Writer.Write("<div style='text-align:center'>");
+        //        ViewContext.Writer.Write("<h2 style='text-align:center'>Thank You</h2>");
+        //        ViewContext.Writer.Write("<br/>");
+        //        Html.DevExpress().HyperLink(s =>
+        //        {
+        //            s.Name = "lnkBacktoHome";
+        //            s.NavigateUrl = Url.Action("Index", "ApplicantExam");
+        //            s.Properties.Text = "Back to Exam List";
+        //        }).GetHtml();
+        //        ViewContext.Writer.Write(" </div>");
+        //    });
+        //}
+        //else
+        //{
+        settings.TabPages.Add("Tab 1").SetContent(() =>
+        {
+            //ViewContext.Writer.Write("<div id='tab-description'></div>");
+
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnStart";
+                btn.Text = "Start";
+                btn.Style.Add(HtmlTextWriterStyle.Margin, "10px");
+                btn.ClientSideEvents.Click = "function(s,e){StartIdentificationExam();}";
+            }).GetHtml();
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnCancel";
+                btn.Text = "Cancel";
+                btn.Style.Add(HtmlTextWriterStyle.Margin, "10px");
+                btn.ClientSideEvents.Click = "function(s,e){ExamTab.SetActiveTabIndex(0) ;}";
+            }).GetHtml();
+        });
+        settings.TabPages.Add("Tab 2").SetContent(() =>
+        {
+
+            using (Ajax.BeginForm("IdentificationExamPartial", "ApplicantExam",null, new AjaxOptions() { }, new { @Id = "frm_identification_exam" }))
+            {
+                Html.RenderAction("IdentificationExamPartial");
+            }
+
+        });
+        //}
+
+
+
+    }).GetHtml();
+}
+
+
+
+
 @Html.DevExpress().LoadingPanel(ldp =>
 {
     ldp.Name = "LoadingOpenExam";
@@ -14,7 +82,9 @@
 }).GetHtml()
 
 
+<script src="~/Content/js/TakingExam.js">
 
+</script>
 <script>
     var ExamId = "";
     function ViewDescription(ExamId) {
@@ -51,6 +121,23 @@
             },
             complete: function () {
                 LoadingPanel.Hide()
+            }
+        });
+    }
+    function StartIdentificationExam() {
+        ExamTab.SetActiveTabIndex(1);
+        $.ajax({
+            url: '@Url.Action("StartExamPartial")',
+            data: { ExamId: ExamId },
+            type: 'POST',
+            beforeSend: function () {
+                LoadingOpenExam.Show();
+            }
+            ,success: function (e) {
+                //$('#tab-exam').html(e);
+            },
+            complete: function () {
+                LoadingOpenExam.Hide();
             }
         });
     }

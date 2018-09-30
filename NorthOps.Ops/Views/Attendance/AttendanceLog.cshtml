@@ -7,16 +7,45 @@
 
 
 @{
-    Html.DevExpress().Button(settings =>
+    using (Ajax.BeginForm("AttendanceLogGridViewPartialUpdate", "Attendance", new AjaxOptions()
     {
-        settings.Name = "btnRetrienveAttendance";
-        settings.UseSubmitBehavior = true;
-        settings.Text = "Retrieve Attendance";
-        settings.ClientSideEvents.Click = "function(s,e){AttendanceLogGridView.UpdateEdit();}";
-        settings.ControlStyle.CssClass = "pull-right margin-bottom-10";
-    }).GetHtml();
+        OnBegin= "ldpAttendance.Show()",
+
+        OnComplete = "RefreshGrid()"
+    }))
+    {
+        Html.DevExpress().Button(settings =>
+        {
+            settings.Name = "btnRetrienveAttendance";
+            settings.UseSubmitBehavior = true;
+            settings.Text = "Retrieve Attendance";
+
+            settings.ControlStyle.CssClass = "pull-right margin-bottom-10";
+        }).GetHtml();
+    }
+
 }
 <div class="clearfix"></div>
 
 
+
+
 @Html.Action("AttendanceLogGridViewPartial")
+
+@{
+    Html.DevExpress().LoadingPanel(settings =>
+    {
+        settings.Name = "ldpAttendance";
+        settings.Modal = true;
+        
+        
+    }).GetHtml();
+}
+
+<script>
+    function RefreshGrid() {
+        ldpAttendance.Hide();
+        AttendanceLogGridView.PerformCallback();
+
+    }
+</script>

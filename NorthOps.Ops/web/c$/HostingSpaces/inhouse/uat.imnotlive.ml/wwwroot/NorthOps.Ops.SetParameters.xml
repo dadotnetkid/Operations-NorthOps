@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="uat.imnotlive.ml" />
+  <setParameter name="northopsEntities-Web.config Connection String" value="metadata=res://*/NorthOpsDb.csdl|res://*/NorthOpsDb.ssdl|res://*/NorthOpsDb.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=10.10.20.42;Initial Catalog=uat_northops;User ID=sa;Password=n0rth@dm1N&quot;" />
+</parameters>

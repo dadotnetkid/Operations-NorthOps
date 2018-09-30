@@ -276,7 +276,7 @@ namespace ZKTeco.SDK.MachineManager
             bool flag4;
             int operationSuccess = this.OperationSuccess;
             int dwWorkCode = 0;
-            string dwEnrollNumber = "";
+            int dwEnrollNumber;
             lstTransaction = new List<Transactions>();
             if (!this.IsConnected)
             {
@@ -328,13 +328,14 @@ namespace ZKTeco.SDK.MachineManager
             flag4 = true;
             if (flag2)
             {
-
-                flag = this.AloneSDK.SSR_GetGeneralLogData(this.dev.MachineNumber, out dwEnrollNumber, out num5, out num6, out num7, out num8, out num9, out num10, out num11, out num12, ref dwWorkCode);
+                string _dwEnrollNumber;
+                flag = this.AloneSDK.SSR_GetGeneralLogData(this.dev.MachineNumber, out _dwEnrollNumber, out num5, out num6, out num7, out num8, out num9, out num10, out num11, out num12, ref dwWorkCode);
+                dwEnrollNumber = Convert.ToInt32(_dwEnrollNumber);
             }
             else
             {
                 flag = this.AloneSDK.GetGeneralExtLogData(this.dev.MachineNumber, ref num3, ref num5, ref num6, ref num7, ref num8, ref num9, ref num10, ref num11, ref num12, ref dwWorkCode, ref num4);
-                dwEnrollNumber = num3.ToString();
+                dwEnrollNumber = num3;
             }
 
             Debug.WriteLine($"{dwEnrollNumber}:{num5 }:{num6}:{num7}:{num8}:{num9}:{num10}:{num11}:{num12}:{dwWorkCode}  ");

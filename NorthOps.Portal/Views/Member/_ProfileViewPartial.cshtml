@@ -1,15 +1,20 @@
 ﻿@model Users
 
+
+@if (Model.FirstName != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p>Check in your inbox folder or spam folder     </p>
+    </div>
+}
+
 @if (Model.Id == User.Identity.GetUserId())
 {
     <div>
-        <div class="pull-left">
-            @{ Html.DevExpress().Button(m =>
-                {
-                    m.Text = "Update";
-                    m.Name = "btnSubmit";
-                    m.UseSubmitBehavior = true;
-                }).GetHtml();
+        <div class="pull-right">
+            @{
+
                 Html.DevExpress().Button(m =>
                 {
                     m.Text = "Resend Email";
@@ -21,11 +26,10 @@
                 }).GetHtml();
             }
         </div>
-      
+
         <div class="clearfix"></div>
     </div>
 }
-
 @{
 
 
@@ -37,182 +41,47 @@
 
     }).GetHtml();
 
-
-
-    Html.DevExpress().FormLayout(settings =>
-    {
-        settings.Name = "UserFormLayout";
-        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-        settings.Enabled = Model.Id == User.Identity.GetUserId() ? true : false;
-        var groupItem = settings.Items.AddGroupItem(groupSettings =>
-        {
-            groupSettings.Caption = "User Information";
-            groupSettings.ShowCaption = DefaultBoolean.True;
-            groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
-        });
-
-        groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
-        groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
-        settings.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
-        settings.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
-        groupItem.SettingsItemHelpTexts.Position = HelpTextPosition.Auto;
-        groupItem.ColCount = 2;
-
-        groupItem.Items.Add(m => m.FirstName, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.LastName, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-
-            });
-        });
-        groupItem.Items.Add(m => m.MiddleName, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.CivilStatus, item =>
-        {
-            item.NestedExtension().ComboBox(cbo =>
-            {
-                cbo.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                cbo.Properties.ValidationSettings.SetFocusOnError = true;
-                cbo.Properties.ValidationSettings.Display = Display.Dynamic;
-                cbo.Properties.DataSource = Enum.GetValues(typeof(CivilStatus)).Cast<CivilStatus>().Select(x => new { Name = x.ToString(), Id = x });
-                cbo.Properties.TextField = "Name";
-                cbo.Properties.ValueField = "Id";
-                cbo.Properties.ValueType = typeof(CivilStatus);
-
-            });
-        });
-        groupItem.Items.Add(m => m.Gender, item =>
-        {
-            item.NestedExtension().ComboBox(cbo =>
-            {
-                cbo.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                cbo.Properties.ValidationSettings.SetFocusOnError = true;
-                cbo.Properties.ValidationSettings.Display = Display.Dynamic;
-                cbo.Properties.DataSource = Enum.GetValues(typeof(Gender)).Cast<Gender>().Select(x => new { Name = x.ToString(), Id = x });
-                cbo.Properties.ValueField = "id";
-                cbo.Properties.TextField = "Name";
-                cbo.Properties.ValueType = typeof(Gender);
-            });
-        });
-        groupItem.Items.Add(m => m.BirthDate, item =>
-        {
-            item.NestedExtension().DateEdit(dt =>
-            {
-                dt.Properties.ValidationSettings.Display = Display.Dynamic;
-                dt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-
-            });
-        });
-        groupItem.Items.Add(m => m.AddressLine1, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.AddressLine2, item =>
-        {
-        });
-
-        groupItem.Items.Add(m => m.TownCity, item =>
-        {
-            item.NestedExtension().ComboBox(cbo =>
-            {
-                cbo.ShowModelErrors = true;
-                cbo.Properties.DataSource = new UnitOfWork().TownCityRepo.Get();
-                cbo.Properties.ValueField = "TownCityId";
-                cbo.Properties.TextField = "name";
-                cbo.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                cbo.Properties.ValueType = typeof(int);
-
-                cbo.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.Cellular, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.Religion, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.Citizenship, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.Languages, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.Skills, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-            });
-        });
-        groupItem.Items.Add(m => m.Email, item =>
-        {
-            item.NestedExtension().TextBox(txt =>
-            {
-                txt.Name = "Email";
-                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                txt.Properties.ValidationSettings.SetFocusOnError = true;
-                txt.Properties.ValidationSettings.Display = Display.Dynamic;
-                txt.Properties.ClientSideEvents.KeyUp = "function(s,e){OnValueChanged(s,e);}";
-            });
-        });
-    }).GetHtml();
-
-
-
-
-
-
 }
+
+<div class="panel panel-body margin-top-10">
+
+    @{
+        Html.DevExpress().PageControl(settings =>
+        {
+
+            settings.Name = "ApplicantDetails";
+            settings.Width = Unit.Percentage(100);
+            settings.TabPages.Add("Applicant Basic Information").SetContent(() =>
+            {
+                Html.RenderPartial("_ApplicantBasicInformationPartial", Model);
+                Html.RenderAction("ButtonTabProfilePartial", new { buttonName = "btnApplicantBasicInformationTabNext" });
+
+            });
+            settings.TabPages.Add("Educational Attainment").SetContent(() =>
+            {
+
+                Html.RenderAction("EducationalAttainmentGridViewPartial", new { UserId = Model.Id });
+                Html.RenderAction("ButtonTabProfilePartial", new { buttonName = "btnEducationAttainmentTabNext" });
+
+            });
+            settings.TabPages.Add("Employment History").SetContent(() =>
+            {
+
+                Html.RenderAction("EmploymentHistoryGridViewPartial", new { UserId = Model.Id });
+                Html.RenderPartial("_btnUpdateProfilePartial", Model);
+            });
+        }).GetHtml();
+    }
+
+
+
+</div>
+
+
+
+
+
+
 
 <script>
     var Email = "";
@@ -275,5 +144,11 @@
         }).done(function () {
             LoadingSubmit.Hide();
             });
+    }
+
+
+    function btnNext(s, e) {
+        var tabIndex = ApplicantDetails.GetActiveTabIndex() + 1;
+        ApplicantDetails.SetActiveTabIndex(tabIndex);
     }
 </script>

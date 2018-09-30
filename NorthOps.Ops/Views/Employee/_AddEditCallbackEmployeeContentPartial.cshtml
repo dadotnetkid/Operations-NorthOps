@@ -1,0 +1,66 @@
+﻿@model Users
+<div class="col-lg-3">
+    @{
+        Html.DevExpress().TextBoxFor(m => m._BiometricId, settings =>
+          {
+              settings.Properties.Caption = "Biometric Id";
+              settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+              settings.Width = Unit.Percentage(100);
+          }).Bind(Model?.BiometricId).GetHtml();
+    }
+</div>
+<div class="col-lg-3">
+    @{
+        @Html.DevExpress().ComboBoxFor(m => m.Position, settings =>
+         {
+             settings.Width = Unit.Percentage(100);
+             settings.Properties.ValueField = "Id";
+             settings.Properties.TextField = "Name";
+             settings.Properties.Caption = "Position";
+             settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+         }).BindList(Enum.GetValues(typeof(Position)).Cast<Position>().Select(x => new {Id = (int) x, Name = x.ToString()}).ToList()).GetHtml()
+    }
+
+</div>
+<div class="col-lg-3">
+    @Html.DevExpress().ComboBoxFor(m=>m.DivisionId,settings =>
+    {
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "DivisionName";
+        settings.Properties.Caption = "Division";
+        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+    }).BindList(new UnitOfWork().DivisionsRepo.Get()).GetHtml()
+</div>
+<div class="col-lg-3">
+    @Html.DevExpress().ComboBoxFor(m=>m.DepartmentId,settings =>
+    {
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "DepartmentName";
+        settings.Properties.Caption = "Department";
+        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+    }).BindList(new UnitOfWork().DepartmentsRepo.Get()).GetHtml()
+</div>
+<div class="col-lg-3">
+    @Html.DevExpress().ComboBoxFor(m=>m.BranchId,settings =>
+    {
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "BranchName";
+        settings.Properties.Caption = "Branch";
+        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+    }).BindList(new UnitOfWork().BranchRepo.Get()).GetHtml()
+</div>
+<div class="col-lg-3">
+    @{
+        Html.DevExpress().ComboBoxFor(m => m.PayPeriod, settings =>
+        {
+            settings.Width = Unit.Percentage(100);
+            settings.Properties.ValueField = "Id";
+            settings.Properties.TextField = "Name";
+            settings.Properties.Caption = "Pay Period";
+            settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+        }).BindList(Enum.GetValues(typeof(Position)).Cast<PayPeriod>().Select(x => new { Id = (int)x, Name = x.ToString() }).ToList()).GetHtml();
+    }
+</div>

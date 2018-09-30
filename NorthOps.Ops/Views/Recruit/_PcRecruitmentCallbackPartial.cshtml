@@ -1,0 +1,22 @@
+﻿@{
+    Html.DevExpress().PageControl(settings =>
+    {
+        settings.CallbackRouteValues = new { Controller = "Recruit", Action = "PcRecruitmentCallbackPartial" };
+        settings.Name = "pcRecruitments";
+//  settings.ClientSideEvents.ActiveTabChanged = "function(s,e){pcRecruitments.PerformCallback()}";
+settings.Width = Unit.Percentage(100);
+        settings.TabPages.Add("PRELIMINARY").SetContent(() =>
+        {
+            Html.RenderAction("JobApplicationGridPartial", new { newId = ViewBag.newId });
+
+        });
+        settings.TabPages.Add("SHORT LIST").SetContent(() =>
+        {
+            Html.RenderAction("JobApplicationGridPartial", new { isExamPassed = true });
+        });
+        settings.TabPages.Add("TRAINING").SetContent(() =>
+        {
+            Html.RenderAction("JobApplicationGridPartial", new { isExamPassed = true, isTraining = true });
+        });
+    }).GetHtml();
+}

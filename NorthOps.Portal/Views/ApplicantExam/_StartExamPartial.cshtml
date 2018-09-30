@@ -14,6 +14,10 @@
     {
         Html.RenderPartial("_listeningexampartial", Model);
     }
+    else if ((ExamTypes)Model.ExamType == ExamTypes.Listening)
+    {
+        Html.RenderAction("IdentificationExamPartial");
+    }
     else if ((ExamTypes)Model.ExamType == ExamTypes.TypingSkills)
     {
         Html.DevExpress().PageControl(setting =>
@@ -46,8 +50,8 @@
 }
 
 <script>
-    $(document).ready(function() {
-        
+    $(document).ready(function () {
+
     });
     window.addEventListener("beforeunload", function (e) {
         var message = "Please do not close or refresh the browser while taking the exam. The exam was designed for 1 passing view only. Closing or refreshing the browser will interere with your score and may cause instant fail.";

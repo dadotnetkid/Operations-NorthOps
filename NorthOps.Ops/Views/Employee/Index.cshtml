@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Employees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("ExportTo", "Employee", new {OutputFormat = "XLS"}))
+{
+    Html.DevExpress().Button(btn =>
+    {
+        btn.Text = "Export";
+        btn.UseSubmitBehavior = true;
+        btn.Name = "btnExport";
+    }).GetHtml();
+}
+
+@Html.Action("EmployeesGridViewPartial")

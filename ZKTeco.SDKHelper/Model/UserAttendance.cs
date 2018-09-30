@@ -11,7 +11,7 @@ namespace ZKTeco.SDK.Model
         public UserAttendance()
         {
         }
-        public string IdNumber { get; set; }
+        public int IdNumber { get; set; }
         public TimeType timeType { get; set; }
         public Double? TotalTimeRendered { get; set; }
         public DateTime AttendanceTime { get; set; }

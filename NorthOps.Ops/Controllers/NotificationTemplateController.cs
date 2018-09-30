@@ -60,11 +60,7 @@ namespace NorthOps.Ops.Controllers
             return PartialView("_NotificationsTemplatesGridViewPartial", model);
         }
 
-        [HttpPost, ValidateInput(false)]
-        public Task<ActionResult> NotificationsTemplatesGridViewPartialUpdate()
-        {
-            return NotificationsTemplatesGridViewPartialUpdate(null);
-        }
+
 
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> NotificationsTemplatesGridViewPartialUpdate([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]NorthOps.Models.NotificationsTemplates item)
@@ -88,14 +84,16 @@ namespace NorthOps.Ops.Controllers
             return PartialView("_NotificationsTemplatesGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult NotificationsTemplatesGridViewPartialDelete([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]System.String Template)
+        public async Task<ActionResult> NotificationsTemplatesGridViewPartialDelete([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]NorthOps.Models.NotificationsTemplates item)
         {
             //   var model = new object[0];
-            if (Template != null)
+            if (item.Id != null)
             {
                 try
                 {
-                    // Insert here a code to delete the item from your model
+                    unitOfWork.NotificationTemplatesRepo.Delete(
+                        unitOfWork.NotificationTemplatesRepo.Find(m => m.Id == item.Id));
+                    await unitOfWork.SaveAsync();
                 }
                 catch (Exception e)
                 {

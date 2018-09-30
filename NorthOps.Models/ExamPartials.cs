@@ -77,7 +77,8 @@ namespace NorthOps.Models
         TrueorFalse,
         MBTI,
         Listening,
-        TypingSkills
+        TypingSkills,
+        Identification
 
     }
     public partial class ExamType

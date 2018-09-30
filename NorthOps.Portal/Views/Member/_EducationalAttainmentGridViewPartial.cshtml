@@ -1,0 +1,60 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "EducationalAttainmentGridView";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Member", Action = "EducationalAttainmentGridViewPartial", UserId = ViewBag.UserId };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Member", Action = "EducationalAttainmentGridViewPartialAddNew", UserId = ViewBag.UserId };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Member", Action = "EducationalAttainmentGridViewPartialUpdate", UserId = ViewBag.UserId };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Member", Action = "EducationalAttainmentGridViewPartialDelete", UserId = ViewBag.UserId };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = false;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.Columns.Add("SchoolName");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "EducationAttainment";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var colset = col.PropertiesEdit as ComboBoxProperties;
+            colset.DataSource = Enum.GetValues(typeof(EducationAttainment)).Cast<EducationAttainment>().Select(x => new {Id = x});
+            colset.TextField = "Id";
+            colset.ValueField = "Id";
+            
+        });
+        settings.ClientSideEvents.EndCallback = "function(s,e){btnEducationAttainmentTabNext.SetEnabled(true)}";
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.FieldName = "SchoolFrom";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.FieldName = "SchoolTo";
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,10 @@
+﻿@{
+    Html.DevExpress().Button(btn =>
+    {
+        btn.Name = ViewBag.buttonName;
+        btn.ControlStyle.CssClass = "pull-right margin-top-10";
+        btn.ClientSideEvents.Click = "function(s,e){btnNext(s,e)}";
+        btn.Text = "Next";
+       // btn.ClientEnabled = false;
+    }).GetHtml();
+}

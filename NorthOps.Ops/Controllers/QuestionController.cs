@@ -72,7 +72,7 @@ namespace NorthOps.Ops.Controllers
             {
                 try
                 {
-                    var questionRepo = unitOfWork.QuestionRepo.GetByID(QuestionId);
+                    var questionRepo = unitOfWork.QuestionRepo.Find(m => m.QuestionId == QuestionId);
                     unitOfWork.QuestionRepo.Delete(questionRepo);
                     unitOfWork.Save();
                 }

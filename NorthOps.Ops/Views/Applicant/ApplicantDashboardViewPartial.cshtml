@@ -1,0 +1,44 @@
+﻿
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "ApplicationStatusGridView";
+        settings.CallbackRouteValues = new { Controller = "Applicant", Action = "ApplicantDashboardViewPartial" };
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+//  settings.CommandColumn.Visible = true;
+//    settings.CommandColumn.ShowNewButton = true;
+//      settings.CommandColumn.ShowDeleteButton = true;
+//        settings.CommandColumn.ShowEditButton = true;
+
+settings.KeyFieldName = "UserId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.Settings.ShowColumnHeaders = false;
+
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Settings.ShowColumnHeaders = false;
+        settings.Columns.Add(col => { col.ColumnType = MVCxGridViewColumnType.CheckBox; col.FieldName = "Done"; col.Caption = ""; col.Width = System.Web.UI.WebControls.Unit.Percentage(10); col.ReadOnly = true; });
+        settings.Columns.Add("Field");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Status";
+            col.PropertiesEdit.EncodeHtml = false;
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

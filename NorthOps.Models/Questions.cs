@@ -22,7 +22,7 @@ namespace NorthOps.Models
         }
     
         public System.Guid QuestionId { get; set; }
-        public System.Guid ExamId { get; set; }
+        public Nullable<System.Guid> ExamId { get; set; }
         public Nullable<System.Guid> VideoId { get; set; }
         public string Title { get; set; }
         public Nullable<int> Number { get; set; }

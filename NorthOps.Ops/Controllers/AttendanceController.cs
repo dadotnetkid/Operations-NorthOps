@@ -39,6 +39,7 @@ namespace NorthOps.Ops.Controllers
             {
                 ViewData["EditError"] = e.Message;
             }
+
             var model = unitOfWork.AttendancesRepo.Get();
             return PartialView("_AttendanceLogGridViewPartial", model);
         }

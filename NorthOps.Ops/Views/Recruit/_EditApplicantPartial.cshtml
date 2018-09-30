@@ -1,0 +1,509 @@
+@model JobApplications
+
+
+
+
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="row margin-top-5">
+            <div class="col-lg-3">
+                <label>Resume</label>
+            </div>
+            <div class="col-lg-1">
+                @{
+                    Html.DevExpress().CheckBox(chk =>
+                    {
+                        chk.ReadOnly = true;
+                        chk.Checked = Model.Users.EmailConfirmed == true;
+                        chk.Name = "chk_" + Model.UserId;
+
+                    }).GetHtml();
+                }
+
+            </div>
+            <div class="col-lg-2" style="padding-top:5px">
+                @{
+                    Html.DevExpress().HyperLink(h =>
+            {
+                h.NavigateUrl = Url.Action("resume", "recruit", new { id = Model.Users.Id });
+                h.Name = "lnk_" + Model.UserId;
+                h.Properties.Text = "Resume";
+                h.Properties.Target = "_blank";
+            }).GetHtml();
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Exam</label>
+            </div>
+            <div class="col-lg-3">
+                @{Html.DevExpress().TextBoxFor(x => x.ApplicantExamScore, txt =>
+                                      {
+                                          txt.Name = "ApplicantExamScore";
+                                          txt.ReadOnly = true;
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                      }).GetHtml(); }
+            </div>
+            <div class="col-lg-3">
+                @using (Ajax.BeginForm("OpenExamPartial", new { UserId = Model.UserId, Open = true }, new AjaxOptions() { HttpMethod = "POST", OnBegin = "ldpRecruitmentLoading.Show()", OnComplete = "ldpRecruitmentLoading.Hide()", UpdateTargetId = "form-openexampartial" }, new { id = "form-openexampartial" }))
+                {
+                    Html.RenderAction("OpenExamPartial", new { UserId = Model.UserId });
+                }
+            </div>
+            <div class="col-lg-3">
+                @Html.Action("NotifyExamResultPartial", new { UserId = Model.UserId })
+            </div>
+        </div>
+        <div class="row margin-top-5">
+            <div class="col-lg-3">
+                <label>Phone Interview</label>
+            </div>
+            <div class="col-lg-1">
+                @{Html.DevExpress().CheckBoxFor(x => x.PhoneInterview, txt =>
+                      {
+                          txt.Name = "PhoneInterview";
+                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                          txt.Enabled = Model.PhoneInterviewDate != null ? true : false;
+                      }).GetHtml(); }
+            </div>
+            <div class="col-lg-4">
+                @{Html.DevExpress().DateEditFor(x => x.PhoneInterviewDate, txt =>
+                      {
+                          txt.Name = "PhoneInterviewDate";
+                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                          txt.Properties.DisplayFormatString = "D";
+                          txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                          txt.Properties.TimeSectionProperties.Visible = true;
+                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt"; ;
+                      }).GetHtml();
+                }
+            </div>
+            <div class="col-lg-4">
+                @{
+                    Html.RenderAction("btnNotifyPhoneResultPartial", new { UserId = Model.UserId });
+                }
+            </div>
+        </div>
+
+        <div class="row margin-top-5">
+            <div class="col-lg-3">
+                <label>Personal Interview</label>
+            </div>
+            <div class="col-lg-1">
+                @{Html.DevExpress().CheckBoxFor(x => x.PersonalInterview, txt =>
+                                      {
+                                          txt.Name = "PersonalInterview";
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                          txt.Enabled = Model.PersonalInterviewDate != null ? true : false;
+                                      }).GetHtml(); }
+            </div>
+            <div class="col-lg-4">
+                @{Html.DevExpress().DateEditFor(x => x.PersonalInterviewDate, txt =>
+                      {
+                          txt.Name = "PersonalInterviewDate";
+                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                          txt.Properties.DisplayFormatString = "D";
+                          txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                          txt.Properties.TimeSectionProperties.Visible = true;
+                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                          txt.Enabled = Model.PhoneInterview == true ? true : false;
+                      }).GetHtml(); }
+            </div>
+            <div class="col-lg-4">
+                @{
+                    Html.RenderAction("btnNotifyPersonalResultPartial", new { UserId = Model.UserId });
+                }
+            </div>
+        </div>
+        @*@if (Model.TrainingDate == null && Model.PersonalInterview == true && Model.IsPersonalInterviewPassed == null)
+            {
+                <div class="row margin-top-5">
+                    <div class="col-lg-4">
+                        <label>Notify Applicant</label>
+                    </div>
+                    <div class="col-lg-2">
+                        @using (Ajax.BeginForm("NotifyApplicantPartial", new { UserId = Model.UserId, isPassed = true },
+                            new AjaxOptions() { HttpMethod = "POST", OnBegin = "ldpRecruitmentLoading.Show()", OnComplete = "ldpRecruitmentLoading.Hide();JobApplicationGrid.CancelEdit()", UpdateTargetId = "form-notifyapplicant-pass" }, new { id = "form-notifyapplicant-pass" }))
+                        {
+                            Html.DevExpress().Button(btn =>
+                            {
+                                btn.Name = "btnNotifyApplicantPass";
+                                btn.UseSubmitBehavior = true;
+                                btn.Text = "Pass";
+                            }).GetHtml();
+                        }
+                    </div>
+                    <div class="col-lg-2">
+                        @using (Ajax.BeginForm("NotifyApplicantPartial", new { UserId = Model.UserId, IsPassed = false }, new AjaxOptions() { HttpMethod = "POST", OnBegin = "ldpRecruitmentLoading.Show();JobApplicationGrid.CancelEdit()", OnComplete = "ldpRecruitmentLoading.Hide()", UpdateTargetId = "form-notifyapplicant-failed" }, new { id = "form-notifyapplicant-failed" }))
+                        {
+                            Html.DevExpress().Button(btn =>
+                            {
+                                btn.Name = "btnNotifyApplicantFailed";
+                                btn.UseSubmitBehavior = true;
+                                btn.Text = "Failed";
+                            }).GetHtml();
+                        }
+                    </div>
+                </div>
+            }*@
+    </div>
+    <div class="col-lg-6">
+        <div class="row margin-top-5">
+            <div class="col-lg-3">
+                <label>Training</label>
+            </div>
+            <div class="col-lg-1">
+                @{Html.DevExpress().CheckBoxFor(x => x.Training, txt =>
+                                      {
+                                          txt.Name = "Training";
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                          txt.Enabled = Model.TrainingDate != null ? true : false;
+                                      }).GetHtml(); }
+            </div>
+            <div class="col-8">
+                @{Html.DevExpress().DateEditFor(x => x.TrainingDate, txt =>
+                                      {
+                                          txt.Name = "TrainingDate";
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                          txt.Properties.DisplayFormatString = "D";
+                                          txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                                          txt.Properties.TimeSectionProperties.Visible = true;
+                                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                                          txt.Enabled = Model.PersonalInterview == true ? true : false;
+                                      }).GetHtml(); }
+            </div>
+        </div>
+        <div class="row margin-top-5">
+            <div class="col-lg-3">
+                <label>On Boarding</label>
+            </div>
+            <div class="col-lg-1">
+                @{Html.DevExpress().CheckBoxFor(x => x.OnBoarding, txt =>
+                                      {
+                                          txt.Name = "OnBoarding";
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                          txt.Enabled = Model.OnBoardingDate != null ? true : false;
+                                      }).GetHtml(); }
+            </div>
+            <div class="col-8">
+                @{Html.DevExpress().DateEditFor(x => x.OnBoardingDate, txt =>
+                                      {
+                                          txt.Name = "OnBoardingDate";
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                          txt.Properties.DisplayFormatString = "D";
+                                          txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                                          txt.Properties.TimeSectionProperties.Visible = true;
+                                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                                          txt.Enabled = Model.Training == true ? true : false;
+                                      }).GetHtml(); }
+            </div>
+        </div>
+        <div class="row margin-top-5">
+            <div class="col-lg-3">
+                <label>Contract</label>
+            </div>
+            <div class="col-lg-1">
+                @{Html.DevExpress().CheckBoxFor(x => x.Contract, txt =>
+                                      {
+                                          txt.Name = "Contract";
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                          txt.Enabled = Model.ContractDate != null ? true : false;
+                                      }).GetHtml(); }
+            </div>
+            <div class="col-8">
+                @{Html.DevExpress().DateEditFor(x => x.ContractDate, txt =>
+                                      {
+                                          txt.Name = "ContractDate";
+                                          txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                                          txt.Properties.DisplayFormatString = "D";
+                                          txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                                          txt.Properties.TimeSectionProperties.Visible = true;
+                                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                                          txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                                          txt.Enabled = Model.OnBoarding == true ? true : false;
+                                      }).GetHtml(); }
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    Html.DevExpress().Button(btn =>
+    {
+        btn.Text = "Update";
+        btn.Name = "btnUpdate";
+        if (ViewBag.GridName != null)
+        {
+            btn.ClientSideEvents.Click = "function(s,e){" + ViewBag.GridName + ".UpdateEdit();}";
+        }
+        else
+        {
+            btn.ClientSideEvents.Click = "function(s,e){JobApplicationGrid.UpdateEdit();}";
+        }
+
+    }).GetHtml();
+    Html.DevExpress().Button(btn =>
+    {
+        btn.Text = "Cancel";
+        btn.Name = "btnCancel";
+//   btn.ClientSideEvents.Click = "function(s,e){JobApplicationGrid.CancelEdit();}";
+if (ViewBag.GridName != null)
+        {
+            btn.ClientSideEvents.Click = "function(s,e){" + ViewBag.GridName + ".CancelEdit();}";
+        }
+        else
+        {
+            btn.ClientSideEvents.Click = "function(s,e){JobApplicationGrid.CancelEdit();}";
+        }
+        btn.Style.Add(HtmlTextWriterStyle.MarginLeft, "10px");
+    }).GetHtml();
+
+
+}
+
+
+
+
+
+@*
+    @Html.DevExpress().FormLayout(settings =>
+    {
+        settings.Name = "JobApplicationFormLayout";
+
+        var groupItem = settings.Items.AddGroupItem(groupSettings =>
+        {
+            groupSettings.Caption = "";
+            groupSettings.ShowCaption = DefaultBoolean.True;
+            groupSettings.GroupBoxDecoration = GroupBoxDecoration.None;
+        });
+        groupItem.ColCount = 2;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+
+
+        groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+        groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+
+        groupItem.Items.Add(m => m.Resume, m =>
+        {
+            m.SetNestedContent(() =>
+            {
+                ViewContext.Writer.Write("<div class='row'><div class='col-md-2'>");
+
+                ViewContext.Writer.Write("</div><div class='col-md-10'>");
+
+                Html.DevExpress().HyperLink(h =>
+                {
+                    h.NavigateUrl = Url.Action("profile", "member", new { id = Model.User.Id });
+                    h.Name = "lnk_" + Model.UserId;
+                    h.Properties.Text = "Resume";
+                    h.Properties.Target = "_blank";
+                }).Render();
+                ViewContext.Writer.Write("</div></div>");
+
+
+            });
+        });
+        groupItem.Items.Add(m =>
+        {
+
+            m.Caption = "Phone Interview";
+            m.SetNestedContent(() =>
+            {
+
+                ViewContext.Writer.Write("<div class='row'><div class='col-md-2'>");
+                Html.DevExpress().CheckBoxFor(x => x.PhoneInterview, txt =>
+                {
+                    txt.Name = "PhoneInterview";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                }).Render();
+                ViewContext.Writer.Write("</div><div class='col-md-10'>");
+                Html.DevExpress().DateEditFor(x => x.PhoneInterviewDate, txt =>
+                {
+                    txt.Name = "PhoneInterviewDate";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.DisplayFormatString = "D";
+                    txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                    txt.Properties.TimeSectionProperties.Visible = true;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                }).Render();
+                ViewContext.Writer.Write("</div></div>");
+
+
+            });
+        });
+        groupItem.Items.Add(m =>
+        {
+            m.Caption = "Personal Interview";
+            m.SetNestedContent(() =>
+            {
+                ViewContext.Writer.Write("<div class='col-md-2'>");
+                Html.DevExpress().CheckBoxFor(x => x.PersonalInterview, txt =>
+                {
+                    txt.Name = "PersonalInterview";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                }).Render();
+                ViewContext.Writer.Write("</div><div class='col-md-10'>");
+                Html.DevExpress().DateEditFor(x => x.PersonalInterviewDate, txt =>
+                {
+                    txt.Name = "PersonalInterviewDate";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.DisplayFormatString = "D";
+                    txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                    txt.Properties.TimeSectionProperties.Visible = true;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                }).Render();
+                ViewContext.Writer.Write("</div>");
+
+
+            });
+
+        });
+        groupItem.Items.Add(m =>
+        {
+            m.Caption = "Training";
+            m.SetNestedContent(() =>
+            {
+                ViewContext.Writer.Write("<div class='col-md-2'>");
+                Html.DevExpress().CheckBoxFor(x => x.Training, txt =>
+                {
+                    txt.Name = "Training";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                }).Render();
+                ViewContext.Writer.Write("</div><div class='col-md-10'>");
+
+                Html.DevExpress().DateEditFor(x => x.TrainingDate, txt =>
+                {
+                    txt.Name = "TrainingDate";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.DisplayFormatString = "D";
+                    txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                    txt.Properties.TimeSectionProperties.Visible = true;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                }).Render();
+                ViewContext.Writer.Write("</div>");
+            });
+        });
+        groupItem.Items.Add(m =>
+        {
+            m.Caption = "On Boarding";
+            m.SetNestedContent(() =>
+            {
+                ViewContext.Writer.Write("<div class='col-md-2'>");
+                Html.DevExpress().CheckBoxFor(x => x.OnBoarding, txt =>
+                {
+                    txt.Name = "OnBoarding";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                }).Render();
+                ViewContext.Writer.Write("</div><div class='col-md-10'>");
+                Html.DevExpress().DateEditFor(x => x.OnBoardingDate, txt =>
+                {
+                    txt.Name = "OnBoardingDate";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.DisplayFormatString = "D";
+                    txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                    txt.Properties.TimeSectionProperties.Visible = true;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                }).Render();
+                ViewContext.Writer.Write("</div>");
+            });
+
+        });
+        groupItem.Items.Add(m =>
+        {
+            m.Caption = "Contract";
+            m.SetNestedContent(() =>
+            {
+                ViewContext.Writer.Write("<div class='col-md-2'>");
+                Html.DevExpress().CheckBoxFor(x => x.Contract, txt =>
+                {
+                    txt.Name = "Contract";
+                    txt.ReadOnly = true;
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                }).Render();
+                ViewContext.Writer.Write("</div><div class='col-md-10'>");
+                Html.DevExpress().DateEditFor(x => x.ContractDate, txt =>
+                {
+                    txt.Name = "ContractDate";
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.DisplayFormatString = "D";
+                    txt.Properties.EditFormatString = "dd/MM/yyyy hh:mm tt";
+                    txt.Properties.TimeSectionProperties.Visible = true;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+                    txt.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "hh:mm tt";
+                }).Render();
+                ViewContext.Writer.Write("</div>");
+
+
+            });
+        });
+        groupItem.Items.Add(m => m.ExamScore, m =>
+        {
+            m.SetNestedContent(() =>
+            {
+
+
+
+            });
+
+        });
+    /*groupItem.Items.Add(m =>
+    {
+
+    m.ColSpan = 3;
+    m.Caption = "";
+    m.SetNestedContent(() =>
+    {
+    Html.DevExpress().FormLayout(nested =>
+    {
+    nested.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    nested.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+    nested.Name = "nestedLayout";
+    nested.Enabled = false;
+    var group2 = nested.Items.AddGroupItem(gs =>
+    {
+    gs.ShowCaption = DefaultBoolean.True ;
+    gs.GroupBoxDecoration = GroupBoxDecoration.Default;
+    gs.Caption = "MBTI Score";
+    });
+    group2.ColCount = 4;
+    foreach (var i in new ScoringService().SumColumns(Model.UserId))
+    {
+    group2.Items.Add(g2 =>
+    {
+    g2.Caption = i.Letter;
+    g2.NestedExtension().TextBox(txt =>
+    {
+    txt.Text = i.Score.ToString();
+
+    txt.Name = i.Letter;
+    txt.Width = 60;
+    });
+
+    });
+
+
+    }
+
+
+    }).GetHtml();
+
+    });
+    });*/
+
+    }).Bind(Model).GetHtml()
+
+*@

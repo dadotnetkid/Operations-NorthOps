@@ -34,7 +34,11 @@ namespace NorthOps.Services.NotificationService
                     unitOfWork.NotificationTemplatesRepo.FindAsync(m => m.Type == (int)NotificationType.IsPersonalInterviewFailed);
                 await this.notificationService.Notify(userId, Template.Template);
             }
-            
+        }
+
+        public async Task NotifyPhoneInterviewStatus(string userId, bool isPassed)
+        {
+
         }
     }
 }

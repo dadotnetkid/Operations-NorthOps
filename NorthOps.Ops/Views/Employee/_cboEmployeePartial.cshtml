@@ -1,0 +1,18 @@
+﻿@{
+    Html.DevExpress().ComboBox(cbo =>
+    {
+        cbo.Width = Unit.Percentage(100);
+        cbo.Properties.Caption = "Employee";
+        cbo.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+        cbo.Name = "Id";
+        cbo.Properties.ClientSideEvents.SelectedIndexChanged = "function(s,e){cbpAddEditEmployeePartial.PerformCallback({Id:s.GetValue()})}";
+        cbo.Properties.CallbackPageSize = 10;
+        cbo.CallbackRouteValues = new { Controller = "Employee", Action = "cboEmployeePartial" };
+        cbo.Properties.ValueField = "Id";
+        cbo.Properties.TextField = "FullName";
+
+    }).BindList(Model).Bind(ViewBag.UserId).GetHtml();
+
+}
+
+

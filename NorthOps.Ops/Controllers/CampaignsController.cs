@@ -46,14 +46,14 @@ namespace NorthOps.Ops.Controllers
             return PartialView("_cboEmployeesPartial", model);
         }
 
-        public ActionResult cboCampaignsPartial(string CampaignId="")
+        public ActionResult cboCampaignsPartial(string CampaignId = "")
         {
             ViewBag.CampaignId = CampaignId;
             var model = unitOfWork.CampaignsRepo.Get();
             return PartialView("_cboCampaignsPartial", model);
         }
 
-        public ActionResult cboShiftsPartial(string CampaignId = "",string ShiftId="")
+        public ActionResult cboShiftsPartial(string CampaignId = "", string ShiftId = "")
         {
             ViewBag.ShiftId = ShiftId;
             var model = unitOfWork.ShiftsRepo.Get(m => m.Campaigns.Any(x => x.Id == CampaignId));
@@ -87,11 +87,12 @@ namespace NorthOps.Ops.Controllers
                     unitOfWork.CampaignsRepo.Insert(item);
                     #region Adding Shifts in Campaign
                     var campaign = unitOfWork.CampaignsRepo.Find(m => m.Id == item.Id, includeProperties: "Shifts");
-                    campaign.Shifts.Clear();
-                    foreach (var i in shifts.Split(','))
-                    {
-                        campaign.Shifts.Add(unitOfWork.ShiftsRepo.Find(m => m.Id == i));
-                    }
+                    campaign?.Shifts?.Clear();
+                    if (!string.IsNullOrEmpty(shifts))
+                        foreach (var i in shifts.Split(','))
+                        {
+                            campaign.Shifts.Add(unitOfWork.ShiftsRepo.Find(m => m.Id == i));
+                        }
                     #endregion
                     await unitOfWork.SaveAsync();
                 }
@@ -268,7 +269,7 @@ namespace NorthOps.Ops.Controllers
 
 
 
-     
+
 
 
 

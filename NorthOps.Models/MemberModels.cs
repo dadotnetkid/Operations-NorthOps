@@ -51,4 +51,18 @@ namespace NorthOps.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+    public class ForgotPassword
+    {
+        [EmailAddress]
+        public string EmailAddress { get; set; }
+        [Display(Name ="Old Password")]
+        public string OldPassword { get; set; }
+        [Display(Name = "New Password")]
+        public string NewPassword { get; set; }
+        [Compare("NewPassword",ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirm Password")]
+        public string ConfirmPassword { get; set; }
+        public string Token { get; set; }
+        
+    }
 }

@@ -1,0 +1,12 @@
+﻿@model Users
+@if (Model.Id == User.Identity.GetUserId())
+{
+             Html.DevExpress().Button(m =>
+                {
+                    m.Text = "Update";
+                    m.Name = "btnSubmit";
+                    m.UseSubmitBehavior = true;
+                    m.ControlStyle.CssClass = "pull-right margin-top-10";
+                }).GetHtml();
+}
+<div class="clearfix"></div>

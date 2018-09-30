@@ -23,22 +23,30 @@ namespace NorthOps.Portal.Controllers
             get
             {
 
-                return User.Identity.GetUserId(); 
+                return User.Identity.GetUserId();
 
             }
-     
+
         }
 
         public ActionResult Index()
         {
-            
-            ViewBag.Notification = unitOfWork.EmployeeNoticationsRepo.Get(m=>m.Id==UserId);
+
+            ViewBag.Notification = unitOfWork.EmployeeNoticationsRepo.Get(m => m.Id == UserId);
             return View();
+        }
+        [Authorize(Roles = "Administrator")]
+        public ActionResult ApplicantDashboard(string UserId)
+        {
+
+            ViewBag.Notification = unitOfWork.EmployeeNoticationsRepo.Get(m => m.Id == UserId);
+            ViewBag.UserId = UserId;
+            return View("Index");
         }
         [HttpPost]
         public async Task<ActionResult> Index(string str = "")
         {
-          for(var i=1;i<=70;i++)
+            for (var i = 1; i <= 70; i++)
             {
                 Debug.WriteLine($"{i}:{i % 7}");
             }
@@ -46,24 +54,14 @@ namespace NorthOps.Portal.Controllers
         }
 
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
 
-            return View();
-        }
+        #region Applicant Dashboard
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
 
         [ValidateInput(false)]
-        public ActionResult ApplicationStatusGridViewPartial()
+        public ActionResult ApplicationStatusGridViewPartial(string UserId = "")
         {
-            var model = new ApplicantStatusModel().applicantStatusModel();
+            var model = new ApplicantStatusModel().applicantStatusModel(UserId);
             return PartialView("_ApplicationStatusGridViewPartial", model);
         }
 
@@ -122,5 +120,76 @@ namespace NorthOps.Portal.Controllers
             }
             return PartialView("_ApplicationStatusGridViewPartial", model);
         }
+        #endregion
+
+        #region Employee Applicant
+
+        [ValidateInput(false)]
+        public ActionResult AttendanceGridViewGridViewPartial()
+        {
+
+            var model = unitOfWork.AttendancesRepo.Get(m => m.Biometrics.UserId == UserId);
+            return PartialView("_AttendanceGridViewGridViewPartial", model);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult AttendanceGridViewGridViewPartialAddNew(NorthOps.Models.Attendances item)
+        {
+            var model = new object[0];
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Insert here a code to insert the new item in your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_AttendanceGridViewGridViewPartial", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult AttendanceGridViewGridViewPartialUpdate(NorthOps.Models.Attendances item)
+        {
+            var model = new object[0];
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Insert here a code to update the item in your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_AttendanceGridViewGridViewPartial", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult AttendanceGridViewGridViewPartialDelete(System.Int32 Id)
+        {
+            var model = new object[0];
+            if (Id >= 0)
+            {
+                try
+                {
+                    // Insert here a code to delete the item from your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("_AttendanceGridViewGridViewPartial", model);
+        }
+
+
+        #endregion
+
     }
 }

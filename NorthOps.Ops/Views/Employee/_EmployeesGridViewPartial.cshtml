@@ -1,0 +1,24 @@
+@using NorthOps.Services.Helpers
+@{
+    var settings = EmployeesGridViewHelper.ExportGridViewSettings;
+    settings.Width = Unit.Percentage(100);
+    settings.Columns.Add(colSettings =>
+    {
+        colSettings.FieldName = "Position";
+        colSettings.ColumnType = MVCxGridViewColumnType.ComboBox;
+        var col = colSettings.PropertiesEdit as ComboBoxProperties;
+        col.DataSource = Enum.GetValues(typeof(Position)).Cast<Position>().Select(x => new { Id = (int)x, Name = x.ToString() });
+        col.ValueField = "Id";
+        col.TextField = "Name";
+
+    });
+    settings.SetEditFormTemplateContent(setting =>
+    {
+
+        @Html.RenderAction("AddEditEmployeePartial", new { userId = DataBinder.Eval(setting.DataItem, "Id") });
+
+    });
+}
+
+
+@Html.DevExpress().GridView(settings).Bind(Model).GetHtml()

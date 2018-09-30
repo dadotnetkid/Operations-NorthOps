@@ -1,0 +1,30 @@
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "EmploymentHistoryGridView";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Recruit", Action = "EmploymentHistoryGridViewPartial" , UserId=ViewBag.UserId };
+
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.Columns.Add("CompanyName");
+        settings.Columns.Add(col => { col.FieldName = "EmployedFrom";
+            col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+        });
+        settings.Columns.Add(col => { col.FieldName = "EmployedTo";
+                                        col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+        });
+    });
+}
+@grid.Bind(Model).GetHtml()

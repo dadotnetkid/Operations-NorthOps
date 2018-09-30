@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="~/Content/img/favicon.png"/>
+    <link rel="icon" href="~/Content/img/favicon.png" />
     <title>
         @if (!string.IsNullOrWhiteSpace(ViewBag.Title))
         {
@@ -52,7 +52,7 @@
 )
 
     @Scripts.Render("~/bundles/js")
- 
+
 
 </head>
 <body class="hold-transition skin-yellow sidebar-mini">
@@ -82,12 +82,12 @@
 
         <!-- /.content-wrapper footer-->
         @*<footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 2.4.0
-            </div>
-            <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-            reserved.
-        </footer>*@
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 2.4.0
+                </div>
+                <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+                reserved.
+            </footer>*@
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Create the tabs -->
@@ -288,7 +288,8 @@
         </div>*@
 
     @*@Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/js")*@
+        @Scripts.Render("~/bundles/js")*@
+   
     @RenderSection("scripts", required: false)
 </body>
 </html>

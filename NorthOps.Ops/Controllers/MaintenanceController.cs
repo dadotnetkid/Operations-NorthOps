@@ -191,6 +191,8 @@ namespace NorthOps.Ops.Controllers
                     user.Languages = item.Languages;
                     user.CivilStatus = item.CivilStatus;
                     user.Skills = item.Skills;
+                    user.Email = item.Email;
+                    user.UserName = item.UserName;
                     await UserManager.UpdateAsync(user);
 
                     #region UpdateRole

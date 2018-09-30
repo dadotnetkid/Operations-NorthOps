@@ -1,0 +1,101 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "RecordingsGridView";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Recordings", Action = "RecordingsGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Recordings", Action = "RecordingsGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Recordings", Action = "RecordingsGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Recordings", Action = "RecordingsGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = false;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "UserId";
+            col.Caption = "Employee";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.TextField = "FullName";
+            cbo.ValueField = "Id";
+            cbo.DataSource = new UnitOfWork().UserRepository.Get(m=>m.UserRoles.Any(x=>x.Name=="Employee"));
+        });
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.FieldName = "CallDate";
+        });
+        settings.Columns.Add("Number");
+       
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CampaignId";
+            col.Caption = "Campaign";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.TextField = "CampaignName";
+            cbo.ValueField = "Id";
+            cbo.DataSource = new UnitOfWork().CampaignsRepo.Get();
+        });
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.BinaryImage;
+            col.FieldName = "Recording";
+            col.Caption = "Recording";
+            // col.EditFormSettings.Visible = DefaultBoolean.False;
+            col.SetEditItemTemplateContent(colTemplate =>
+            {
+
+                using (Html.BeginForm("UploadControlUpload", "Recordings", FormMethod.Post))
+                {
+                    Html.DevExpress().UploadControl(uc =>
+                    {
+                        uc.Name = "UploadControl";
+                        uc.CallbackRouteValues = new { Controller = "CallRecording", Action = "UploadControlUpload" };
+
+                        uc.AdvancedModeSettings.EnableDragAndDrop = true;
+                        uc.AutoStartUpload = true;
+                        //uc.ShowUploadButton = true;
+                        uc.ShowProgressPanel = true;
+
+                        uc.ValidationSettings.Assign(NorthOps.Ops.Controllers.CallRecordingControllerUploadControlSettings.UploadValidationSettings);
+                    }).GetHtml();
+                }
+
+            });
+            col.SetDataItemTemplateContent(e =>
+            {
+
+                Html.DevExpress().HyperLink(lnk =>
+                {
+                    lnk.Properties.Text = "Download";
+                    lnk.NavigateUrl = Url.Action("download", new { recordingId =DataBinder.Eval(e.DataItem,"Id") });
+                }).GetHtml();
+            });
+
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -2,7 +2,8 @@
 <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-12">
         @{
-            Html.DevExpress().LabelFor(m => m.CampaignName).GetHtml();
+            Html.DevExpress().LabelFor(m => m.CampaignName,lbl=> {
+            }).GetHtml();
             Html.DevExpress().TextBoxFor(m => m.CampaignName, txt =>
             {
                 txt.Width = Unit.Percentage(100);
@@ -11,7 +12,7 @@
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12">
         @{
-            Html.DevExpress().Label(lbl => { lbl.Text = "Shifts"; }).GetHtml();
+            Html.DevExpress().Label(lbl => { lbl.Text = "Shifts"; lbl.AssociatedControlName = "ShiftId"; }).GetHtml();
             Html.RenderAction("TokenBoxShiftPartial", new { CampaignId = Model?.Id });
         }
     </div>

@@ -14,6 +14,18 @@ namespace NorthOps.Models.Repository
         //private GenericRepository<AddressStateProvince> addressStateProvinceRepository;
 
 
+        private GenericRepository<Recordings> _RecordingsRepo;
+        public GenericRepository<Recordings> RecordingsRepo
+        {
+            get
+            {
+                if (this._RecordingsRepo == null)
+                    this._RecordingsRepo = new GenericRepository<Recordings>(context);
+                return _RecordingsRepo;
+            }
+            set { _RecordingsRepo = value; }
+        }
+
         private GenericRepository<Users> userRepository;
         private GenericRepository<UserRoles> roleRepository;
 
@@ -197,6 +209,18 @@ namespace NorthOps.Models.Repository
             }
         }
 
+
+        private GenericRepository<Equivalents> _EquivalentsRepo;
+        public GenericRepository<Equivalents> EquivalentsRepo
+        {
+            get
+            {
+                if (this._EquivalentsRepo == null)
+                    this._EquivalentsRepo = new GenericRepository<Equivalents>(context);
+                return _EquivalentsRepo;
+            }
+            set { _EquivalentsRepo = value; }
+        }
         private GenericRepository<EmployeeNotications> employeeNotifcationsRepo;
         public GenericRepository<EmployeeNotications> EmployeeNoticationsRepo
         {
@@ -307,6 +331,80 @@ namespace NorthOps.Models.Repository
                 return _UsersInCampaignShiftRepo;
             }
             set { _UsersInCampaignShiftRepo = value; }
+        }
+
+
+
+        private GenericRepository<EducationAttainments> _EducationAttainmentsRepo;
+        public GenericRepository<EducationAttainments> EducationAttainmentsRepo
+        {
+            get
+            {
+                if (this._EducationAttainmentsRepo == null)
+                    this._EducationAttainmentsRepo = new GenericRepository<EducationAttainments>(context);
+                return _EducationAttainmentsRepo;
+            }
+            set { _EducationAttainmentsRepo = value; }
+        }
+
+        private GenericRepository<EmploymentHistories> _EmploymentHistoriesRepo;
+        public GenericRepository<EmploymentHistories> EmploymentHistoriesRepo
+        {
+            get
+            {
+                if (this._EmploymentHistoriesRepo == null)
+                    this._EmploymentHistoriesRepo = new GenericRepository<EmploymentHistories>(context);
+                return _EmploymentHistoriesRepo;
+            }
+            set { _EmploymentHistoriesRepo = value; }
+        }
+
+        private GenericRepository<Inventory> _InventoryRepo;
+        public GenericRepository<Inventory> InventoryRepo
+        {
+            get
+            {
+                if (this._InventoryRepo == null)
+                    this._InventoryRepo = new GenericRepository<Inventory>(context);
+                return _InventoryRepo;
+            }
+            set { _InventoryRepo = value; }
+        }
+
+        private GenericRepository<Branch> _BranchRepo;
+        public GenericRepository<Branch> BranchRepo
+        {
+            get
+            {
+                if (this._BranchRepo == null)
+                    this._BranchRepo = new GenericRepository<Branch>(context);
+                return _BranchRepo;
+            }
+            set { _BranchRepo = value; }
+        }
+
+        private GenericRepository<Divisions> _DivisionsRepo;
+        public GenericRepository<Divisions> DivisionsRepo
+        {
+            get
+            {
+                if (this._DivisionsRepo == null)
+                    this._DivisionsRepo = new GenericRepository<Divisions>(context);
+                return _DivisionsRepo;
+            }
+            set { _DivisionsRepo = value; }
+        }
+
+        private GenericRepository<Departments> _DepartmentsRepo;
+        public GenericRepository<Departments> DepartmentsRepo
+        {
+            get
+            {
+                if (this._DepartmentsRepo == null)
+                    this._DepartmentsRepo = new GenericRepository<Departments>(context);
+                return _DepartmentsRepo;
+            }
+            set { _DepartmentsRepo = value; }
         }
         public void Save()
         {

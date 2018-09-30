@@ -9,41 +9,50 @@
     <p class="login-box-msg">Sign in to access your account.</p>
 
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="has-feedback">
-            @Html.DevExpress().TextBoxFor(m => m.Email,
-                settings => {
-                    settings.Name = "Email";
-                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                    settings.Properties.NullText = "Email Address";
-                    settings.ControlStyle.CssClass = "form-control";
-                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                    settings.Properties.ValidationSettings.Display = Display.Dynamic;
-                    settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png";
-                }).GetHtml()
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             @*@Html.ValidationMessageFor(m => m.Email)*@
         </div>
+            @Html.DevExpress().TextBoxFor(m => m.Email,
+       settings =>
+       {
+           settings.Name = "Email";
+           settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.Properties.NullText = "Email Address";
+           settings.ControlStyle.CssClass = "form-control";
+           settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+           settings.Properties.ValidationSettings.Display = Display.Dynamic;
+           //settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png";
+           
+           
+       }).GetHtml()
+         
         <div class="has-feedback">
             @Html.DevExpress().TextBoxFor(m => m.Password,
-                settings => {
-                    settings.Name = "Password";
-                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                    settings.Properties.NullText = "Password";
-                    settings.ControlStyle.CssClass = "form-control";
-                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
-                    settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png"; settings.Properties.Password = true;
-                }).GetHtml()
+       settings =>
+       {
+           settings.Name = "Password";
+           settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.Properties.NullText = "Password";
+           settings.ControlStyle.CssClass = "form-control";
+           settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
+           //settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png";
+           settings.Properties.Password = true;
+       }).GetHtml()
 
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 
             @*@Html.ValidationMessageFor(m => m.Password)*@
-            @Html.DevExpress().CheckBoxFor(m => m.RememberMe, ch => {
+            @Html.DevExpress().CheckBoxFor(m => m.RememberMe, ch =>
+       {
            ch.Name = "RememberMe"; ch.Text = "Remember Me"; ch.Properties.AllowGrayed = false;
-           ch.PreRender = (sender, e) => {
+           ch.PreRender = (sender, e) =>
+           {
                ASPxCheckBox chk = (ASPxCheckBox)sender;
                chk.CheckState = CheckState.Unchecked;
            };
@@ -73,9 +82,28 @@
             </a>*@
     </div>
     <!-- /.social-auth-links -->
-    <a href="#">I forgot my password</a><br>
+
+
+    <a href="#" class="text-center" onclick="forgotPassword()">Forgot Password</a>
+    <br />
     <a href="/member/register" class="text-center">Register an Account</a>
     <address>
-       <a href="mailto:support@northops.asia">support@northops.asia</a>
+        <a href="mailto:support@northops.asia">support@northops.asia</a>
     </address>
 </div>
+
+
+@Html.Partial("_PcForgotPasswordPartial")
+
+
+@Html.DevExpress().LoadingPanel(ldp => {
+    ldp.Name = "ldpLoading";
+    ldp.Modal = true;
+    
+}).GetHtml()
+<script>
+    function forgotPassword() {
+        pcForgotPasswordModal.Show();
+        pcForgotPasswordModal.PerformCallback();
+    }
+</script>

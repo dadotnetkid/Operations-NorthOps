@@ -46,5 +46,17 @@ namespace NorthOps.Services
             }
             return false;
         }
+        public static bool IsMenuBarActive(string ActionName, string ControllerName)
+        {
+            var httpContext = new HttpContextWrapper(HttpContext.Current);
+            var actionName = HttpContext.Current.Request.RequestContext.RouteData.Values["action"]?.ToString().ToLower();
+            var controllerName = System.Web.Routing.RouteTable.Routes.GetRouteData(httpContext).Values["Controller"].ToString().ToLower();
+            if (actionName == ActionName && controllerName == ControllerName)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

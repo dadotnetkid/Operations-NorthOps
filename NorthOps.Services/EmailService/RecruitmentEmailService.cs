@@ -57,10 +57,14 @@ namespace NorthOps.Services.EmailService
                     break;
 
                 case NotificationType.IsExamFailed:
-                    
 
+                case NotificationType.IsExamPassed:
+                    emailTemplate = emailTemplate?
+                                           .Replace("@FullName", this.jobApplications.Users.FullName);
+                                         
+                    break;
                 case NotificationType.IsPersonalInterviewPassed:
-                
+
 
                     break;
                 default:

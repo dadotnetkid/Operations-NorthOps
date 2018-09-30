@@ -22,6 +22,8 @@ namespace NorthOps.Models
         IsPersonalInterviewPassed,
         IsPersonalInterviewFailed,
         IsExamPassed,
-        IsExamFailed
+        IsExamFailed,
+        IsPhoneInterviewPassed,
+        IsPhoneInterviewFailed
     }
 }

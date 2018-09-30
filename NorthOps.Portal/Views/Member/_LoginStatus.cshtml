@@ -14,7 +14,7 @@
             <p>
                 @Html.DisplayTextFor(m => m.Name)<br />
                 @Html.DisplayTextFor(m => m.Position)
-                @if (Model.HireDate != null) {
+                @if (Model?.HireDate != null) {
                     <small>Member since @Html.DisplayTextFor(m => m.HireDate.Value.Year)</small>
                 }
                 

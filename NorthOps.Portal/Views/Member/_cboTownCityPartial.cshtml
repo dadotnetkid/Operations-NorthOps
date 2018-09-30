@@ -1,0 +1,18 @@
+﻿@model Users
+@{
+    Html.DevExpress().ComboBoxFor(m => m.TownCity, cbo =>
+    {
+        cbo.CallbackRouteValues = new {Controller="member",Action="cboTownCityPartial",UserId=Model.Id};
+        cbo.Properties.ValueField = "TownCityId";
+        cbo.Properties.TextField = "name";
+
+        cbo.Properties.ValidationSettings.Display = Display.Dynamic;
+        cbo.Properties.ValidationSettings.RequiredField.IsRequired = true;
+        cbo.Properties.Caption = "Town City";
+        cbo.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+        cbo.Width = Unit.Percentage(100);
+        cbo.Properties.CallbackPageSize = 10;
+    }).BindList(new UnitOfWork().TownCityRepo.Get()).GetHtml();
+
+}
+    

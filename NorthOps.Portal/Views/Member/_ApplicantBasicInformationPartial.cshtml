@@ -1,0 +1,222 @@
+﻿@model Users
+<div class="row">
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.FirstName, txt =>
+            {
+                txt.Properties.Caption = "First Name";
+                txt.Width = Unit.Percentage(100);
+                txt.Properties.NullText = "First Name";
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.MiddleName, txt =>
+            {
+                txt.Properties.Caption = "Middle Name";
+                txt.Width = Unit.Percentage(100);
+                txt.Properties.NullText = "Middle Name";
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.LastName, txt =>
+            {
+                txt.Properties.Caption = "Last Name";
+                txt.Width = Unit.Percentage(100);
+                txt.Properties.NullText = "Last Name";
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().ComboBoxFor(m => m.CivilStatus, cbo =>
+            {
+                cbo.Properties.Caption = "Civil Status";
+                cbo.Width = Unit.Percentage(100);
+                cbo.Properties.NullText = "Civil Status";
+                cbo.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                cbo.Properties.ValidationSettings.SetFocusOnError = true;
+                cbo.Properties.ValidationSettings.Display = Display.Dynamic;
+
+                cbo.Properties.TextField = "Name";
+                cbo.Properties.ValueField = "Id";
+                cbo.Properties.ValueType = typeof(CivilStatus);
+                cbo.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                cbo.Properties.Caption = "Civil Status";
+            }).BindList(Enum.GetValues(typeof(CivilStatus)).Cast<CivilStatus>().Select(x => new { Name = x.ToString(), Id = x })).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().ComboBoxFor(m => m.Gender, cbo =>
+            {
+                cbo.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                cbo.Properties.ValidationSettings.SetFocusOnError = true;
+                cbo.Properties.ValidationSettings.Display = Display.Dynamic;
+
+                cbo.Properties.ValueField = "id";
+                cbo.Properties.TextField = "Name";
+                cbo.Properties.ValueType = typeof(Gender);
+                cbo.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                cbo.Properties.Caption = "Civil Status";
+                cbo.Width = Unit.Percentage(100);
+            }).BindList(Enum.GetValues(typeof(Gender)).Cast<Gender>().Select(x => new { Name = x.ToString(), Id = x })).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().DateEditFor(m => m.BirthDate, dt =>
+            {
+                dt.Properties.ValidationSettings.Display = Display.Dynamic;
+                dt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                dt.Properties.Caption = "Birth Date";
+                dt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                dt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.AddressLine1, txt =>
+            {
+                txt.Width = Unit.Percentage(100);
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Address Line 1";
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.AddressLine2, txt =>
+            {
+
+
+
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Address Line 2";
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.RenderAction("cboTownCityPartial", new { userId = Model.Id });
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.Cellular, txt =>
+            {
+                txt.Width = Unit.Percentage(100);
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Cellular";
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.Religion, txt =>
+            {
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+
+
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Religion";
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.Citizenship, txt =>
+            {
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+
+
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Citizenship";
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.Languages, txt =>
+            {
+                txt.Width = Unit.Percentage(100);
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Languages";
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.Skills, txt =>
+            {
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+
+
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Skills";
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-md-4">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.Email, txt =>
+            {
+                txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                txt.Properties.ValidationSettings.SetFocusOnError = true;
+                txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+
+
+                txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                txt.Properties.Caption = "Email";
+                txt.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+</div>
