@@ -1,0 +1,55 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Width = Unit.Percentage(100);
+        settings.Name = "OTGridView";
+        settings.CallbackRouteValues = new { Controller = "OT", Action = "OTGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "OT", Action = "OTGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "OT", Action = "OTGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "OT", Action = "OTGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+        settings.Columns.Add("Users.FullName");
+        settings.Columns.Add("DateFrom");
+        settings.Columns.Add("DateTo");
+        settings.Columns.Add("DateCreated");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CreatedByUser.FullName";
+            col.Caption = "Created By";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ModifiedByUser.FullName";
+            col.Caption = "Modified By";
+        });
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderAction("AddEditOvertimePartial", new {Id = col.KeyValue});
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

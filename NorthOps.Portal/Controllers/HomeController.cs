@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Services.AttendanceService;
+using NorthOps.Services.DTRService;
 
 namespace NorthOps.Portal.Controllers
 {
@@ -31,6 +33,10 @@ namespace NorthOps.Portal.Controllers
 
         public ActionResult Index()
         {
+            if (User.IsInRole("Employee"))
+            {
+                return RedirectToAction("index", "DailyTimeRecord");
+            }
 
             ViewBag.Notification = unitOfWork.EmployeeNoticationsRepo.Get(m => m.Id == UserId);
             return View();
@@ -125,11 +131,11 @@ namespace NorthOps.Portal.Controllers
         #region Employee Applicant
 
         [ValidateInput(false)]
-        public ActionResult AttendanceGridViewGridViewPartial()
+        public async Task<ActionResult> AttendanceGridViewGridViewPartial()
         {
 
-            var model = unitOfWork.AttendancesRepo.Get(m => m.Biometrics.UserId == UserId);
-            return PartialView("_AttendanceGridViewGridViewPartial", model);
+            var model = await new AttendanceServices().GetDtrReport(User.Identity.GetUserId());
+            return PartialView("_AttendanceGridViewGridViewPartial", model.DtrReportViewModels);
         }
 
         [HttpPost, ValidateInput(false)]
@@ -152,14 +158,14 @@ namespace NorthOps.Portal.Controllers
             return PartialView("_AttendanceGridViewGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult AttendanceGridViewGridViewPartialUpdate(NorthOps.Models.Attendances item)
+        public ActionResult AttendanceGridViewGridViewPartialUpdate()
         {
-            var model = new object[0];
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Insert here a code to update the item in your model
+
+
                 }
                 catch (Exception e)
                 {
@@ -168,7 +174,7 @@ namespace NorthOps.Portal.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_AttendanceGridViewGridViewPartial", model);
+            return PartialView("_AttendanceGridViewGridViewPartial");
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult AttendanceGridViewGridViewPartialDelete(System.Int32 Id)

@@ -1,0 +1,117 @@
+﻿@using NorthOps.Ops.Controllers
+@model Recordings
+<div class="row">
+
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().ComboBoxFor(m => m.UserId, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.NullText = "Employee";
+                settings.Properties.Caption = "Employee";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.TextField = "Fullname";
+                settings.Properties.ValueField= "Id";
+            }).BindList(new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"))). GetHtml();
+
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEditFor(m => m.CallDate, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.NullText = "Call Date";
+                settings.Properties.Caption = "Call Date";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            }).GetHtml();
+
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().TextBoxFor(m => m.CallerNumber, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.NullText = @"Number";
+                settings.Properties.Caption = "Number";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            }).GetHtml();
+
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().ComboBoxFor(m => m.CampaignId, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.NullText = "Campaigns";
+                settings.Properties.Caption = "Campaigns";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.ValueField = "Id";
+                settings.Properties.TextField = "CampaignName";
+            }).BindList(new UnitOfWork().CampaignsRepo.Get()).GetHtml();
+
+        }
+    </div>
+    <div class="col-lg-12">
+        @{
+            Html.DevExpress().MemoFor(m => m.Errors, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.NullText = "Errors";
+                settings.Properties.Caption = "Errors";
+                settings.Height = Unit.Pixel(100);
+                settings.ControlStyle.CssClass = "editor";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            }).GetHtml();
+
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            using (Html.BeginForm("UploadControlUpload", "Recordings", FormMethod.Post))
+            {
+                Html.DevExpress().Label(settings =>
+                {
+                    settings.Text = "Recording File";
+                    settings.AssociatedControlName = "UploadControl";
+                }).GetHtml();
+             
+                Html.DevExpress().UploadControl(uc =>
+                {
+                    uc.Name = "UploadControl";
+                    uc.CallbackRouteValues = new { Controller = "Recordings", Action = "UploadControlUpload" };
+
+                    uc.AdvancedModeSettings.EnableDragAndDrop = true;
+                    uc.AutoStartUpload = true;
+                    //uc.ShowUploadButton = true;
+                    uc.ShowProgressPanel = true;
+
+                    uc.ValidationSettings.Assign(RecordingsControllerUploadControlSettings.UploadValidationSettings);
+                }).GetHtml();
+            }
+
+        }
+    </div>
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-12">
+        @{
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Text = "Save";
+                btn.Name = "btnSave";
+                btn.ControlStyle.CssClass = "margin-r-5";
+                btn.ClientSideEvents.Click = "function(s,e){RecordingsGridView.UpdateEdit()}";
+            }).GetHtml();
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Text = "Cancel";
+                btn.Name = "btnCancel";
+                btn.ControlStyle.CssClass = "margin-r-5";
+                btn.ClientSideEvents.Click = "function(s,e){RecordingsGridView.CancelEdit()}";
+            }).GetHtml();
+        }
+    </div>
+</div>

@@ -24,15 +24,24 @@
             newId = ViewBag.newId
         };
 
-        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialAddNew",
+        settings.SettingsEditing.AddNewRowRouteValues = new
+        {
+            Controller = "Recruit",
+            Action = "JobApplicationGridPartialAddNew",
             isExamPassed = ViewBag.isExamPassed,
             newId = ViewBag.newId
         };
-        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialUpdate",
+        settings.SettingsEditing.UpdateRowRouteValues = new
+        {
+            Controller = "Recruit",
+            Action = "JobApplicationGridPartialUpdate",
             isExamPassed = ViewBag.isExamPassed,
             newId = ViewBag.newId
         };
-        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Recruit", Action = "JobApplicationGridPartialDelete",
+        settings.SettingsEditing.DeleteRowRouteValues = new
+        {
+            Controller = "Recruit",
+            Action = "JobApplicationGridPartialDelete",
             isExamPassed = ViewBag.isExamPassed,
             newId = ViewBag.newId
         };
@@ -59,13 +68,26 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
 
-        //settings.Columns.Add("JobApplicationId");
-
-        settings.Columns.Add(col =>
+if (isExamPassed == true && isTraining == null)
         {
-            col.FieldName = "Users.CreatedDate";
-            col.ColumnType = DevExpress.Web.Mvc.MVCxGridViewColumnType.DateEdit; col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
-        });
+            settings.Columns.Add(col =>
+            {
+                col.FieldName = "IsExamPassedDate";
+                col.ColumnType = DevExpress.Web.Mvc.MVCxGridViewColumnType.DateEdit; col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+                col.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
+                col.Caption = "Exam Passed Date";
+            });
+        }
+        else
+        {
+            settings.Columns.Add(col =>
+            {
+                col.FieldName = "Users.CreatedDate";
+                col.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
+                col.ColumnType = DevExpress.Web.Mvc.MVCxGridViewColumnType.DateEdit; col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
+            });
+        }
+
         settings.Columns.Add("Users.Email");
         settings.Columns.Add("Users.FullName");
 
@@ -79,11 +101,11 @@
             {
 
 
-                //ch.Name = "cb_" + c.KeyValue.ToString();
-                //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Resume"));
-                //chk.ClientEnabled = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "IsRequiredRelationship")) != true;
-                //chk.ClientEnabled = false;"IsExamReady"
-                Html.DevExpress().CheckBox(ch =>
+        //ch.Name = "cb_" + c.KeyValue.ToString();
+        //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Resume"));
+        //chk.ClientEnabled = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "IsRequiredRelationship")) != true;
+        //chk.ClientEnabled = false;"IsExamReady"
+        Html.DevExpress().CheckBox(ch =>
                 {
                     ch.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Users.EmailConfirmed"));
                     ch.Name = "cb_" + c.KeyValue.ToString();
@@ -146,93 +168,93 @@
         }
 
 
-        /*     settings.Columns.Add(column =>
-          {
-              column.FieldName = "PhoneInterview";
-              column.Caption = "Phone Interview";
-              column.ColumnType = MVCxGridViewColumnType.CheckBox;
-              column.SetDataItemTemplateContent(c =>
-              {
+/*     settings.Columns.Add(column =>
+  {
+      column.FieldName = "PhoneInterview";
+      column.Caption = "Phone Interview";
+      column.ColumnType = MVCxGridViewColumnType.CheckBox;
+      column.SetDataItemTemplateContent(c =>
+      {
 
-                  Html.DevExpress().CheckBox(chk =>
-                  {
-                      chk.Name = "cbRi_" + c.KeyValue.ToString();
-                      chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "PhoneInterview"));
-                      chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
-                  }).Bind(DataBinder.Eval(c.DataItem, "PhoneInterview")).Render();
-              });
-          });
+          Html.DevExpress().CheckBox(chk =>
+          {
+              chk.Name = "cbRi_" + c.KeyValue.ToString();
+              chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "PhoneInterview"));
+              chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+          }).Bind(DataBinder.Eval(c.DataItem, "PhoneInterview")).Render();
+      });
+  });
 
 
-        settings.Columns.Add(column =>
+settings.Columns.Add(column =>
+  {
+      column.FieldName = "PersonalInterview";
+      column.Caption = "Personal Interview";
+      column.ColumnType = MVCxGridViewColumnType.CheckBox;
+      column.SetDataItemTemplateContent(c =>
+      {
+          Html.DevExpress().CheckBox(chk =>
           {
-              column.FieldName = "PersonalInterview";
-              column.Caption = "Personal Interview";
-              column.ColumnType = MVCxGridViewColumnType.CheckBox;
-              column.SetDataItemTemplateContent(c =>
-              {
-                  Html.DevExpress().CheckBox(chk =>
-                  {
-                      chk.Name = "cbPi_" + c.KeyValue.ToString();
-                      //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "PersonalInterview"));
-                      chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
-                  }).Bind(DataBinder.Eval(c.DataItem, "PersonalInterview")).Render();
+              chk.Name = "cbPi_" + c.KeyValue.ToString();
+              //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "PersonalInterview"));
+              chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+          }).Bind(DataBinder.Eval(c.DataItem, "PersonalInterview")).Render();
 
-              });
-          });
-          settings.Columns.Add(column =>
+      });
+  });
+  settings.Columns.Add(column =>
+  {
+      column.FieldName = "Training";
+      column.Caption = "Training";
+      column.ColumnType = MVCxGridViewColumnType.CheckBox;
+      column.SetDataItemTemplateContent(c =>
+      {
+          Html.DevExpress().CheckBox(chk =>
           {
-              column.FieldName = "Training";
-              column.Caption = "Training";
-              column.ColumnType = MVCxGridViewColumnType.CheckBox;
-              column.SetDataItemTemplateContent(c =>
-              {
-                  Html.DevExpress().CheckBox(chk =>
-                  {
-                      chk.Name = "cbT_" + c.KeyValue.ToString();
-                      //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Training"));
-                      chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
-                  }).Bind(DataBinder.Eval(c.DataItem, "Training")).Render();
-              });
-          });
-          settings.Columns.Add(column =>
+              chk.Name = "cbT_" + c.KeyValue.ToString();
+              //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Training"));
+              chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+          }).Bind(DataBinder.Eval(c.DataItem, "Training")).Render();
+      });
+  });
+  settings.Columns.Add(column =>
+  {
+      column.FieldName = "OnBoarding";
+      column.Caption = "OnBoarding";
+      column.ColumnType = MVCxGridViewColumnType.CheckBox;
+      column.SetDataItemTemplateContent(c =>
+      {
+          Html.DevExpress().CheckBox(chk =>
           {
-              column.FieldName = "OnBoarding";
-              column.Caption = "OnBoarding";
-              column.ColumnType = MVCxGridViewColumnType.CheckBox;
-              column.SetDataItemTemplateContent(c =>
-              {
-                  Html.DevExpress().CheckBox(chk =>
-                  {
-                      chk.Name = "cbOb_" + c.KeyValue.ToString();
-                      //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "OnBoarding"));
-                      chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
-                  }).Bind(DataBinder.Eval(c.DataItem, "OnBoarding")).Render();
-              });
-          });
-          settings.Columns.Add(column =>
+              chk.Name = "cbOb_" + c.KeyValue.ToString();
+              //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "OnBoarding"));
+              chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+          }).Bind(DataBinder.Eval(c.DataItem, "OnBoarding")).Render();
+      });
+  });
+  settings.Columns.Add(column =>
+  {
+      column.FieldName = "Contract";
+      column.Caption = "Contract";
+      column.SetDataItemTemplateContent(c =>
+      {
+          Html.DevExpress().CheckBox(chk =>
           {
-              column.FieldName = "Contract";
-              column.Caption = "Contract";
-              column.SetDataItemTemplateContent(c =>
-              {
-                  Html.DevExpress().CheckBox(chk =>
-                  {
-                      chk.Name = "cbC_" + c.KeyValue.ToString();
-                      //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Contract"));
-                      chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
-                  }).Bind(DataBinder.Eval(c.DataItem, "Contract")).Render();
-              });
-          });*/
-        //settings.Columns.Add("PhoneInterview");
-        //settings.Columns.Add("PersonalInterview");
-        //settings.Columns.Add("Training");
-        //settings.Columns.Add("OnBoarding");
-        //settings.Columns.Add("Contract");
-        settings.Columns.Add("Users.Cellular");
+              chk.Name = "cbC_" + c.KeyValue.ToString();
+              //chk.Checked = Convert.ToBoolean(DataBinder.Eval(c.DataItem, "Contract"));
+              chk.ClientEnabled = false; chk.Properties.AllowGrayed = true;
+          }).Bind(DataBinder.Eval(c.DataItem, "Contract")).Render();
+      });
+  });*/
+//settings.Columns.Add("PhoneInterview");
+//settings.Columns.Add("PersonalInterview");
+//settings.Columns.Add("Training");
+//settings.Columns.Add("OnBoarding");
+//settings.Columns.Add("Contract");
+settings.Columns.Add("Users.Cellular");
         settings.Columns.Add("Users.Skills");
-        //settings.Columns.Add("Users.ReApply");
-        settings.SetEditFormTemplateContent(c =>
+//settings.Columns.Add("Users.ReApply");
+settings.SetEditFormTemplateContent(c =>
         {
             var item = ViewData["item"] != null ? ViewData["item"] : c.DataItem;
 

@@ -1,0 +1,23 @@
+@model string
+
+@Html.DevExpress().FileManager(settings => {
+    settings.Name = "FileManager";
+    settings.CallbackRouteValues = new { Controller = "Documents", Action = "FileManagerPartial", isUploadShow = ViewBag.isUploadShow };
+
+    settings.DownloadRouteValues = new { Controller = "Documents", Action = "FileManagerPartialDownload" };
+    settings.SettingsEditing.AllowDownload = true;
+
+    settings.Settings.ThumbnailFolder = Url.Content("~/Content/FileManager/Thumbnails");
+
+    settings.SettingsEditing.AllowRename = true;
+    settings.SettingsEditing.AllowMove = true;
+    settings.SettingsEditing.AllowDelete = true;
+    settings.SettingsUpload.Enabled = ViewBag.isUploadShow;
+    settings.SettingsUpload.UseAdvancedUploadMode = true;
+    settings.SettingsEditing.AllowCreate = false;
+    settings.ClientSideEvents.SelectedFileChanged = "function(s,e){selectedFile(s,e)}";
+
+    settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = true;
+
+    settings.SettingsFileList.View = DevExpress.Web.FileListView.Thumbnails;
+}).BindToFolder(Model).GetHtml()

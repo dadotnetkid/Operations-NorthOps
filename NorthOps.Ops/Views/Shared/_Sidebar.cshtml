@@ -1,6 +1,7 @@
 ﻿@using NorthOps.Ops.Controllers
 @using NorthOps.Ops.Repository;
 @using Microsoft.AspNet.Identity;
+@using NorthOps.Services.Helpers
 
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -23,12 +24,19 @@
             <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(HomeController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">
                 <a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span>Dash Board</span></a>
             </li>
-           
+
+            @if (User.IsInRoles("Administrator", "Team Leader"))
+            {
+                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(RecordingsController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "CallRecording" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Recordings")"><i class="fa fa-music"></i> <span>Call Recording</span></a>
+                </li>
+            }
             @if (User.IsInRole("Administrator"))
             {
 
-                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(RecordingsController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "CallRecording" ? "active" : "")">
-                    <a href="@Url.Action("Index", "Recordings")"><i class="fa fa-dashboard"></i> <span>Call Recording</span></a>
+
+                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(DocumentsController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Documents" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Documents")"><i class="fa fa-file-archive-o"></i> <span>Documents</span></a>
                 </li>
                 <li class="@("treeview " + (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit" ? "active" : ""))">
                     <a href="#">
@@ -39,8 +47,8 @@
                     </a>
                     <ul class="treeview-menu">
                         @*<li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(RecruitController.Index) && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit"? "active" : "")">
-                        <a href="@Url.Action("Index", "recruit")"><i class="fa fa-users"></i> <span>Applicants</span></a>
-                    </li>*@
+                                <a href="@Url.Action("Index", "recruit")"><i class="fa fa-users"></i> <span>Applicants</span></a>
+                            </li>*@
                         <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(RecruitController.JobApplications).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit" ? "active" : "")">
                             <a href="@Url.Action("JobApplications", "recruit")"><i class="fa fa-calendar-check-o"></i> <span>Manage Applicants</span></a>
                         </li>
@@ -58,6 +66,18 @@
 
                         <li class="@(ControllerServices.IsMenuBarActive("index","employee")? "active" : "")">
                             <a href="@Url.Action("index", "employee")"><i class="fa fa-users"></i> <span> Employees</span></a>
+                        </li>
+                        <li class="@(ControllerServices.IsMenuBarActive("index","ot")? "active" : "")">
+                            <a href="@Url.Action("index", "ot")"><i class="fa fa-clock-o"></i> <span> Overtime</span></a>
+                        </li>
+                        <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("schedules") ? "active" : "")">
+                            <a href="@Url.Action("index", "schedules")"><i class="fa fa-calendar-o"></i> Schedules</a>
+                        </li>
+                        <li class="@(ControllerServices.IsControllerName("dailytimeRecord")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                            <a href="@Url.Action("index", "dailytimeRecord")"><i class="fa fa-calendar-plus-o"></i> Daily Time Record</a>
+                        </li>
+                        <li class="@(ControllerServices.IsControllerName("holiday")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                            <a href="@Url.Action("index", "holiday")"><i class="fa fa-calendar-times-o"></i> Holidays</a>
                         </li>
                     </ul>
 
@@ -106,21 +126,7 @@
                     </ul>
 
                 </li>
-                <li class="@("treeview " + (ControllerServices.IsControllerName("inventory")   ? "active" : ""))">
-                    <a href="#">
-                        <i class="fa fa-hdd-o"></i> <span>Inventory's</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
 
-                        <li class="@(ControllerServices.IsMenuBarActive("index","inventory")? "active" : "")">
-                            <a href="@Url.Action("index", "inventory")"><i class="fa fa-users"></i> <span> Inventory</span></a>
-                        </li>
-                    </ul>
-
-                </li>
 
                 <li class="@("treeview " + (ControllerServices.IsControllerName("maintenance","filemanagementdata","notificationtemplate")   ? "active" : ""))">
                     <a href="#">
@@ -148,7 +154,9 @@
                             <a href="@Url.Action("AttendanceLog", "attendance")"><i class="fa fa-address-book"></i> <span> Attendance Log</span></a>
                         </li>
 
-
+                        <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                            <a href="@Url.Action("index", "campaigns")"><i class="fa fa-circle-o"></i> <span> Campaigns</span></a>
+                        </li>
 
                         <li class="treeview">
                             <a href="#">
@@ -168,13 +176,26 @@
                                 <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
                                     <a href="@Url.Action("userscampaignshift", "campaigns")"><i class="fa fa-circle-o"></i> <span> Users in Campaign Shifts</span></a>
                                 </li>
-                                <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("schedules") ? "active" : "")">
-                                    <a href="@Url.Action("index", "schedules")"><i class="fa fa-circle-o"></i> Employees Schedules</a>
-                                </li>
+                                
                                 <li><a href="@Url.Action("index", "schedules")"><i class="fa fa-circle-o"></i> Generate Schedules</a></li>
                             </ul>
                         </li>
 
+                    </ul>
+
+                </li>
+                <li class="@("treeview " + (ControllerServices.IsControllerName("DailyTimeRecordReport")   ? "active" : ""))">
+                    <a href="#">
+                        <i class="fa fa-file-excel-o"></i> <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li class="@(ControllerServices.IsMenuBarActive("index","DailyTimeRecordReport")? "active" : "")">
+                            <a href="@Url.Action("index", "DailyTimeRecordReport")"><i class="fa fa-circle-o"></i> <span> DTR Report</span></a>
+                        </li>
                     </ul>
 
                 </li>

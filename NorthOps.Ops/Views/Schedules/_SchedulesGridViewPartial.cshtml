@@ -1,0 +1,68 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "SchedulesGridView";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Schedules", Action = "SchedulesGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Schedules", Action = "SchedulesGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Schedules", Action = "SchedulesGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Schedules", Action = "SchedulesGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Users.FullName";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.DataSource = new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee")).Select(x => new { x.Id, x.FullName });
+            cbo.TextField = "FullName";
+            cbo.ValueField = "FullName";
+
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ScheduleDateFrom";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ScheduleDateTo";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy  hh:mm:ss tt";
+        });
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderAction("AddEditSchedulePartial", new { scheduleId = col.KeyValue });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

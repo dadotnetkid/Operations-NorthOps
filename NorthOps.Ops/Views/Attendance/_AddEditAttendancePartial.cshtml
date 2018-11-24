@@ -1,0 +1,44 @@
+﻿@model Attendances
+
+
+
+<div class="row">
+    <div class="col-lg-4">
+        @{
+            Html.DevExpress().ComboBoxFor(m => m.BiometricId, settings =>
+              {
+                  settings.Properties.TextField = "FullName";
+                  settings.Properties.ValueField = "BiometricId";
+              }).BindList(new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"))).GetHtml();
+        }
+    </div>
+    <div class="col-lg-4">
+        @{
+            Html.DevExpress().DateEditFor(m => m.LogDateTime, settings =>
+            {
+                settings.Properties.TimeSectionProperties.Visible = true;
+                settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
+                settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
+
+                
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-4">
+        @{
+            Html.DevExpress().Button( settings =>
+            {
+                settings.Name = "btnUpdate";
+                settings.Text = "Update";
+                settings.ClientSideEvents.Click = "function(s,e){AttendanceLogGridView.UpdateEdit()}";
+            }).GetHtml();
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Text = "Cancel";
+                settings.Name = "btnCancel";
+                settings.ClientSideEvents.Click = "function(s,e){AttendanceLogGridView.CancelEdit()}";
+            }).GetHtml();
+        }
+    </div>
+</div>
+

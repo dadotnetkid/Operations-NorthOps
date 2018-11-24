@@ -14,8 +14,7 @@
 
         settings.CommandColumn.Visible = true;
         settings.CommandColumn.ShowNewButtonInHeader = true;
-        settings.CommandColumn.ShowDeleteButton = true;
-        settings.CommandColumn.ShowEditButton = true;
+  settings.CommandColumn.ShowEditButton = true;
 
         settings.KeyFieldName = "Id";
 
@@ -30,18 +29,20 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
-        settings.Columns.Add("LogDateTime");
-        settings.Columns.Add(x =>
-        {
-            x.FieldName = "InOutState";
-            x.ColumnType = MVCxGridViewColumnType.ComboBox;
-            var col = x.PropertiesEdit as ComboBoxProperties;
-            col.ValueType = typeof(InOutState);
-            col.ValueField = "Id";
-            col.TextField = "Id";
-            col.DataSource = Enum.GetValues(typeof(InOutState)).Cast<InOutState>().Select(m => new { Id = m });
+        settings.Columns.Add("DateLog");
+        settings.Columns.Add("TimeIn");
+        settings.Columns.Add("TimeOut");
+        //settings.Columns.Add(x =>
+        //{
+        //    x.FieldName = "InOutState";
+        //    x.ColumnType = MVCxGridViewColumnType.ComboBox;
+        //    var col = x.PropertiesEdit as ComboBoxProperties;
+        //    col.ValueType = typeof(InOutState);
+        //    col.ValueField = "Id";
+        //    col.TextField = "Id";
+        //    col.DataSource = Enum.GetValues(typeof(InOutState)).Cast<InOutState>().Select(m => new { Id = m });
 
-        });
+        //});
     });
     if (ViewData["EditError"] != null)
     {

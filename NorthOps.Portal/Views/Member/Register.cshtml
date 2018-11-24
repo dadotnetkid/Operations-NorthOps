@@ -21,7 +21,7 @@
                                 settings.Properties.NullText = "Email Address";
                                 settings.ControlStyle.CssClass = "form-control";
                                 settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
-                                settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png";
+                               // settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png";
                 }).GetHtml()
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             @*@Html.ValidationMessageFor(m => m.Email)*@
@@ -29,12 +29,13 @@
         <div class="has-feedback">
             @Html.DevExpress().TextBoxFor(m => m.Password,
                 settings => {
-                                settings.Name = "Password";
-                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                                settings.Properties.NullText = "Password";
-                                settings.ControlStyle.CssClass = "form-control";
-                                settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
-                                settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png"; settings.Properties.Password = true;
+                    settings.Name = "Password";
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.Properties.NullText = "Password";
+                    settings.ControlStyle.CssClass = "form-control";
+                    settings.Properties.Password = true;
+                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
+                    // settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png"; settings.Properties.Password = true;
                 }).GetHtml()
 
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -51,12 +52,13 @@
         <div class="has-feedback">
             @Html.DevExpress().TextBoxFor(m => m.ConfirmPassword,
                 settings => {
-                                settings.Name = "ConfirmPassword";
-                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                                settings.Properties.NullText = "Confirm Password";
-                                settings.ControlStyle.CssClass = "form-control";
-                                settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
-                                settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png"; settings.Properties.Password = true;
+                    settings.Name = "ConfirmPassword";
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.Properties.NullText = "Confirm Password";
+                    settings.ControlStyle.CssClass = "form-control";
+                    settings.Properties.Password = true;
+                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
+                    //     settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png"; settings.Properties.Password = true;
                 }).GetHtml()
 
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>

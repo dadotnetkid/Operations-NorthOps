@@ -1,0 +1,26 @@
+@using NorthOps.Services.Helpers
+
+@{
+    var scheduler = Html.DevExpress().Scheduler(settings =>
+    {
+        settings.ActiveViewType = SchedulerViewType.Month;
+        settings.Name = "DailyTimeRecordScheduler";
+        settings.CallbackRouteValues = new { Controller = "DailyTimeRecord", Action = "DailyTimeRecordSchedulerPartial" };
+        settings.EditAppointmentRouteValues = new { Controller = "DailyTimeRecord", Action = "DailyTimeRecordSchedulerPartialEditAppointment" };
+
+        settings.Storage.EnableReminders = false;
+        settings.Storage.Appointments.Assign(DailyTimeRecordSchedulerSettings.AppointmentStorage);
+        settings.OptionsCustomization.AllowAppointmentCreate = UsedAppointmentType.None;
+        settings.OptionsCustomization.AllowAppointmentDelete = UsedAppointmentType.None;
+        settings.OptionsForms.SetAppointmentFormTemplateContent(col =>
+        {
+            var dItem = col.Appointment;
+            Html.RenderAction("EditDailyTimerRecordSchedulerPartial", new { Appointment = col.Appointment });
+        });
+    });
+    if (ViewData["SchedulerErrorText"] != null)
+    {
+        scheduler.SetErrorText((string)ViewData["SchedulerErrorText"]);
+    }
+}
+@scheduler.Bind(Model).GetHtml()

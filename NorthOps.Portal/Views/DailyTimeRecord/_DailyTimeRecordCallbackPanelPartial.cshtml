@@ -1,0 +1,20 @@
+@Html.DevExpress().CallbackPanel(settings => {
+    settings.Name = "DailyTimeRecordCallbackPanel";
+    settings.CallbackRouteValues = new { Controller = "DailyTimeRecord", Action = "DailyTimeRecordCallbackPanelPartial" };
+    settings.Width = Unit.Percentage(100);
+    settings.Height = 800;
+
+    settings.SetContent(() =>
+    {
+        if ((ScheduleType) ViewBag.ScheduleType == ScheduleType.Calendar)
+        {
+            Html.RenderAction("DailyTimeRecordSchedulerPartial");
+        }
+        else
+        {
+            Html.RenderAction("DailyTimeRecordGridViewPartial");
+        }
+
+
+    });
+}).GetHtml()

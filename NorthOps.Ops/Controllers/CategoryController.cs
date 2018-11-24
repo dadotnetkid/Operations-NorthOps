@@ -9,6 +9,7 @@ using NorthOps.Models;
 using NorthOps.Models.Repository;
 
 namespace NorthOps.Ops.Controllers {
+    [Authorize(Roles = "Administrator")]
     public class CategoryController : Controller {
         private UnitOfWork unitOfWork = new UnitOfWork();
         public ActionResult Index() {

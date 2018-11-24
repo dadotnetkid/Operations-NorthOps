@@ -1,0 +1,37 @@
+@using DevExpress.Utils.Controls
+@using NorthOps.Portal.Controllers;
+@using NorthOps.Services.Helpers
+@{
+    var scheduler = Html.DevExpress().Scheduler(settings =>
+    {
+        settings.Name = "Scheduler";
+        settings.CallbackRouteValues = new { Controller = "Schedules", Action = "SchedulerPartial", TimeZone = ViewBag.TimeZone };
+        settings.EditAppointmentRouteValues = new { Controller = "Schedules", Action = "SchedulerPartialEditAppointment", TimeZone = ViewBag.TimeZone };
+
+       
+
+
+        settings.Storage.EnableReminders = false;
+        settings.Storage.Appointments.Assign(SchedulerSettingsHelper.AppointmentStorage);
+        settings.OptionsView.ShowOnlyResourceAppointments = false;
+        settings.ActiveViewType = SchedulerViewType.Month;
+        settings.Start = DateTime.Now;
+        settings.Views.WeekView.AppointmentDisplayOptions.StartTimeVisibility = AppointmentTimeVisibility.Always;
+        settings.Views.WeekView.AppointmentDisplayOptions.EndTimeVisibility = AppointmentTimeVisibility.Always;
+        settings.Views.WeekView.AppointmentDisplayOptions.ShowRecurrence = true;
+
+        settings.OptionsCustomization.AllowAppointmentCreate = UsedAppointmentType.None;
+
+        settings.OptionsForms.SetAppointmentFormTemplateContent(col =>
+        {
+            var dItem = col.Appointment;
+            Html.RenderAction("EditSchedulerPartial", new { Appointment = col.Appointment });
+        });
+
+    });
+    if (ViewData["SchedulerErrorText"] != null)
+    {
+        scheduler.SetErrorText((string)ViewData["SchedulerErrorText"]);
+    }
+}
+@scheduler.Bind(Model).GetHtml()

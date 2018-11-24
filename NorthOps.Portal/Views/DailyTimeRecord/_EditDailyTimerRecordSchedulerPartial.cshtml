@@ -1,0 +1,56 @@
+﻿@model DailyTimeRecords
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-6">
+            @{
+                Html.DevExpress().DateEditFor(m => m.DateFrom, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                    settings.Properties.Caption = "Date From";
+                    settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
+                }).GetHtml();
+
+            }
+
+        </div>
+        <div class="col-lg-6">
+            @{
+                Html.DevExpress().DateEditFor(m => m.DateTo, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                    settings.Properties.Caption = "Date To";
+                    settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
+                }).GetHtml();
+            }
+        </div>
+    </div>
+    <div class="row margin-top-10 ">
+        <div class="col-lg-6">
+            @{
+
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.ControlStyle.CssClass = "margin-r-5";
+                    settings.Name = "btnUpdate";
+                    settings.Text = "Save";
+                    settings.UseSubmitBehavior = false;
+                    settings.ClientSideEvents.Click = "function(s,e){ DailyTimeRecordScheduler.InplaceEditFormSave();}";
+                }).GetHtml();
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "btnCancel";
+                    settings.UseSubmitBehavior = false;
+                    settings.Text = "Cancel";
+                    settings.ClientSideEvents.Click = "function(s,e){ DailyTimeRecordScheduler.InplaceEditFormCancel();}";
+                }).GetHtml();
+            }
+        </div>
+    </div>
+}

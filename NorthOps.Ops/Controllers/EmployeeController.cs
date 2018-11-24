@@ -13,7 +13,7 @@ using NorthOps.Services.Helpers;
 
 namespace NorthOps.Ops.Controllers
 {
-
+    [Authorize(Roles = "Administrator")]
     public class EmployeeController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -71,16 +71,20 @@ namespace NorthOps.Ops.Controllers
             {
                 try
                 {
-                    //  var res = Request.Params["UserRole"];
+                    var roles = Request.Params["UserRole"];
                     await UserManager.RemoveFromRoleAsync(item.Id, "Applicant");
-                    await UserManager.AddToRoleAsync(item.Id, item.userRole);
+                    foreach (var i in roles.Split(','))
+                    {
+                        await UserManager.AddToRoleAsync(item.Id, i);
+                    }
+
                     var res = unitOfWork.UserRepository.Find(m => m.Id == item.Id);
                     res.Position = item.Position ?? res.Position;
                     res.DivisionId = item.DivisionId ?? res.DivisionId;
                     res.DepartmentId = item.DepartmentId ?? res.DepartmentId;
                     res.BranchId = item.BranchId ?? res.BranchId;
-                    if (item._BiometricId != null)
-                        res.Biometrics.Add(new Biometrics() { UserId = res.Id, BiometricId = item._BiometricId });
+                    res.BiometricId = item.BiometricId ?? res.BiometricId;
+                    res.Rfid = item.Rfid ?? res.Rfid;
                     unitOfWork.Save();
                 }
                 catch (Exception e)
@@ -102,21 +106,19 @@ namespace NorthOps.Ops.Controllers
             {
                 try
                 {
-
+                    var roles = Request.Params["UserRole"];
                     await UserManager.RemoveFromRolesAsync(item.Id, (await UserManager.GetRolesAsync(item.Id)).ToArray());
-                    await UserManager.AddToRoleAsync(item.Id, item.userRole);
+                    foreach (var i in roles.Split(','))
+                    {
+                        await UserManager.AddToRoleAsync(item.Id, i);
+                    }
                     var res = unitOfWork.UserRepository.Find(m => m.Id == item.Id);
                     res.Position = item.Position ?? res.Position;
                     res.DivisionId = item.DivisionId ?? res.DivisionId;
                     res.DepartmentId = item.DepartmentId ?? res.DepartmentId;
                     res.BranchId = item.BranchId ?? res.BranchId;
-
-                    if (res.Biometrics.Any())
-                    {
-                        unitOfWork.BiometricsRepo.Delete(unitOfWork.BiometricsRepo.Find(
-                            m => (m.UserId == item.Id && m.BiometricId < 5000)));
-                    }
-                    res.Biometrics.Add(new Biometrics() { UserId = res.Id, BiometricId = item._BiometricId });
+                    res.BiometricId = item.BiometricId ?? res.BiometricId;
+                    res.Rfid = item.Rfid ?? res.Rfid;
 
                     unitOfWork.Save();
                 }

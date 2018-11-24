@@ -12,3 +12,12 @@
 .dxgvDetailRow_Moderno.dxgvADR td.dxgvAIC { overflow: hidden; border-top-width: 0; border-left-width: 0; border-bottom: 1px Solid #d1d1d1; border-right: 1px Solid #d1d1d1; padding: 8px 10px 9px; vertical-align: top !important; }
 .dxflHALSys.dxflVATSys.dxflCaptionCell_Moderno.dxflCaptionCellSys {
 }
+.align-center {
+    text-align: center;
+}
+.dxscApt {
+    border-left: orange 5px solid;
+}
+.margin-bottom-10 {
+    margin-bottom:10px;
+}

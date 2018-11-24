@@ -1,0 +1,52 @@
+﻿@model Schedules
+<div class="row">
+  <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEditFor(m => m.ScheduleDateFrom, settings =>
+            {
+                settings.Properties.TimeSectionProperties.Visible = true;
+                settings.Properties.DisplayFormatString = @"MM-dd-yyy hh:mm tt";
+                settings.Properties.EditFormatString = @"MM-dd-yyy hh:mm tt";
+                settings.Properties.NullText = @"Schedule From";
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.Caption = "From";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEditFor(m => m.ScheduleDateTo, settings =>
+            {
+                settings.Properties.Caption = "To";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.TimeSectionProperties.Visible = true;
+                settings.Properties.DisplayFormatString = @"MM-dd-yyy hh:mm tt";
+                settings.Properties.EditFormatString = @"MM-dd-yyy hh:mm tt";
+                settings.Properties.NullText = @"Schedule To";
+                settings.Width = Unit.Percentage(100);
+            }).GetHtml();
+        }
+    </div>
+</div>
+
+<div class="row margin-top-10">
+    <div class="col-lg-12">
+        @{
+            Html.DevExpress().Button(settings =>
+            {
+                settings.ControlStyle.CssClass = "margin-r-5";
+                settings.Name = "btnSave";
+                settings.Text = "Save";
+                settings.ClientSideEvents.Click = "function(s,e){SchedulesGridView.UpdateEdit()}";
+            }).GetHtml();
+            Html.DevExpress().Button(settings =>
+            {
+                settings.ClientSideEvents.Click = "function(s,e){SchedulesGridView.CancelEdit()}";
+                settings.Name = "btnCancel";
+                settings.Text = "Cancel";
+            }).GetHtml();
+        }
+    </div>
+</div>

@@ -19,9 +19,19 @@ namespace NorthOps.Models
         public string UserId { get; set; }
         public byte[] Recording { get; set; }
         public Nullable<System.DateTime> CallDate { get; set; }
-        public Nullable<int> Number { get; set; }
+        public string Errors { get; set; }
+        public string CallerNumber { get; set; }
+        public Nullable<int> ErrorTypeId { get; set; }
+        public Nullable<System.DateTime> ErrorDateTime { get; set; }
+        public string RootCauseAnalysis { get; set; }
+        public string Commitment { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> AcknowledgmentDate { get; set; }
+        public Nullable<System.DateTime> CoachingDate { get; set; }
     
         public virtual Campaigns Campaigns { get; set; }
         public virtual Users Users { get; set; }
+        public virtual ErrorTypes ErrorTypes { get; set; }
+        public virtual Users CreatedByUser { get; set; }
     }
 }

@@ -81,11 +81,11 @@ namespace NorthOps.Ops.Controllers
             {
                 ViewBag.Gridname = "JobApplicationGridTraining";
             }
-            else if(isExamPassed==true)
+            else if (isExamPassed == true)
             {
                 ViewBag.Gridname = "JobApplicationGridShortlist";
             }
-            
+
             return PartialView("_EditApplicantPartial", model);
         }
         [ValidateInput(false)]
@@ -227,6 +227,7 @@ namespace NorthOps.Ops.Controllers
                 {
                     var applicant = unitOfWork.JobApplicationRepo.Find(m => m.UserId == userId);
                     applicant.IsExamPassed = isPassed;
+                    applicant.IsExamPassedDate = DateTime.Now;
                     await unitOfWork.SaveAsync();
                     var email = new EmailServices(new RecruitmentEmailService(UserManager, applicant));
                     if (isPassed == true)

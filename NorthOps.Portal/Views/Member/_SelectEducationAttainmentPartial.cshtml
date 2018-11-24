@@ -1,0 +1,27 @@
+﻿<div class="row">
+    <div class="col-lg-4">
+        @Html.DevExpress().CheckBox(settings =>
+        {
+            settings.Text = "Elementary";
+            settings.Name = "elementary";
+            settings.Properties.ClientSideEvents.CheckedChanged = "function(s,e){callbackPanel(s,e)}";
+        }).Bind(ViewBag.elementary).GetHtml()
+    </div>
+    <div class="col-lg-4">
+        @Html.DevExpress().CheckBox(settings =>
+        {
+            settings.Text = "High School";
+            settings.Name = "highSchool";
+            settings.Properties.ClientSideEvents.CheckedChanged = "function(s,e){callbackPanel(s,e)}";
+        }).Bind(ViewBag.highSchool).GetHtml()
+    </div>
+    <div class="col-lg-4">
+        @Html.DevExpress().CheckBox(settings =>
+        {
+            settings.Text = "College";
+            settings.Name = "college";
+            settings.Properties.ClientSideEvents.CheckedChanged = "function(s,e){callbackPanel(s,e)}";
+        }).Bind(ViewBag.college).GetHtml()
+    </div>
+</div>
+

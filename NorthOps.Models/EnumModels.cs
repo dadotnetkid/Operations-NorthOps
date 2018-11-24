@@ -6,6 +6,19 @@ using System.Threading.Tasks;
 
 namespace NorthOps.Models
 {
+    public enum ScheduleType
+    {
+        Grid,
+        Calendar
+    }
+    public enum DocumentType
+    {
+        Video = 0,
+        PDF = 1,
+        Excel = 2,
+        Word=3
+    }
+
     public enum Position
     {
         Trainee,
@@ -28,5 +41,17 @@ namespace NorthOps.Models
         Master,
         TechVoc
 
+    }
+
+    public enum HolidayType
+    {
+        Regular,
+        Special,
+
+    }
+    public enum InOutState
+    {
+        CheckIn = 10,
+        CheckOut = 11
     }
 }

@@ -5,18 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Services.AttendanceService;
 using NorthOps.Services.DTRService;
 
 namespace NorthOps.Ops.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class AttendanceController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
         // GET: Attendance
         public ActionResult AttendanceLog()
         {
-           
+
             return View();
         }
 
@@ -26,7 +29,23 @@ namespace NorthOps.Ops.Controllers
             var model = unitOfWork.AttendancesRepo.Get();
             return PartialView("_AttendanceLogGridViewPartial", model);
         }
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> AttendanceLogGridViewPartialAddNew([ModelBinder(typeof(DevExpressEditorsBinder))]Attendances item, [ModelBinder(typeof(DevExpressEditorsBinder))] string userId)
+        {
+            try
+            {
+                item.InOutState = (int)InOutState.CheckOut;
+                unitOfWork.AttendancesRepo.Insert(item);
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                ViewData["EditError"] = e.Message;
+            }
 
+            var model = unitOfWork.AttendancesRepo.Get();
+            return PartialView("_AttendanceLogGridViewPartial", model);
+        }
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> AttendanceLogGridViewPartialUpdate()
         {

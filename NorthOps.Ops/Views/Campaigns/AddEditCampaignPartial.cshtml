@@ -17,6 +17,12 @@
         }
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12">
+        @{
+            Html.DevExpress().Label(lbl => { lbl.Text = "Employee"; lbl.AssociatedControlName = "UserID"; }).GetHtml();
+            Html.RenderAction("TokenBoxUsersInCampaignsPartial", new { CampaignId = Model?.Id });
+        }
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12">
 
         @{
             Html.DevExpress().LabelFor(m => m.IsActive).GetHtml();

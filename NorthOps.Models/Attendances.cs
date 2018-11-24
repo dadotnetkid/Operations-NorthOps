@@ -17,7 +17,7 @@ namespace NorthOps.Models
         public int Id { get; set; }
         public int BiometricId { get; set; }
         public string ModifiedBy { get; set; }
-        public Nullable<System.DateTime> LogDateTime { get; set; }
+        public System.DateTime LogDateTime { get; set; }
         public int InOutState { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }

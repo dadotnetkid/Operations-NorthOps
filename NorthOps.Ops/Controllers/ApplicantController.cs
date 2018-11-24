@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace NorthOps.Ops.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ApplicantController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();

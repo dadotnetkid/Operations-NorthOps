@@ -20,22 +20,32 @@ namespace NorthOps.Models
             this.ApplicantAnswers = new HashSet<ApplicantAnswers>();
             this.Applicants = new HashSet<Applicants>();
             this.Biometrics = new HashSet<Biometrics>();
+            this.Documents = new HashSet<Documents>();
             this.EducationAttainments = new HashSet<EducationAttainments>();
             this.EmployeeNotications = new HashSet<EmployeeNotications>();
             this.EmploymentHistories = new HashSet<EmploymentHistories>();
             this.JobApplications = new HashSet<JobApplications>();
+            this.Overtimes = new HashSet<Overtimes>();
             this.PersonalityResults = new HashSet<PersonalityResults>();
+            this.Recordings = new HashSet<Recordings>();
             this.RestDays = new HashSet<RestDays>();
-            this.Schedules = new HashSet<Schedules>();
             this.UserClaims = new HashSet<UserClaims>();
             this.UserLogins = new HashSet<UserLogins>();
-            this.UsersInCampaignShift = new HashSet<UsersInCampaignShift>();
-            this.UserRoles = new HashSet<UserRoles>();
             this.Inventory = new HashSet<Inventory>();
-            this.Recordings = new HashSet<Recordings>();
+            this.UsersInCampaignShift = new HashSet<UsersInCampaignShift>();
+            this.Campaigns = new HashSet<Campaigns>();
+            this.UserRoles = new HashSet<UserRoles>();
+            this.CreatedByUser = new HashSet<Recordings>();
+            this.DailyTimeRecords = new HashSet<DailyTimeRecords>();
+            this.DailyTimeRecordsCreatedBy = new HashSet<DailyTimeRecords>();
+            this.OvertimesCreatedBy = new HashSet<Overtimes>();
+            this.OvertimesModifiedBy = new HashSet<Overtimes>();
+            this.Schedules = new HashSet<Schedules>();
         }
     
         public string Id { get; set; }
+        public string Rfid { get; set; }
+        public Nullable<int> BiometricId { get; set; }
         public Nullable<int> DivisionId { get; set; }
         public Nullable<int> DepartmentId { get; set; }
         public Nullable<int> BranchId { get; set; }
@@ -104,6 +114,8 @@ namespace NorthOps.Models
         public virtual Departments Departments { get; set; }
         public virtual Divisions Divisions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Documents> Documents { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EducationAttainments> EducationAttainments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeNotications> EmployeeNotications { get; set; }
@@ -112,22 +124,36 @@ namespace NorthOps.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JobApplications> JobApplications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Overtimes> Overtimes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonalityResults> PersonalityResults { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RestDays> RestDays { get; set; }
+        public virtual ICollection<Recordings> Recordings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Schedules> Schedules { get; set; }
+        public virtual ICollection<RestDays> RestDays { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserClaims> UserClaims { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserLogins> UserLogins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UsersInCampaignShift> UsersInCampaignShift { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Campaigns> Campaigns { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRoles> UserRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Inventory> Inventory { get; set; }
+        public virtual ICollection<Recordings> CreatedByUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recordings> Recordings { get; set; }
+        public virtual ICollection<DailyTimeRecords> DailyTimeRecords { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DailyTimeRecords> DailyTimeRecordsCreatedBy { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Overtimes> OvertimesCreatedBy { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Overtimes> OvertimesModifiedBy { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Schedules> Schedules { get; set; }
     }
 }

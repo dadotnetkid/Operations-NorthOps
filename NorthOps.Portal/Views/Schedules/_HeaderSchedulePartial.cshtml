@@ -1,0 +1,49 @@
+﻿@model ScheduleType
+<div class="row">
+    <div class="col-lg-4">
+        @{
+            Html.DevExpress().ComboBox(settings =>
+            {
+                settings.Properties.Caption = "Schedule Type";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Left;
+                settings.Name = "ScheduleType";
+                settings.ControlStyle.CssClass = "margin-bottom-10 pull-left";
+                settings.Properties.ClientSideEvents.SelectedIndexChanged = "function(s,e){SchedulerCallbackPanel.PerformCallback({ScheduleType:s.GetValue()})}";
+                settings.Properties.ValueField = "Id";
+                settings.Properties.TextField = "Name";
+            }).BindList(Enum.GetValues(typeof(ScheduleType)).Cast<ScheduleType>().Select(x => new { Id = (int)x, Name = x.ToString() })).Bind(Model).GetHtml();
+        }
+    </div>
+    @if (Model == ScheduleType.Calendar)
+    {
+        <div class="col-lg-4">
+            @{
+                Html.DevExpress().ComboBox(settings =>
+                {
+                    settings.Properties.Caption = "Time Zone";
+                    settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Left;
+                    settings.Name = "TimeZone";
+                    settings.ControlStyle.CssClass = "margin-bottom-10 pull-left";
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "function(s,e){Scheduler.PerformCallback({TimeZone:TimeZone.GetValue()})}";
+                    settings.Properties.ValueField = "Id";
+                    settings.Properties.TextField = "StandardName";
+                }).BindList(new Schedules().TimeZones).GetHtml();
+            }
+        </div>
+        <div class="col-lg-4">
+            @{
+
+
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "btnAddEditScheduler";
+                    settings.ClientSideEvents.Click = "function(s,e){pcAddEditSchedule.PerformCallback();pcAddEditSchedule.Show();}";
+                    settings.Text = "New Schedule";
+                    settings.ControlStyle.CssClass = "margin-bottom-10 pull-right";
+                }).GetHtml();
+
+            }
+        </div>
+    }
+
+</div>

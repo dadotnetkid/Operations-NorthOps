@@ -31,19 +31,26 @@
         settings.Columns.Add("CampaignName");
         settings.Columns.Add(col =>
         {
+            col.Width = col.Width = Unit.Percentage(50);
+            col.FieldName = "UsersInCampaigns";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.Width = Unit.Percentage(10);
             col.ColumnType = MVCxGridViewColumnType.CheckBox;
             col.FieldName = "IsActive";
 
         });
 
         settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
-        settings.SetEditFormTemplateContent(col => {
+        settings.SetEditFormTemplateContent(col =>
+        {
             Html.RenderAction("AddEditCampaignPartial", new { CampaignId = DataBinder.Eval(col.DataItem, "Id") });
         });
         settings.SettingsDetail.ShowDetailRow = true;
         settings.SetDetailRowTemplateContent(col =>
         {
-            Html.RenderAction("ShiftsGridViewPartial", new { CampaignId = col.KeyValue});
+            Html.RenderAction("ShiftsGridViewPartial", new { CampaignId = col.KeyValue });
         });
     });
     if (ViewData["EditError"] != null)

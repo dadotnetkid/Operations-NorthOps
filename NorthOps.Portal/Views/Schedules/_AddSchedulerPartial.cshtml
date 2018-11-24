@@ -1,0 +1,69 @@
+﻿
+
+@model Schedules
+
+@using (Ajax.BeginForm("SchedulerPartialAddEditUpdate", new { Id = Model?.Id }, new AjaxOptions() { OnBegin = "showldpLoading()", OnComplete = "hideldpLoading(); Scheduler.PerformCallback(); pcAddEditSchedule.PerformCallback();" }))
+{
+    <div class="row">
+        <div class="col-lg-6">
+            @{
+                <span style="float:left;padding:4px;">Date From </span><br />
+                Html.DevExpress().DateEditFor(m => m.ScheduleDateFrom, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-lg-6">
+            @{
+                <span style="float:left;padding:4px;">Date To</span><br />
+                Html.DevExpress().DateEditFor(m => m.ScheduleDateTo, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                }).GetHtml();
+            }
+        </div>
+        @*<div class="col-lg-4">
+            @{
+                <span style="float:left;padding:4px;">Time Zone </span><br />
+                Html.DevExpress().ComboBoxFor(m => m.TimeZoneId, settings =>
+                   {
+                       settings.Width = Unit.Percentage(100);
+                       settings.Properties.ValueField = "Id";
+                       settings.Properties.TextField = "StandardName";
+                       settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                   }).BindList(new Schedules().TimeZones).GetHtml();
+            }
+        </div>*@
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-lg-6">
+            @{
+
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "btnUpdate";
+                    settings.Text = "Save";
+                    settings.UseSubmitBehavior = true;
+                }).GetHtml();
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "btnCancel";
+                    settings.UseSubmitBehavior = false;
+                    settings.Text = "Cancel";
+                    settings.ClientSideEvents.Click = "function(s,e){ pcAddEditSchedule.Hide();}";
+                }).GetHtml();
+            }
+        </div>
+    </div>
+}

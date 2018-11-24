@@ -1,12 +1,22 @@
 ﻿@model Users
 <div class="col-lg-3">
     @{
-        Html.DevExpress().TextBoxFor(m => m._BiometricId, settings =>
-          {
-              settings.Properties.Caption = "Biometric Id";
-              settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-              settings.Width = Unit.Percentage(100);
-          }).Bind(Model?.BiometricId).GetHtml();
+        Html.DevExpress().TextBoxFor(m => m.BiometricId, settings =>
+        {
+            settings.Properties.Caption = "Biometric Id";
+            settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            settings.Width = Unit.Percentage(100);
+        }).GetHtml();
+    }
+</div>
+<div class="col-lg-3">
+    @{
+        Html.DevExpress().TextBoxFor(m => m.Rfid, settings =>
+        {
+            settings.Properties.Caption = "Rfid";
+            settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            settings.Width = Unit.Percentage(100);
+        }).GetHtml();
     }
 </div>
 <div class="col-lg-3">

@@ -1,3 +1,4 @@
+@using NorthOps.Ops.Controllers
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
@@ -36,15 +37,20 @@
             var cbo = col.PropertiesEdit as ComboBoxProperties;
             cbo.TextField = "FullName";
             cbo.ValueField = "Id";
-            cbo.DataSource = new UnitOfWork().UserRepository.Get(m=>m.UserRoles.Any(x=>x.Name=="Employee"));
+            cbo.DataSource = new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"));
         });
         settings.Columns.Add(col =>
         {
             col.ColumnType = MVCxGridViewColumnType.DateEdit;
             col.FieldName = "CallDate";
         });
-        settings.Columns.Add("Number");
-       
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CallerNumber";
+            col.ColumnType = MVCxGridViewColumnType.TextBox;
+            var txt = col.PropertiesEdit as TextBoxProperties;
+        });
+
         settings.Columns.Add(col =>
         {
             col.FieldName = "CampaignId";
@@ -53,6 +59,7 @@
             var cbo = col.PropertiesEdit as ComboBoxProperties;
             cbo.TextField = "CampaignName";
             cbo.ValueField = "Id";
+
             cbo.DataSource = new UnitOfWork().CampaignsRepo.Get();
         });
         settings.Columns.Add(col =>
@@ -60,8 +67,8 @@
             col.ColumnType = MVCxGridViewColumnType.BinaryImage;
             col.FieldName = "Recording";
             col.Caption = "Recording";
-            // col.EditFormSettings.Visible = DefaultBoolean.False;
-            col.SetEditItemTemplateContent(colTemplate =>
+    // col.EditFormSettings.Visible = DefaultBoolean.False;
+    col.SetEditItemTemplateContent(colTemplate =>
             {
 
                 using (Html.BeginForm("UploadControlUpload", "Recordings", FormMethod.Post))
@@ -69,14 +76,14 @@
                     Html.DevExpress().UploadControl(uc =>
                     {
                         uc.Name = "UploadControl";
-                        uc.CallbackRouteValues = new { Controller = "CallRecording", Action = "UploadControlUpload" };
+                        uc.CallbackRouteValues = new { Controller = "Recordings", Action = "UploadControlUpload" };
 
                         uc.AdvancedModeSettings.EnableDragAndDrop = true;
                         uc.AutoStartUpload = true;
-                        //uc.ShowUploadButton = true;
-                        uc.ShowProgressPanel = true;
+                //uc.ShowUploadButton = true;
+                uc.ShowProgressPanel = true;
 
-                        uc.ValidationSettings.Assign(NorthOps.Ops.Controllers.CallRecordingControllerUploadControlSettings.UploadValidationSettings);
+                        uc.ValidationSettings.Assign(RecordingsControllerUploadControlSettings.UploadValidationSettings);
                     }).GetHtml();
                 }
 
@@ -87,10 +94,14 @@
                 Html.DevExpress().HyperLink(lnk =>
                 {
                     lnk.Properties.Text = "Download";
-                    lnk.NavigateUrl = Url.Action("download", new { recordingId =DataBinder.Eval(e.DataItem,"Id") });
+                    lnk.NavigateUrl = Url.Action("download", new { recordingId = DataBinder.Eval(e.DataItem, "Id") });
                 }).GetHtml();
             });
 
+        });
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderAction("AddEditRecordingPartials", new { recordingId = col.KeyValue });
         });
     });
     if (ViewData["EditError"] != null)

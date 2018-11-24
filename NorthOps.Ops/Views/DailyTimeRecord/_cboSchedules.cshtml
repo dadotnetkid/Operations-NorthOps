@@ -1,0 +1,16 @@
+﻿@model  DailyTimeRecords
+@{
+   var  userId = ViewBag.UserId;
+}
+@{
+    Html.DevExpress().ComboBoxFor(m => m.ScheduleId, settings =>
+    {
+        settings.CallbackRouteValues = new {Controller="DailyTimeRecord",Action="cboSchedules"};
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.Caption = "Schedule";
+        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "Schedule";
+    }).BindList(ViewBag.Schedules).GetHtml();
+
+}

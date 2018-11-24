@@ -1,9 +1,20 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Coaching Logs";
     Layout = "~/Views/Shared/_layout.cshtml";
 }
 
 
 
 @Html.Action("RecordingGridViewPartial")
+<script>
+    function onFileUploadComplete(e) {
+        if(e.callbackData) {
+            var fileData = e.callbackData.split('|');
+            var fileName = fileData[0];
+            $('#lbl-fileName').text(fileName);
+            console.log(fileName);
+        }
+        console.log(e);
+    }
+</script>

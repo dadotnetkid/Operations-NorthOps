@@ -112,10 +112,17 @@
     <Compile Include="Choices.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="DailyTimeRecords.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DailyTimeRecordsPartial.cs" />
     <Compile Include="Departments.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Divisions.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Documents.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="EducationAttainments.cs">
@@ -131,7 +138,13 @@
     <Compile Include="Equivalents.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="ErrorTypes.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Exams.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Holidays.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Inventory.cs">
@@ -146,12 +159,19 @@
     <Compile Include="JobApplications.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Leaves.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="NotificationsTemplates.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="NotificationTemplatesPartial.cs" />
     <Compile Include="JobApplicantsPartial.cs" />
     <Compile Include="NorthOpsDbPartial.cs" />
+    <Compile Include="Overtimes.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OvertimesPartial.cs" />
     <Compile Include="PersonalityResults.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
@@ -168,6 +188,7 @@
     <Compile Include="Repository\Bootstrap.cs" />
     <Compile Include="Repository\DataHelper.cs" />
     <Compile Include="Repository\Excel.cs" />
+    <Compile Include="Repository\UnitOfWorkPartial.cs" />
     <Compile Include="RestDays.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
@@ -202,6 +223,7 @@
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="VideosPartial.cs" />
+    <Compile Include="ViewModels\AcknowledgeTokenViewModel.cs" />
     <Compile Include="ViewModels\ApplicantStatusModel.cs" />
     <Compile Include="ExamPartials.cs" />
     <Compile Include="MemberModels.cs" />
@@ -233,7 +255,10 @@
     <Compile Include="UsersPartial.cs" />
     <Compile Include="UserStore.cs" />
     <Compile Include="ViewModels\ApplicationExamModel.cs" />
+    <Compile Include="ViewModels\DailyTimeRecordViewModel.cs" />
+    <Compile Include="ViewModels\DtrReportViewModel.cs" />
     <Compile Include="ViewModels\IdentificationExamViewModel.cs" />
+    <Compile Include="ViewModels\SmsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="NorthOpsDb.edmx">

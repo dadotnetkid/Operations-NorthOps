@@ -1,0 +1,91 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "DailyTimeRecordGridView";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "DailyTimeRecord", Action = "DailyTimeRecordGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "DailyTimeRecord", Action = "DailyTimeRecordGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "DailyTimeRecord", Action = "DailyTimeRecordGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "DailyTimeRecord", Action = "DailyTimeRecordGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+        settings.SettingsPager.PageSize = 15;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.DataSource = new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"));
+            cbo.ValueField = "Id";
+            cbo.TextField = "FullName";
+            col.FieldName = "Schedules.UserId";
+            col.Caption = @"Employee Name";
+
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Schedule";
+            col.Caption = @"Schedule";
+
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateFrom";
+            col.Caption = @"Check In";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateTo";
+            col.Caption = @"Check Out";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "CreatedByUser.FullName";
+            col.Caption = @"Created By";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Users.FullName";
+            col.Caption = @"Modified By";
+        });
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderAction("AddEditDailyTimeRecordPartial", new { dailyTimeRecordId = col.KeyValue });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+
+
+@functions {
+    static string[] WideThemes = new string[] { "iOS", "Material", "MaterialCompact", "Metropolis", "MetropolisBlue", "Moderno", "Mulberry", "SoftOrange" };
+
+    GridHeaderFilterMode HeaderFilterMode { get { return ViewBag.HeaderFilterMode; } }
+
+    int GetHeaderFilterPopupWidth()
+    {
+        return HeaderFilterMode == GridHeaderFilterMode.DateRangeCalendar ? 360 : 300;
+    }
+}

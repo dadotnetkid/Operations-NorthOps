@@ -15,6 +15,7 @@ using NorthOps.Services.Helpers;
 
 namespace NorthOps.Ops.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class MaintenanceController : IdentityController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();

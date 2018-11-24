@@ -17,8 +17,8 @@ namespace NorthOps.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Shifts()
         {
-            this.UsersInCampaignShift = new HashSet<UsersInCampaignShift>();
             this.Campaigns = new HashSet<Campaigns>();
+            this.UsersInCampaignShift = new HashSet<UsersInCampaignShift>();
         }
     
         public string Id { get; set; }
@@ -29,8 +29,8 @@ namespace NorthOps.Models
         public Nullable<decimal> RegularTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UsersInCampaignShift> UsersInCampaignShift { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Campaigns> Campaigns { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UsersInCampaignShift> UsersInCampaignShift { get; set; }
     }
 }

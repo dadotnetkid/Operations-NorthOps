@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NorthOps.Models;
 using zkemkeeper;
 using ZKTeco.SDK.Model;
 using static ZKTeco.SDK.MachineManager.ComTokenManager;
@@ -66,6 +67,7 @@ namespace ZKTeco.SDK.MachineManager
             if (null != this.OnAttTransaction)
             {
                 this.OnAttTransaction(EnrollNumber, IsInValid, AttState, VerifyMethod, Year, Month, Day, Hour, Minute, Second, WorkCode);
+               
             }
         }
 

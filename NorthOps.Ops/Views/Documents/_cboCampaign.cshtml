@@ -1,0 +1,13 @@
+﻿
+@{
+    Html.DevExpress().ComboBox(settings =>
+    {
+        settings.Properties.Caption = "Campaign";
+        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+        settings.CallbackRouteValues = new { Controller = "Documents", Action = "cboCampaign", CampaignId = ViewBag.CampaignId };
+        settings.Name = "CampaignId";
+        settings.Properties.TextField = "CampaignName";
+        settings.Properties.ValueField = "Id";
+        settings.Width = Unit.Percentage(100);
+    }).Bind(ViewBag.CampaignId).BindList(Model).GetHtml();
+}

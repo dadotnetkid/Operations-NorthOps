@@ -1,6 +1,6 @@
 ﻿@model JobApplications
 @{
-    using (Ajax.BeginForm("NotifyExamResultPartial",null,new AjaxOptions() { UpdateTargetId = "form-notify-exam-result" },new {id= "form-notify-exam-result" }))
+    using (Ajax.BeginForm("NotifyExamResultPartial", null, new AjaxOptions() { UpdateTargetId = "form-notify-exam-result", OnBegin = "ShowLoading()", OnComplete = "HideLoading()" }, new { id = "form-notify-exam-result" }))
     {
         if (Model?.IsExamPassed == null)
         {

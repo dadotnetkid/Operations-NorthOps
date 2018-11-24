@@ -1,0 +1,24 @@
+﻿@model NorthOps.Models.ViewModels.SmsViewModel
+@{
+    Layout = null;
+}
+
+<script src="~/Content/js/jquery-3.2.1.js"></script>
+<script src="~/Content/js/log4javascript_lite.js"></script>
+<script src="~/Content/js/main.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var verificationToken = '@Model.VerificationToken';
+        var sessionId = '@Model.SessionId';
+        var xmlPassword = '@Model.XmlPassword';
+        var data = doRSAEncrypt('@Model.XmlPassword');
+        console.log(data);
+
+        $.ajax({
+            url: '@Url.Action("login")',
+            data: { VerificationToken: verificationToken, SessionId: sessionId, XmlPassword: xmlPassword, Rsa: data}
+        });
+
+    });
+</script>

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace NorthOps.Models.Repository
 {
-    public class UnitOfWork : IDisposable
+    public partial class UnitOfWork : IDisposable
     {
         private northopsEntities context = new northopsEntities();
         //private GenericRepository<AddressTownCity> addressTownCityRepository;
@@ -320,7 +320,18 @@ namespace NorthOps.Models.Repository
             set { _SchedulesRepo = value; }
         }
 
-       
+
+        private GenericRepository<DailyTimeRecords> _DailyTimeRecordsRepo;
+        public GenericRepository<DailyTimeRecords> DailyTimeRecordsRepo
+        {
+            get
+            {
+                if (this._DailyTimeRecordsRepo == null)
+                    this._DailyTimeRecordsRepo = new GenericRepository<DailyTimeRecords>(context);
+                return _DailyTimeRecordsRepo;
+            }
+            set { _DailyTimeRecordsRepo = value; }
+        }
         private GenericRepository<UsersInCampaignShift> _UsersInCampaignShiftRepo;
         public GenericRepository<UsersInCampaignShift> UsersInCampaignShiftRepo
         {
@@ -405,6 +416,42 @@ namespace NorthOps.Models.Repository
                 return _DepartmentsRepo;
             }
             set { _DepartmentsRepo = value; }
+        }
+
+        private GenericRepository<Documents> _DocumentsRepo;
+        public GenericRepository<Documents> DocumentsRepo
+        {
+            get
+            {
+                if (this._DocumentsRepo == null)
+                    this._DocumentsRepo = new GenericRepository<Documents>(context);
+                return _DocumentsRepo;
+            }
+            set { _DocumentsRepo = value; }
+        }
+
+        private GenericRepository<Overtimes> _OvertimesRepo;
+        public GenericRepository<Overtimes> OvertimesRepo
+        {
+            get
+            {
+                if (this._OvertimesRepo == null)
+                    this._OvertimesRepo = new GenericRepository<Overtimes>(context);
+                return _OvertimesRepo;
+            }
+            set { _OvertimesRepo = value; }
+        }
+
+        private GenericRepository<ErrorTypes> _ErrorTypesRepo;
+        public GenericRepository<ErrorTypes> ErrorTypesRepo
+        {
+            get
+            {
+                if (this._ErrorTypesRepo == null)
+                    this._ErrorTypesRepo = new GenericRepository<ErrorTypes>(context);
+                return _ErrorTypesRepo;
+            }
+            set { _ErrorTypesRepo = value; }
         }
         public void Save()
         {

@@ -9,25 +9,32 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using NorthOps.AspIdentity;
 
-namespace NorthOps.Portal {
-    public class MvcApplication : System.Web.HttpApplication {
-        protected void Application_Start() {
+namespace NorthOps.Portal
+{
+    public class MvcApplication : System.Web.HttpApplication
+    {
+        protected void Application_Start()
+        {
+
             //DashboardConfig.RegisterService(RouteTable.Routes);
             //DevExpress.XtraReports.Web.WebDocumentViewer.Native.WebDocumentViewerBootstrapper.SessionState = System.Web.SessionState.SessionStateBehavior.Disabled;
             AreaRegistration.RegisterAllAreas();
             //Web Api 2.2 Manually Added
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ModelBinders.Binders.DefaultBinder = new DevExpress.Web.Mvc.DevExpressEditorsBinder();
             DevExpress.Web.ASPxWebControl.CallbackError += Application_Error;
         }
-        protected void Application_Error(object sender, EventArgs e) {
+        protected void Application_Error(object sender, EventArgs e)
+        {
             Exception exception = System.Web.HttpContext.Current.Server.GetLastError();
             //TODO: Handle Exception
         }
-        
+
     }
 }

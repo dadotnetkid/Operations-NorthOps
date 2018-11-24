@@ -8,6 +8,7 @@ namespace NorthOps.Portal
     {
         public void Configuration(IAppBuilder app)
         {
+          
             AspIdentity.IdentityStartup.ConfigureAuth(app);
         }
     }

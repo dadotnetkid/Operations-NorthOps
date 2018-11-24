@@ -11,11 +11,17 @@
         settings.Storage.Appointments.Assign(CampaignsControllerSchedulerSettings.AppointmentStorage);
         settings.OptionsView.ShowOnlyResourceAppointments = false;
 
+      //  settings.ClientSideEvents.AppointmentDeleting = "function(s,e){onDelete(s,e)}";
 
-        settings.Start = new DateTime(2018, 1, 1);
+        settings.OptionsCustomization.AllowAppointmentDelete = UsedAppointmentType.None;
+        settings.OptionsCustomization.AllowAppointmentCreate = UsedAppointmentType.None;
+        settings.OptionsCustomization.AllowAppointmentEdit = UsedAppointmentType.None;
+
+        settings.Start = DateTime.Now;
         settings.Views.WeekView.AppointmentDisplayOptions.StartTimeVisibility = AppointmentTimeVisibility.Always;
         settings.Views.WeekView.AppointmentDisplayOptions.EndTimeVisibility = AppointmentTimeVisibility.Always;
-        settings.Views.WeekView.AppointmentDisplayOptions.ShowRecurrence = true;
+        settings.Views.WeekView.AppointmentDisplayOptions.ShowRecurrence = false;
+
     });
     if (ViewData["SchedulerErrorText"] != null)
     {

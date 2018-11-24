@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Daily Time Record";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-4">
+        @{
+            Html.DevExpress().ComboBox(settings =>
+            {
+                settings.Properties.Caption = "Schedule Type";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Left;
+                settings.Name = "ScheduleType";
+                settings.ControlStyle.CssClass = "margin-bottom-10 pull-left";
+                settings.Properties.ClientSideEvents.SelectedIndexChanged = "function(s,e){DailyTimeRecordCallbackPanel.PerformCallback({ScheduleType:s.GetValue()})}";
+                settings.Properties.ValueField = "Id";
+                settings.Properties.TextField = "Name";
+            }).BindList(Enum.GetValues(typeof(ScheduleType)).Cast<ScheduleType>().Select(x => new { Id = (int)x, Name = x.ToString() })).Bind(Model).GetHtml();
+        }
+    </div>
+</div>
+
+
+@Html.Action("DailyTimeRecordCallbackPanelPartial")

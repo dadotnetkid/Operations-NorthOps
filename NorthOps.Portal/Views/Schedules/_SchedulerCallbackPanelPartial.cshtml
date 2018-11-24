@@ -1,0 +1,22 @@
+@Html.DevExpress().CallbackPanel(settings => {
+    settings.Name = "SchedulerCallbackPanel";
+    settings.CallbackRouteValues = new { Controller = "Schedules", Action = "SchedulerCallbackPanelPartial" };
+    settings.Width = Unit.Percentage(100);
+    settings.Height = 800;
+
+    settings.SetContent(() =>
+    {
+        Html.RenderPartial("_HeaderSchedulePartial", (ScheduleType) ViewBag.ScheduleType);
+
+        if ((int) ViewBag.ScheduleType == (int) ScheduleType.Calendar)
+        {
+            Html.RenderAction("SchedulerPartial");
+        }
+        else
+        {
+            Html.RenderAction("SchedulesGridViewPartial");
+        }
+
+
+    });
+}).GetHtml()

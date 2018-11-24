@@ -65,6 +65,7 @@
     <Reference Include="DevExpress.DataAccess.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="DevExpress.Docs.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Office.v16.2.Core, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -216,6 +217,9 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=106.5.4.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\RestSharp.106.5.4\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="RouteJs, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RouteJs.Mvc5.2.2.0\lib\net45\RouteJs.dll</HintPath>
     </Reference>
@@ -298,12 +302,17 @@
     <Compile Include="Controllers\ApplicantExamController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\AudioController.cs" />
+    <Compile Include="Controllers\DailyTimeRecordController.cs" />
     <Compile Include="Controllers\ErrorHandlerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\OTController.cs" />
     <Compile Include="Controllers\RecordingController.cs" />
-    <Compile Include="Controllers\VideoController.cs" />
+    <Compile Include="Controllers\RSAProviderController.cs" />
+    <Compile Include="Controllers\SchedulesController.cs" />
+    <Compile Include="Controllers\VideoApiController.cs" />
+    <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -367,6 +376,8 @@
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\fontello.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\js\log4javascript_lite.js" />
+    <Content Include="Content\js\main.js" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\fontello.svg" />
     <Content Include="Content\img\favicon.png" />
@@ -493,6 +504,37 @@
     <Content Include="Views\Home\_AttendanceGridViewGridViewPartial.cshtml" />
     <Content Include="Views\Recording\Index.cshtml" />
     <Content Include="Views\Recording\_RecordingGridViewPartial.cshtml" />
+    <Content Include="Views\Member\_SelectEducationAttainmentPartial.cshtml" />
+    <Content Include="Views\Member\_SelectEducationAttainmentCallbackPanelPartial.cshtml" />
+    <Content Include="Views\Documents\Index.cshtml" />
+    <Content Include="Views\Documents\_DocumentGridViewGridViewPartial.cshtml" />
+    <Content Include="Views\Documents\_DetailDocumentGridViewGridViewPartial.cshtml" />
+    <Content Include="Views\Documents\_GetVideo.cshtml" />
+    <Content Include="Views\OT\Index.cshtml" />
+    <Content Include="Views\OT\_OTGridViewPartial.cshtml" />
+    <Content Include="Views\Recording\_AddEditRecordingsPartial.cshtml" />
+    <Content Include="Views\Recording\_DetailRecordingsPartial.cshtml" />
+    <Content Include="Views\Recording\_UploadControl.cshtml" />
+    <Content Include="Views\Schedules\Index.cshtml" />
+    <Content Include="Views\Schedules\_SchedulesGridViewPartial.cshtml" />
+    <Content Include="Views\Schedules\_AddEditSchedulePartial.cshtml" />
+    <Content Include="Views\DailyTimeRecord\Index.cshtml" />
+    <Content Include="Views\DailyTimeRecord\_DailyTimeRecordGridViewPartial.cshtml" />
+    <Content Include="Views\DailyTimeRecord\_AddEditDailyTimeRecordPartial.cshtml" />
+    <Content Include="Views\OT\_AddEditOverTimePartial.cshtml" />
+    <Content Include="Views\Schedules\_SchedulerPartial.cshtml" />
+    <Content Include="Views\Schedules\_EditSchedulerPartial.cshtml" />
+    <Content Include="Views\Schedules\_AddSchedulerPartial.cshtml" />
+    <Content Include="Views\Schedules\_pcAddSchedulerPartial.cshtml" />
+    <Content Include="Views\DailyTimeRecord\_DailyTimeRecordSchedulerPartial.cshtml" />
+    <Content Include="Views\DailyTimeRecord\_EditDailyTimerRecordSchedulerPartial.cshtml" />
+    <Content Include="Views\Schedules\_SchedulerCallbackPanelPartial.cshtml" />
+    <Content Include="Views\Schedules\_HeaderSchedulePartial.cshtml" />
+    <Content Include="Views\DailyTimeRecord\_DailyTimeRecordCallbackPanelPartial.cshtml" />
+    <Content Include="Views\Attendance\Index.cshtml" />
+    <Content Include="Views\Attendance\_RawAttendanceGridViewPartial.cshtml" />
+    <Content Include="Views\RSAProvider\Index.cshtml" />
+    <Content Include="Views\RSAProvider\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -500,7 +542,6 @@
     <Folder Include="FileManager\Excel\" />
     <Folder Include="FileManager\Videos\" />
     <Folder Include="Scripts\" />
-    <Folder Include="Views\Attendance\" />
     <Folder Include="Views\Audio\" />
   </ItemGroup>
   <ItemGroup>
@@ -547,9 +588,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>62874</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:62810/</IISUrl>
+          <IISUrl>http://localhost:51607/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

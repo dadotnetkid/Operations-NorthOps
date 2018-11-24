@@ -47,8 +47,11 @@ namespace NorthOps.Models
             foreach (var i in unitOfWork.JobApplicationRepo.Get(filter: m => m.UserId == _userId, includeProperties: "Users"))
             {
                 var examResult = $"Congratulations {i.Users.FullName} You passed the online exam for NorthOps. We are located at Josephine Hotel formerly Sports City Bayombong. Kindly look for Alvin and bring a copy of your resume. Thank you.";
+                if (i.IsExamPassed == true)
+                {
 
-                if (i.Users?.Applicants?.Any(m => m.IsTaken == null) == true)
+                }
+                else if (i.Users?.Applicants?.Any(m => m.IsTaken == null) == true)
                 {
                     examResult =
                         $"Your exam is ready <a href='{new UrlHelper(requestContext).Action("Index", "ApplicantExam")}'> click here</a>";

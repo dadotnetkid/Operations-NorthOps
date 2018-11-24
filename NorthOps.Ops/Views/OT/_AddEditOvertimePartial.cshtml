@@ -1,0 +1,64 @@
+﻿@model Overtimes
+<div class="row">
+    <div class="col-lg-2">
+        @{
+            Html.DevExpress().ComboBoxFor(m => m.UserId, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.Caption = "Employee";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.NullText = @"Employee";
+                settings.Properties.TextField = "FullName";
+                settings.Properties.ValueField= "Id";
+            }).BindList(new UnitOfWork().UserRepository.Get(m=>m.UserRoles.Any(x=>x.Name=="Employee"))).GetHtml();
+        }
+    </div>
+    <div class="col-lg-2">
+        @{
+            Html.DevExpress().DateEditFor(m=>m.DateFrom, settings =>
+            {
+                settings.Properties.EditFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.DisplayFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.Caption = "Date Time From";
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TimeSectionProperties.Visible = true;
+
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-2">
+        @{
+            Html.DevExpress().DateEditFor(m=>m.DateTo, settings =>
+            {
+                settings.Properties.EditFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.DisplayFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.Caption = "Date Time To";
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TimeSectionProperties.Visible = true;
+            }).GetHtml();
+        }
+    </div>
+  
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().Button(settings =>
+            {
+                settings.ControlStyle.CssClass = "margin-r-5";
+                settings.Name = "btnSave";
+                settings.Text = "Save";
+                settings.ClientSideEvents.Click = "function(s,e){OTGridView.UpdateEdit();}";
+            }).GetHtml();
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnCancel";
+                settings.Text = "Cancel";
+                settings.ClientSideEvents.Click = "function(s,e){OTGridView.CancelEdit();}";
+            }).GetHtml();
+        }
+    </div>
+   
+</div>

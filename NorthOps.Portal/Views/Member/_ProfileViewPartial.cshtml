@@ -59,8 +59,8 @@
             });
             settings.TabPages.Add("Educational Attainment").SetContent(() =>
             {
-
-                Html.RenderAction("EducationalAttainmentGridViewPartial", new { UserId = Model.Id });
+                //Html.RenderAction("SelectEducationAttainmentCallbackPanelPartial", new {userId = Model.Id});
+                Html.RenderAction("EducationalAttainmentGridViewPartial", new { userId = Model.Id });
                 Html.RenderAction("ButtonTabProfilePartial", new { buttonName = "btnEducationAttainmentTabNext" });
 
             });
@@ -117,11 +117,11 @@
 
     function OnValueChanged(s, e) {
         Email = '@Model.Email';
-       @{
-           if(Model.Email!=null )
-           {
-               ViewContext.Writer.Write("CheckEmailChange(s,e);");
-           }
+        @{
+            if(Model.Email!=null )
+            {
+                ViewContext.Writer.Write("CheckEmailChange(s,e);");
+            }
         }
 
     }
@@ -143,12 +143,21 @@
 
         }).done(function () {
             LoadingSubmit.Hide();
-            });
+        });
     }
 
 
     function btnNext(s, e) {
         var tabIndex = ApplicantDetails.GetActiveTabIndex() + 1;
         ApplicantDetails.SetActiveTabIndex(tabIndex);
+    }
+</script>
+<script>
+    function callbackPanel(s,e) {
+        SelectEducationAttainmentCallbackPanel.PerformCallback({
+            elementary: elementary.GetValue(),
+            highSchool: highSchool.GetValue(),
+            college: college.GetValue()
+        });
     }
 </script>

@@ -13,10 +13,10 @@
         settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsBehavior.ConfirmDelete = true;
 
-        settings.CommandColumn.Visible = false;
-        settings.CommandColumn.ShowNewButton = true;
-        settings.CommandColumn.ShowDeleteButton = true;
-        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = false;
+        settings.CommandColumn.ShowEditButton = false;
 
         settings.KeyFieldName = "Id";
 
@@ -35,7 +35,7 @@
         {
             col.FieldName = "LogDateTime";
         });
-       
+
         settings.Columns.Add(col =>
         {
             col.ColumnType = MVCxGridViewColumnType.ComboBox;
@@ -49,6 +49,10 @@
 
         });
 
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderPartial("_addeditattendancepartial", new Attendances());
+        });
 
     });
     if (ViewData["EditError"] != null)

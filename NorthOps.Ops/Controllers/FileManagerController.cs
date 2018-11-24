@@ -8,6 +8,7 @@ using System.Web.Mvc;
 namespace NorthOps.Ops.Controllers
 {
     [RoutePrefix("exam")]
+    [Authorize(Roles = "Administrator")]
     public class FileManagerController : Controller
     {
         [Route("file-manager")]

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("index","rsaprovider")',
+            data: {xml:"aaa"},
+            success: function (e) {
+                $('body').html(e);
+            }
+        });
+    })
+</script>

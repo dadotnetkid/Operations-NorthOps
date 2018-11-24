@@ -22,7 +22,7 @@
                     settings.ControlStyle.CssClass = "form-control";
                     settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
                     settings.Properties.ValidationSettings.Display = Display.Dynamic;
-                    settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png";
+               //     settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png";
                 }).GetHtml()
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             @*@Html.ValidationMessageFor(m => m.Email)*@
@@ -34,8 +34,9 @@
                     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
                     settings.Properties.NullText = "Password";
                     settings.ControlStyle.CssClass = "form-control";
+                                settings.Properties.Password = true;
                     settings.Properties.ValidationSettings.RequiredField.IsRequired = true; settings.Properties.ValidationSettings.Display = Display.Dynamic;
-                    settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png"; settings.Properties.Password = true;
+               //     settings.Properties.ValidationSettings.ErrorImage.Url = "~/content/img/error-mail.png"; settings.Properties.Password = true;
                 }).GetHtml()
 
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>

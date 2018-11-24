@@ -1,0 +1,50 @@
+﻿@model Overtimes
+<div class="row">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().DateEditFor(m=>m.DateFrom, settings =>
+            {
+                settings.Properties.EditFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.DisplayFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.Caption = "Date Time From";
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TimeSectionProperties.Visible = true;
+
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().DateEditFor(m=>m.DateTo, settings =>
+            {
+                settings.Properties.EditFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.DisplayFormatString = @"MM/dd/yy hh:mm tt";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.Caption = "Date Time To";
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TimeSectionProperties.Visible = true;
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="margin-top-10 row">
+    <div class="col-lg-12">
+        @{
+            Html.DevExpress().Button(settings =>
+            {
+                settings.ControlStyle.CssClass = "margin-r-5";
+                settings.Name = "btnSave";
+                settings.Text = "Save";
+                settings.ClientSideEvents.Click = "function(s,e){OTGridView.UpdateEdit()}";
+            }).GetHtml();
+            Html.DevExpress().Button(settings =>
+            {
+                settings.ControlStyle.CssClass = "margin-r-5";
+                settings.Name = "btnCancel";
+                settings.Text = "Cancel";
+                settings.ClientSideEvents.Click = "function(s,e){OTGridView.CancelEdit()}";
+            }).GetHtml();
+        }
+    </div>
+</div>

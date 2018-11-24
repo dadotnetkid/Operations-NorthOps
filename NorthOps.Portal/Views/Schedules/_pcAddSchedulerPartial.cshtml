@@ -1,0 +1,16 @@
+﻿@{
+    Html.DevExpress().PopupControl(settings =>
+    {
+        settings.Name = "pcAddEditSchedule";
+        settings.Width = Unit.Pixel(700);
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.HeaderText = "New Schedule";
+        settings.CallbackRouteValues = new { Action = "PcAddSchedulerPartial", Controller = "Schedules" };
+        settings.ClientSideEvents.EndCallback = "function(s,e){ScheduleDateFrom.Focus()}";
+        settings.SetContent(() =>
+        {
+            Html.RenderPartial("_AddSchedulerPartial");
+        });
+    }).GetHtml();
+}

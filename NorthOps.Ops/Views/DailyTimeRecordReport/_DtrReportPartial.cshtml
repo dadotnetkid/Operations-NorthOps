@@ -1,0 +1,14 @@
+﻿
+@{
+
+    if (Model != null)
+    {
+        Html.DevExpress().WebDocumentViewer(web =>
+        {
+            web.Name = "ReportWebDocumentViewer";
+        }).Bind(Model).GetHtml();
+    }
+
+}
+
+

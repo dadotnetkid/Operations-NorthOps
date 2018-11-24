@@ -1,0 +1,58 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Width = Unit.Percentage(100);
+
+        settings.Name = "RawAttendanceGridView";
+        settings.CallbackRouteValues = new { Controller = "Attendance", Action = "RawAttendanceGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Attendance", Action = "RawAttendanceGridViewPartialAddNew" };
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = false;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "LogDateTime";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
+            dt.EditFormatString = "MM/dd/yyyy hh:mm tt";
+            dt.EditFormat = EditFormat.DateTime;
+            dt.TimeSectionProperties.Visible = true;
+            col.Settings.AutoFilterCondition = AutoFilterCondition.GreaterOrEqual;
+
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "InOutState"; col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.TextField = "Name";
+            cbo.ValueField = "Id";
+            cbo.DataSource = Enum.GetValues(typeof(InOutState)).Cast<InOutState>().Select(x => new { Id = (int)x, Name = x.ToString() });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

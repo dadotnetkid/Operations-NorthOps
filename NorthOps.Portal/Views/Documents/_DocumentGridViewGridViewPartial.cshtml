@@ -1,0 +1,69 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "DocumentGridView";
+        settings.CallbackRouteValues = new { Controller = "documents", Action = "DocumentGridViewGridViewPartial" };
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "documents", Action = "DocumentGridViewGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Videos", Action = "DocumentGridViewGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Videos", Action = "DocumentGridViewGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = false;
+        settings.CommandColumn.ShowEditButton = false;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+
+        settings.SettingsDetail.ShowDetailRow = true;
+        settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+     
+
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            col.FieldName = "Campaigns.CampaignName";
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.TextField = "CampaignName";
+            cbo.ValueField = "CampaignName";
+            cbo.DataSource = new UnitOfWork().CampaignsRepo.Get();
+
+        });
+        settings.Columns.Add("Title");
+        settings.Columns.Add("Project");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DocumentType";
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.TextField = "Name";
+            cbo.ValueField = "Id";
+            cbo.ValueType = typeof(DocumentType);
+            cbo.DataSource = Enum.GetValues(typeof(DocumentType)).Cast<DocumentType>().Select(x => new { Id = (int)x, Name = x.ToString() });
+
+
+        });
+        settings.SetDetailRowTemplateContent(col =>
+        {
+            Html.RenderAction("DetailDocumentGridViewGridViewPartial", new { documentId = col.KeyValue });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

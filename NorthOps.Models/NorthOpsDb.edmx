@@ -51,7 +51,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BiometricId" Type="int" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" />
-          <Property Name="LogDateTime" Type="datetime2" Precision="7" />
+          <Property Name="LogDateTime" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="InOutState" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime2" Precision="7" />
           <Property Name="DateModified" Type="datetime2" Precision="7" />
@@ -107,6 +107,20 @@
           <Property Name="IsAnswer" Type="bit" />
           <Property Name="DateCreated" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="DailyTimeRecords">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleId" Type="nvarchar" MaxLength="128" />
+          <Property Name="DateFrom" Type="datetime2" Precision="7" />
+          <Property Name="DateTo" Type="datetime2" Precision="7" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="isAgentApproved" Type="bit" />
+          <Property Name="isAdminApproved" Type="bit" />
+        </EntityType>
         <EntityType Name="Departments">
           <Key>
             <PropertyRef Name="Id" />
@@ -122,6 +136,20 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DivisionName" Type="nvarchar(max)" />
           <Property Name="Description" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CampaignId" Type="nvarchar" MaxLength="128" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="Project" Type="nvarchar(max)" />
+          <Property Name="AddedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="Path" Type="nvarchar(max)" />
+          <Property Name="DocumentContent" Type="nvarchar(max)" />
+          <Property Name="DocumentType" Type="int" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="EducationAttainments">
           <Key>
@@ -161,6 +189,13 @@
           <Property Name="Equivalent" Type="int" />
           <Property Name="Items" Type="int" />
         </EntityType>
+        <EntityType Name="ErrorTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ErrorType" Type="nvarchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="Exams">
           <Key>
             <PropertyRef Name="ExamId" />
@@ -176,6 +211,15 @@
           <Property Name="IsRandom" Type="bit" />
           <Property Name="Percentage" Type="int" />
           <Property Name="Items" Type="int" />
+        </EntityType>
+        <EntityType Name="Holidays">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Holiday" Type="nvarchar" MaxLength="255" />
+          <Property Name="HolidayDate" Type="datetime2" Precision="7" />
+          <Property Name="Type" Type="int" />
         </EntityType>
         <EntityType Name="JobApplications">
           <Key>
@@ -201,6 +245,17 @@
           <Property Name="IsPhoneInterviewPassed" Type="bit" />
           <Property Name="IsTrainingPassed" Type="bit" />
           <Property Name="IsOnBoardingPassed" Type="bit" />
+          <Property Name="IsExamPassedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Leaves">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="LeaveDate" Type="datetime2" Precision="7" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+          <Property Name="isApproved" Type="bit" />
         </EntityType>
         <EntityType Name="NotificationsTemplates">
           <Key>
@@ -209,6 +264,19 @@
           <Property Name="Id" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Type" Type="int" />
           <Property Name="Template" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Overtimes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="DateFrom" Type="datetime2" Precision="7" />
+          <Property Name="DateTo" Type="datetime2" Precision="7" />
+          <Property Name="isApproved" Type="bit" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="PersonalityResults">
           <Key>
@@ -252,9 +320,17 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CampaignId" Type="nvarchar" MaxLength="128" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ErrorTypeId" Type="int" />
           <Property Name="Recording" Type="varbinary(max)" />
           <Property Name="CallDate" Type="datetime" />
-          <Property Name="Number" Type="int" />
+          <Property Name="CallerNumber" Type="nvarchar" MaxLength="128" />
+          <Property Name="Errors" Type="nvarchar(max)" />
+          <Property Name="ErrorDateTime" Type="datetime2" Precision="7" />
+          <Property Name="RootCauseAnalysis" Type="nvarchar(max)" />
+          <Property Name="Commitment" Type="nvarchar(max)" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="AcknowledgmentDate" Type="datetime2" Precision="7" />
+          <Property Name="CoachingDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="RestDays">
           <Key>
@@ -270,7 +346,10 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ScheduleDateFrom" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ScheduleDateTo" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ScheduleDate" Type="datetime2" Precision="7" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="Shifts">
           <Key>
@@ -324,6 +403,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Rfid" Type="nvarchar" MaxLength="128" />
+          <Property Name="BiometricId" Type="int" />
           <Property Name="DivisionId" Type="int" />
           <Property Name="DepartmentId" Type="int" />
           <Property Name="BranchId" Type="int" />
@@ -381,6 +462,14 @@
           <Property Name="isActive" Type="bit" />
           <Property Name="ZipCode" Type="int" />
         </EntityType>
+        <EntityType Name="UsersInCampaigns">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CampaingId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CampaingId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="UsersInCampaignShift">
           <Key>
             <PropertyRef Name="Id" />
@@ -388,7 +477,7 @@
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CampaignId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ShiftId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ShiftId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="UsersInRoles">
           <Key>
@@ -568,6 +657,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DailyTimeRecords_Schedules">
+          <End Role="Schedules" Type="Self.Schedules" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DailyTimeRecords" Type="Self.DailyTimeRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedules">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyTimeRecords">
+              <PropertyRef Name="ScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyTimeRecords_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="DailyTimeRecords" Type="Self.DailyTimeRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyTimeRecords">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyTimeRecords_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="DailyTimeRecords" Type="Self.DailyTimeRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyTimeRecords">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DayOff_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="RestDays" Type="Self.RestDays" Multiplicity="*" />
@@ -591,6 +718,30 @@
             </Principal>
             <Dependent Role="AddressTownCities">
               <PropertyRef Name="StateProvinceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documents_Campaigns">
+          <End Role="Campaigns" Type="Self.Campaigns" Multiplicity="0..1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaigns">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documents_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="AddedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -694,6 +845,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Overtimes_CreatedBy">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Overtimes" Type="Self.Overtimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Overtimes">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Overtimes_ModifiedBy">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Overtimes" Type="Self.Overtimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Overtimes">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Overtimes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Overtimes" Type="Self.Overtimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Overtimes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PersonalityResult_UserId">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -743,6 +930,30 @@
             </Principal>
             <Dependent Role="Recordings">
               <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recordings_CreatedBy">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Recordings" Type="Self.Recordings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Recordings">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recordings_ErrorTypes">
+          <End Role="ErrorTypes" Type="Self.ErrorTypes" Multiplicity="0..1" />
+          <End Role="Recordings" Type="Self.Recordings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ErrorTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Recordings">
+              <PropertyRef Name="ErrorTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -858,6 +1069,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UsersInCampaigns_Campaigns">
+          <End Role="Campaigns" Type="Self.Campaigns" Multiplicity="1" />
+          <End Role="UsersInCampaigns" Type="Self.UsersInCampaigns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaigns">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersInCampaigns">
+              <PropertyRef Name="CampaingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersInCampaigns_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersInCampaigns" Type="Self.UsersInCampaigns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersInCampaigns">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UsersInCampaignShift_Campaigns">
           <End Role="Campaigns" Type="Self.Campaigns" Multiplicity="1" />
           <End Role="UsersInCampaignShift" Type="Self.UsersInCampaignShift" Multiplicity="*" />
@@ -871,7 +1106,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UsersInCampaignShift_Shifts">
-          <End Role="Shifts" Type="Self.Shifts" Multiplicity="1" />
+          <End Role="Shifts" Type="Self.Shifts" Multiplicity="0..1" />
           <End Role="UsersInCampaignShift" Type="Self.UsersInCampaignShift" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Shifts">
@@ -946,15 +1181,21 @@
           <EntitySet Name="CampaignsInShifts" EntityType="Self.CampaignsInShifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Choices" EntityType="Self.Choices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyTimeRecords" EntityType="Self.DailyTimeRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Documents" EntityType="Self.Documents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EducationAttainments" EntityType="Self.EducationAttainments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeNotications" EntityType="Self.EmployeeNotications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmploymentHistories" EntityType="Self.EmploymentHistories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equivalents" EntityType="Self.Equivalents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ErrorTypes" EntityType="Self.ErrorTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Exams" EntityType="Self.Exams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Holidays" EntityType="Self.Holidays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobApplications" EntityType="Self.JobApplications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Leaves" EntityType="Self.Leaves" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationsTemplates" EntityType="Self.NotificationsTemplates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Overtimes" EntityType="Self.Overtimes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonalityResults" EntityType="Self.PersonalityResults" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Positions" EntityType="Self.Positions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
@@ -967,6 +1208,7 @@
           <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersInCampaigns" EntityType="Self.UsersInCampaigns" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersInCampaignShift" EntityType="Self.UsersInCampaignShift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Videos" EntityType="Self.Videos" Schema="dbo" store:Type="Tables" />
@@ -1013,6 +1255,18 @@
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Choices" EntitySet="Choices" />
           </AssociationSet>
+          <AssociationSet Name="FK_DailyTimeRecords_Schedules" Association="Self.FK_DailyTimeRecords_Schedules">
+            <End Role="Schedules" EntitySet="Schedules" />
+            <End Role="DailyTimeRecords" EntitySet="DailyTimeRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyTimeRecords_Users" Association="Self.FK_DailyTimeRecords_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DailyTimeRecords" EntitySet="DailyTimeRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyTimeRecords_Users1" Association="Self.FK_DailyTimeRecords_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DailyTimeRecords" EntitySet="DailyTimeRecords" />
+          </AssociationSet>
           <AssociationSet Name="FK_DayOff_Users" Association="Self.FK_DayOff_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="RestDays" EntitySet="RestDays" />
@@ -1020,6 +1274,14 @@
           <AssociationSet Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" Association="Self.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
             <End Role="AddressStateProvinces" EntitySet="AddressStateProvinces" />
             <End Role="AddressTownCities" EntitySet="AddressTownCities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documents_Campaigns" Association="Self.FK_Documents_Campaigns">
+            <End Role="Campaigns" EntitySet="Campaigns" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documents_Users" Association="Self.FK_Documents_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Documents" EntitySet="Documents" />
           </AssociationSet>
           <AssociationSet Name="FK_EducationAttainments_Users" Association="Self.FK_EducationAttainments_Users">
             <End Role="Users" EntitySet="Users" />
@@ -1053,6 +1315,18 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="JobApplications" EntitySet="JobApplications" />
           </AssociationSet>
+          <AssociationSet Name="FK_Overtimes_CreatedBy" Association="Self.FK_Overtimes_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Overtimes" EntitySet="Overtimes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Overtimes_ModifiedBy" Association="Self.FK_Overtimes_ModifiedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Overtimes" EntitySet="Overtimes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Overtimes_Users" Association="Self.FK_Overtimes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Overtimes" EntitySet="Overtimes" />
+          </AssociationSet>
           <AssociationSet Name="FK_PersonalityResult_UserId" Association="Self.FK_PersonalityResult_UserId">
             <End Role="Users" EntitySet="Users" />
             <End Role="PersonalityResults" EntitySet="PersonalityResults" />
@@ -1067,6 +1341,14 @@
           </AssociationSet>
           <AssociationSet Name="FK_Recordings_Campaigns" Association="Self.FK_Recordings_Campaigns">
             <End Role="Campaigns" EntitySet="Campaigns" />
+            <End Role="Recordings" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recordings_CreatedBy" Association="Self.FK_Recordings_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Recordings" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recordings_ErrorTypes" Association="Self.FK_Recordings_ErrorTypes">
+            <End Role="ErrorTypes" EntitySet="ErrorTypes" />
             <End Role="Recordings" EntitySet="Recordings" />
           </AssociationSet>
           <AssociationSet Name="FK_Recordings_Users" Association="Self.FK_Recordings_Users">
@@ -1105,6 +1387,14 @@
             <End Role="Divisions" EntitySet="Divisions" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_UsersInCampaigns_Campaigns" Association="Self.FK_UsersInCampaigns_Campaigns">
+            <End Role="Campaigns" EntitySet="Campaigns" />
+            <End Role="UsersInCampaigns" EntitySet="UsersInCampaigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInCampaigns_Users" Association="Self.FK_UsersInCampaigns_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersInCampaigns" EntitySet="UsersInCampaigns" />
+          </AssociationSet>
           <AssociationSet Name="FK_UsersInCampaignShift_Campaigns" Association="Self.FK_UsersInCampaignShift_Campaigns">
             <End Role="Campaigns" EntitySet="Campaigns" />
             <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
@@ -1139,7 +1429,6 @@
           <EntitySet Name="AddressTownCities" EntityType="northopsModel.AddressTownCities" />
           <EntitySet Name="ApplicantAnswers" EntityType="northopsModel.ApplicantAnswers" />
           <EntitySet Name="Applicants" EntityType="northopsModel.Applicants" />
-          <EntitySet Name="Attendances" EntityType="northopsModel.Attendances" />
           <EntitySet Name="Biometrics" EntityType="northopsModel.Biometrics" />
           <EntitySet Name="Branch" EntityType="northopsModel.Branch" />
           <EntitySet Name="Campaigns" EntityType="northopsModel.Campaigns" />
@@ -1158,22 +1447,15 @@
           <EntitySet Name="Positions" EntityType="northopsModel.Positions" />
           <EntitySet Name="Questions" EntityType="northopsModel.Questions" />
           <EntitySet Name="RestDays" EntityType="northopsModel.RestDays" />
-          <EntitySet Name="Schedules" EntityType="northopsModel.Schedules" />
           <EntitySet Name="Shifts" EntityType="northopsModel.Shifts" />
           <EntitySet Name="TypingSpeeds" EntityType="northopsModel.TypingSpeeds" />
           <EntitySet Name="UserClaims" EntityType="northopsModel.UserClaims" />
           <EntitySet Name="UserLogins" EntityType="northopsModel.UserLogins" />
           <EntitySet Name="UserRoles" EntityType="northopsModel.UserRoles" />
-          <EntitySet Name="Users" EntityType="northopsModel.Users" />
-          <EntitySet Name="UsersInCampaignShift" EntityType="northopsModel.UsersInCampaignShift" />
           <EntitySet Name="Videos" EntityType="northopsModel.Videos" />
           <AssociationSet Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" Association="northopsModel.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
             <End Role="AddressStateProvinces" EntitySet="AddressStateProvinces" />
             <End Role="AddressTownCities" EntitySet="AddressTownCities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_AddressTownCities" Association="northopsModel.FK_Users_AddressTownCities">
-            <End Role="AddressTownCities" EntitySet="AddressTownCities" />
-            <End Role="Users" EntitySet="Users" />
           </AssociationSet>
           <AssociationSet Name="FK_ApplicantAnswer_ChoiceId" Association="northopsModel.FK_ApplicantAnswer_ChoiceId">
             <End Role="Choices" EntitySet="Choices" />
@@ -1183,33 +1465,9 @@
             <End Role="Questions" EntitySet="Questions" />
             <End Role="ApplicantAnswers" EntitySet="ApplicantAnswers" />
           </AssociationSet>
-          <AssociationSet Name="FK_ApplicantAnswer_UserId" Association="northopsModel.FK_ApplicantAnswer_UserId">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="ApplicantAnswers" EntitySet="ApplicantAnswers" />
-          </AssociationSet>
           <AssociationSet Name="FK_Applicants_ExamId" Association="northopsModel.FK_Applicants_ExamId">
             <End Role="Exams" EntitySet="Exams" />
             <End Role="Applicants" EntitySet="Applicants" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Applicants_UserId" Association="northopsModel.FK_Applicants_UserId">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Applicants" EntitySet="Applicants" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendances_Biometrics" Association="northopsModel.FK_Attendances_Biometrics">
-            <End Role="Biometrics" EntitySet="Biometrics" />
-            <End Role="Attendances" EntitySet="Attendances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Biometrics_Users" Association="northopsModel.FK_Biometrics_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Biometrics" EntitySet="Biometrics" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_Branch" Association="northopsModel.FK_Users_Branch">
-            <End Role="Branch" EntitySet="Branch" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UsersInCampaignShift_Campaigns" Association="northopsModel.FK_UsersInCampaignShift_Campaigns">
-            <End Role="Campaigns" EntitySet="Campaigns" />
-            <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
           </AssociationSet>
           <AssociationSet Name="FK_Exam_CategoryId" Association="northopsModel.FK_Exam_CategoryId">
             <End Role="Categories" EntitySet="Categories" />
@@ -1218,26 +1476,6 @@
           <AssociationSet Name="FK_Choice_Question" Association="northopsModel.FK_Choice_Question">
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Choices" EntitySet="Choices" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_Departments" Association="northopsModel.FK_Users_Departments">
-            <End Role="Departments" EntitySet="Departments" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_Divisions" Association="northopsModel.FK_Users_Divisions">
-            <End Role="Divisions" EntitySet="Divisions" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EducationAttainments_Users" Association="northopsModel.FK_EducationAttainments_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="EducationAttainments" EntitySet="EducationAttainments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeNotications_Users" Association="northopsModel.FK_EmployeeNotications_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="EmployeeNotications" EntitySet="EmployeeNotications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmploymentHistories_Users" Association="northopsModel.FK_EmploymentHistories_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="EmploymentHistories" EntitySet="EmploymentHistories" />
           </AssociationSet>
           <AssociationSet Name="FK_Question_ExamId" Association="northopsModel.FK_Question_ExamId">
             <End Role="Exams" EntitySet="Exams" />
@@ -1251,57 +1489,17 @@
             <End Role="Exams" EntitySet="Exams" />
             <End Role="Videos" EntitySet="Videos" />
           </AssociationSet>
-          <AssociationSet Name="FK_JobApplications_Users" Association="northopsModel.FK_JobApplications_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="JobApplications" EntitySet="JobApplications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PersonalityResult_UserId" Association="northopsModel.FK_PersonalityResult_UserId">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="PersonalityResults" EntitySet="PersonalityResults" />
-          </AssociationSet>
           <AssociationSet Name="FK_Question_VideoId" Association="northopsModel.FK_Question_VideoId">
             <End Role="Videos" EntitySet="Videos" />
             <End Role="Questions" EntitySet="Questions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DayOff_Users" Association="northopsModel.FK_DayOff_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="RestDays" EntitySet="RestDays" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Schedules_Users" Association="northopsModel.FK_Schedules_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Schedules" EntitySet="Schedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UsersInCampaignShift_Shifts" Association="northopsModel.FK_UsersInCampaignShift_Shifts">
-            <End Role="Shifts" EntitySet="Shifts" />
-            <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserClaims_Users" Association="northopsModel.FK_UserClaims_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserClaims" EntitySet="UserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserLogins_Users" Association="northopsModel.FK_UserLogins_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserLogins" EntitySet="UserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UsersInCampaignShift_Users" Association="northopsModel.FK_UsersInCampaignShift_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
           </AssociationSet>
           <AssociationSet Name="CampaignsInShifts" Association="northopsModel.CampaignsInShifts">
             <End Role="Campaigns" EntitySet="Campaigns" />
             <End Role="Shifts" EntitySet="Shifts" />
           </AssociationSet>
-          <AssociationSet Name="UsersInRoles" Association="northopsModel.UsersInRoles">
-            <End Role="UserRoles" EntitySet="UserRoles" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
           <EntitySet Name="Inventory" EntityType="northopsModel.Inventory" />
           <EntitySet Name="Items" EntityType="northopsModel.Items" />
           <EntitySet Name="ItemTypes" EntityType="northopsModel.ItemTypes" />
-          <AssociationSet Name="FK_Inventory_Users" Association="northopsModel.FK_Inventory_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Inventory" EntitySet="Inventory" />
-          </AssociationSet>
           <AssociationSet Name="FK_Inventory_ItemTypes" Association="northopsModel.FK_Inventory_ItemTypes">
             <End Role="Items" EntitySet="Items" />
             <End Role="Inventory" EntitySet="Inventory" />
@@ -1315,9 +1513,151 @@
             <End Role="Campaigns" EntitySet="Campaigns" />
             <End Role="Recordings" EntitySet="Recordings" />
           </AssociationSet>
+          <EntitySet Name="Documents" EntityType="northopsModel.Documents" />
+          <AssociationSet Name="FK_Documents_Campaigns" Association="northopsModel.FK_Documents_Campaigns">
+            <End Role="Campaigns" EntitySet="Campaigns" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <EntitySet Name="UsersInCampaignShift" EntityType="northopsModel.UsersInCampaignShift" />
+          <AssociationSet Name="FK_UsersInCampaignShift_Campaigns" Association="northopsModel.FK_UsersInCampaignShift_Campaigns">
+            <End Role="Campaigns" EntitySet="Campaigns" />
+            <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInCampaignShift_Shifts" Association="northopsModel.FK_UsersInCampaignShift_Shifts">
+            <End Role="Shifts" EntitySet="Shifts" />
+            <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
+          </AssociationSet>
+          <EntitySet Name="Overtimes" EntityType="northopsModel.Overtimes" />
+          <EntitySet Name="Leaves" EntityType="northopsModel.Leaves" />
+          <EntitySet Name="Users" EntityType="northopsModel.Users" />
+          <AssociationSet Name="FK_Users_AddressTownCities" Association="northopsModel.FK_Users_AddressTownCities">
+            <End Role="AddressTownCities" EntitySet="AddressTownCities" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicantAnswer_UserId" Association="northopsModel.FK_ApplicantAnswer_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ApplicantAnswers" EntitySet="ApplicantAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicants_UserId" Association="northopsModel.FK_Applicants_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Applicants" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Biometrics_Users" Association="northopsModel.FK_Biometrics_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Biometrics" EntitySet="Biometrics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Branch" Association="northopsModel.FK_Users_Branch">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Departments" Association="northopsModel.FK_Users_Departments">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Divisions" Association="northopsModel.FK_Users_Divisions">
+            <End Role="Divisions" EntitySet="Divisions" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documents_Users" Association="northopsModel.FK_Documents_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EducationAttainments_Users" Association="northopsModel.FK_EducationAttainments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="EducationAttainments" EntitySet="EducationAttainments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeNotications_Users" Association="northopsModel.FK_EmployeeNotications_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="EmployeeNotications" EntitySet="EmployeeNotications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmploymentHistories_Users" Association="northopsModel.FK_EmploymentHistories_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="EmploymentHistories" EntitySet="EmploymentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobApplications_Users" Association="northopsModel.FK_JobApplications_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="JobApplications" EntitySet="JobApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Overtimes_Users" Association="northopsModel.FK_Overtimes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Overtimes" EntitySet="Overtimes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonalityResult_UserId" Association="northopsModel.FK_PersonalityResult_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PersonalityResults" EntitySet="PersonalityResults" />
+          </AssociationSet>
           <AssociationSet Name="FK_Recordings_Users" Association="northopsModel.FK_Recordings_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Recordings" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DayOff_Users" Association="northopsModel.FK_DayOff_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RestDays" EntitySet="RestDays" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClaims_Users" Association="northopsModel.FK_UserClaims_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClaims" EntitySet="UserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLogins_Users" Association="northopsModel.FK_UserLogins_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserLogins" EntitySet="UserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventory_Users" Association="northopsModel.FK_Inventory_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInCampaignShift_Users" Association="northopsModel.FK_UsersInCampaignShift_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
+          </AssociationSet>
+          <AssociationSet Name="UsersInCampaigns" Association="northopsModel.UsersInCampaigns">
+            <End Role="Campaigns" EntitySet="Campaigns" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="UsersInRoles" Association="northopsModel.UsersInRoles">
+            <End Role="UserRoles" EntitySet="UserRoles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="ErrorTypes" EntityType="northopsModel.ErrorTypes" />
+          <AssociationSet Name="FK_Recordings_ErrorTypes" Association="northopsModel.FK_Recordings_ErrorTypes">
+            <End Role="ErrorTypes" EntitySet="ErrorTypes" />
+            <End Role="Recordings" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recordings_CreatedBy" Association="northopsModel.FK_Recordings_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Recordings" EntitySet="Recordings" />
+          </AssociationSet>
+          <EntitySet Name="DailyTimeRecords" EntityType="northopsModel.DailyTimeRecords" />
+          <AssociationSet Name="FK_DailyTimeRecords_Users" Association="northopsModel.FK_DailyTimeRecords_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DailyTimeRecords" EntitySet="DailyTimeRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyTimeRecords_Users1" Association="northopsModel.FK_DailyTimeRecords_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DailyTimeRecords" EntitySet="DailyTimeRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Overtimes_CreatedBy" Association="northopsModel.FK_Overtimes_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Overtimes" EntitySet="Overtimes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Overtimes_ModifiedBy" Association="northopsModel.FK_Overtimes_ModifiedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Overtimes" EntitySet="Overtimes" />
+          </AssociationSet>
+          <EntitySet Name="Schedules" EntityType="northopsModel.Schedules" />
+          <AssociationSet Name="FK_DailyTimeRecords_Schedules" Association="northopsModel.FK_DailyTimeRecords_Schedules">
+            <End Role="Schedules" EntitySet="Schedules" />
+            <End Role="DailyTimeRecords" EntitySet="DailyTimeRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_Users" Association="northopsModel.FK_Schedules_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <EntitySet Name="Holidays" EntityType="northopsModel.Holidays" />
+          <EntitySet Name="Attendances" EntityType="northopsModel.Attendances" />
+          <AssociationSet Name="FK_Attendances_Biometrics" Association="northopsModel.FK_Attendances_Biometrics">
+            <End Role="Biometrics" EntitySet="Biometrics" />
+            <End Role="Attendances" EntitySet="Attendances" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AddressStateProvinces">
@@ -1367,29 +1707,14 @@
           <NavigationProperty Name="Exams" Relationship="northopsModel.FK_Applicants_ExamId" FromRole="Applicants" ToRole="Exams" />
           <NavigationProperty Name="Users" Relationship="northopsModel.FK_Applicants_UserId" FromRole="Applicants" ToRole="Users" />
         </EntityType>
-        <EntityType Name="Attendances">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BiometricId" Type="Int32" Nullable="false" />
-          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LogDateTime" Type="DateTime" Precision="7" />
-          <Property Name="InOutState" Type="Int32" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Precision="7" />
-          <Property Name="DateModified" Type="DateTime" Precision="7" />
-          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsApproved" Type="Boolean" />
-          <NavigationProperty Name="Biometrics" Relationship="northopsModel.FK_Attendances_Biometrics" FromRole="Attendances" ToRole="Biometrics" />
-        </EntityType>
         <EntityType Name="Biometrics">
           <Key>
             <PropertyRef Name="BiometricId" />
           </Key>
           <Property Name="BiometricId" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Attendances" Relationship="northopsModel.FK_Attendances_Biometrics" FromRole="Biometrics" ToRole="Attendances" />
           <NavigationProperty Name="Users" Relationship="northopsModel.FK_Biometrics_Users" FromRole="Biometrics" ToRole="Users" />
+          <NavigationProperty Name="Attendances" Relationship="northopsModel.FK_Attendances_Biometrics" FromRole="Biometrics" ToRole="Attendances" />
         </EntityType>
         <EntityType Name="Branch">
           <Key>
@@ -1407,9 +1732,11 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CampaignName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="UsersInCampaignShift" Relationship="northopsModel.FK_UsersInCampaignShift_Campaigns" FromRole="Campaigns" ToRole="UsersInCampaignShift" />
           <NavigationProperty Name="Shifts" Relationship="northopsModel.CampaignsInShifts" FromRole="Campaigns" ToRole="Shifts" />
           <NavigationProperty Name="Recordings" Relationship="northopsModel.FK_Recordings_Campaigns" FromRole="Campaigns" ToRole="Recordings" />
+          <NavigationProperty Name="Documents" Relationship="northopsModel.FK_Documents_Campaigns" FromRole="Campaigns" ToRole="Documents" />
+          <NavigationProperty Name="UsersInCampaignShift" Relationship="northopsModel.FK_UsersInCampaignShift_Campaigns" FromRole="Campaigns" ToRole="UsersInCampaignShift" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.UsersInCampaigns" FromRole="Campaigns" ToRole="Users" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -1536,6 +1863,7 @@
           <Property Name="IsPhoneInterviewPassed" Type="Boolean" />
           <Property Name="IsTrainingPassed" Type="Boolean" />
           <Property Name="IsOnBoardingPassed" Type="Boolean" />
+          <Property Name="IsExamPassedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Users" Relationship="northopsModel.FK_JobApplications_Users" FromRole="JobApplications" ToRole="Users" />
         </EntityType>
         <EntityType Name="NotificationsTemplates">
@@ -1595,15 +1923,6 @@
           <Property Name="RestDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Users" Relationship="northopsModel.FK_DayOff_Users" FromRole="RestDays" ToRole="Users" />
         </EntityType>
-        <EntityType Name="Schedules">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ScheduleDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Schedules_Users" FromRole="Schedules" ToRole="Users" />
-        </EntityType>
         <EntityType Name="Shifts">
           <Key>
             <PropertyRef Name="Id" />
@@ -1614,8 +1933,8 @@
           <Property Name="TimeOut" Type="DateTime" Precision="7" />
           <Property Name="BreakTime" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="RegularTime" Type="Decimal" Precision="19" Scale="4" />
-          <NavigationProperty Name="UsersInCampaignShift" Relationship="northopsModel.FK_UsersInCampaignShift_Shifts" FromRole="Shifts" ToRole="UsersInCampaignShift" />
           <NavigationProperty Name="Campaigns" Relationship="northopsModel.CampaignsInShifts" FromRole="Shifts" ToRole="Campaigns" />
+          <NavigationProperty Name="UsersInCampaignShift" Relationship="northopsModel.FK_UsersInCampaignShift_Shifts" FromRole="Shifts" ToRole="UsersInCampaignShift" />
         </EntityType>
         <EntityType Name="TypingSpeeds">
           <Key>
@@ -1657,11 +1976,343 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Users" Relationship="northopsModel.UsersInRoles" FromRole="UserRoles" ToRole="Users" />
         </EntityType>
+        <EntityType Name="Videos">
+          <Key>
+            <PropertyRef Name="VideoId" />
+          </Key>
+          <Property Name="VideoId" Type="Guid" Nullable="false" />
+          <Property Name="ExamId" Type="Guid" />
+          <Property Name="VideoName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="VideoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Video" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Extension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Exams" Relationship="northopsModel.FK_Video_ExamId" FromRole="Videos" ToRole="Exams" />
+          <NavigationProperty Name="Questions" Relationship="northopsModel.FK_Question_VideoId" FromRole="Videos" ToRole="Questions" />
+        </EntityType>
+        <Association Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
+          <End Type="northopsModel.AddressStateProvinces" Role="AddressStateProvinces" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="northopsModel.AddressTownCities" Role="AddressTownCities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressStateProvinces">
+              <PropertyRef Name="StateProvinceId" />
+            </Principal>
+            <Dependent Role="AddressTownCities">
+              <PropertyRef Name="StateProvinceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicantAnswer_ChoiceId">
+          <End Type="northopsModel.Choices" Role="Choices" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="northopsModel.ApplicantAnswers" Role="ApplicantAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Choices">
+              <PropertyRef Name="ChoiceId" />
+            </Principal>
+            <Dependent Role="ApplicantAnswers">
+              <PropertyRef Name="ChoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicantAnswer_QuestionId">
+          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="0..1" />
+          <End Type="northopsModel.ApplicantAnswers" Role="ApplicantAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="ApplicantAnswers">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicants_ExamId">
+          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="northopsModel.Applicants" Role="Applicants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exams">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Applicants">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exam_CategoryId">
+          <End Type="northopsModel.Categories" Role="Categories" Multiplicity="0..1" />
+          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Exams">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Choice_Question">
+          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="northopsModel.Choices" Role="Choices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="Choices">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_ExamId">
+          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exams">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TypingSpeed_ExamId">
+          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1" />
+          <End Type="northopsModel.TypingSpeeds" Role="TypingSpeeds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exams">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="TypingSpeeds">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Video_ExamId">
+          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1" />
+          <End Type="northopsModel.Videos" Role="Videos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exams">
+              <PropertyRef Name="ExamId" />
+            </Principal>
+            <Dependent Role="Videos">
+              <PropertyRef Name="ExamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_VideoId">
+          <End Type="northopsModel.Videos" Role="Videos" Multiplicity="0..1" />
+          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Videos">
+              <PropertyRef Name="VideoId" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="VideoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CampaignsInShifts">
+          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="*" />
+          <End Type="northopsModel.Shifts" Role="Shifts" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ItemId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="DateReleased" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Items" Relationship="northopsModel.FK_Inventory_ItemTypes" FromRole="Inventory" ToRole="Items" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Inventory_Users" FromRole="Inventory" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ItemTypeId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Barcode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Serial" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SKU" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ItemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Inventory" Relationship="northopsModel.FK_Inventory_ItemTypes" FromRole="Items" ToRole="Inventory" />
+          <NavigationProperty Name="ItemTypes" Relationship="northopsModel.FK_Items_ItemTypes" FromRole="Items" ToRole="ItemTypes" />
+        </EntityType>
+        <EntityType Name="ItemTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ItemType" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Items" Relationship="northopsModel.FK_Items_ItemTypes" FromRole="ItemTypes" ToRole="Items" />
+        </EntityType>
+        <Association Name="FK_Inventory_ItemTypes">
+          <End Type="northopsModel.Items" Role="Items" Multiplicity="0..1" />
+          <End Type="northopsModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Items_ItemTypes">
+          <End Type="northopsModel.ItemTypes" Role="ItemTypes" Multiplicity="0..1" />
+          <End Type="northopsModel.Items" Role="Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Items">
+              <PropertyRef Name="ItemTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Recordings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CampaignId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Recording" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CallDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Campaigns" Relationship="northopsModel.FK_Recordings_Campaigns" FromRole="Recordings" ToRole="Campaigns" />
+          <Property Name="Errors" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CallerNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Recordings_Users" FromRole="Recordings" ToRole="Users" />
+          <Property Name="ErrorTypeId" Type="Int32" />
+          <Property Name="ErrorDateTime" Type="DateTime" Precision="7" />
+          <Property Name="RootCauseAnalysis" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Commitment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ErrorTypes" Relationship="northopsModel.FK_Recordings_ErrorTypes" FromRole="Recordings" ToRole="ErrorTypes" />
+          <NavigationProperty Name="CreatedByUser" Relationship="northopsModel.FK_Recordings_CreatedBy" FromRole="Recordings" ToRole="Users" />
+          <Property Name="AcknowledgmentDate" Type="DateTime" Precision="7" />
+          <Property Name="CoachingDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Recordings_Campaigns">
+          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="0..1" />
+          <End Type="northopsModel.Recordings" Role="Recordings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaigns">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Recordings">
+              <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CampaignId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Project" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Campaigns" Relationship="northopsModel.FK_Documents_Campaigns" FromRole="Documents" ToRole="Campaigns" />
+          <Property Name="DocumentType" Type="Int32" />
+          <Property Name="DocumentContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Documents_Users" FromRole="Documents" ToRole="Users" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Documents_Campaigns">
+          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="0..1" />
+          <End Type="northopsModel.Documents" Role="Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaigns">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UsersInCampaignShift">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CampaignId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ShiftId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Campaigns" Relationship="northopsModel.FK_UsersInCampaignShift_Campaigns" FromRole="UsersInCampaignShift" ToRole="Campaigns" />
+          <NavigationProperty Name="Shifts" Relationship="northopsModel.FK_UsersInCampaignShift_Shifts" FromRole="UsersInCampaignShift" ToRole="Shifts" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_UsersInCampaignShift_Users" FromRole="UsersInCampaignShift" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_UsersInCampaignShift_Campaigns">
+          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="1" />
+          <End Type="northopsModel.UsersInCampaignShift" Role="UsersInCampaignShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaigns">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersInCampaignShift">
+              <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersInCampaignShift_Shifts">
+          <End Type="northopsModel.Shifts" Role="Shifts" Multiplicity="0..1" />
+          <End Type="northopsModel.UsersInCampaignShift" Role="UsersInCampaignShift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shifts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsersInCampaignShift">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Overtimes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="isApproved" Type="Boolean" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Overtimes_Users" FromRole="Overtimes" ToRole="Users" />
+          <Property Name="DateFrom" Type="DateTime" Precision="7" />
+          <Property Name="DateTo" Type="DateTime" Precision="7" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CreatedByUser" Relationship="northopsModel.FK_Overtimes_CreatedBy" FromRole="Overtimes" ToRole="Users" />
+          <NavigationProperty Name="ModifiedByUser" Relationship="northopsModel.FK_Overtimes_ModifiedBy" FromRole="Overtimes" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Leaves">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LeaveDate" Type="DateTime" Precision="7" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <Property Name="isApproved" Type="Boolean" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Rfid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BiometricId" Type="Int32" />
           <Property Name="DivisionId" Type="Int32" />
           <Property Name="DepartmentId" Type="Int32" />
           <Property Name="BranchId" Type="Int32" />
@@ -1725,59 +2376,28 @@
           <NavigationProperty Name="Branch" Relationship="northopsModel.FK_Users_Branch" FromRole="Users" ToRole="Branch" />
           <NavigationProperty Name="Departments" Relationship="northopsModel.FK_Users_Departments" FromRole="Users" ToRole="Departments" />
           <NavigationProperty Name="Divisions" Relationship="northopsModel.FK_Users_Divisions" FromRole="Users" ToRole="Divisions" />
+          <NavigationProperty Name="Documents" Relationship="northopsModel.FK_Documents_Users" FromRole="Users" ToRole="Documents" />
           <NavigationProperty Name="EducationAttainments" Relationship="northopsModel.FK_EducationAttainments_Users" FromRole="Users" ToRole="EducationAttainments" />
           <NavigationProperty Name="EmployeeNotications" Relationship="northopsModel.FK_EmployeeNotications_Users" FromRole="Users" ToRole="EmployeeNotications" />
           <NavigationProperty Name="EmploymentHistories" Relationship="northopsModel.FK_EmploymentHistories_Users" FromRole="Users" ToRole="EmploymentHistories" />
           <NavigationProperty Name="JobApplications" Relationship="northopsModel.FK_JobApplications_Users" FromRole="Users" ToRole="JobApplications" />
+          <NavigationProperty Name="Overtimes" Relationship="northopsModel.FK_Overtimes_Users" FromRole="Users" ToRole="Overtimes" />
           <NavigationProperty Name="PersonalityResults" Relationship="northopsModel.FK_PersonalityResult_UserId" FromRole="Users" ToRole="PersonalityResults" />
+          <NavigationProperty Name="Recordings" Relationship="northopsModel.FK_Recordings_Users" FromRole="Users" ToRole="Recordings" />
           <NavigationProperty Name="RestDays" Relationship="northopsModel.FK_DayOff_Users" FromRole="Users" ToRole="RestDays" />
-          <NavigationProperty Name="Schedules" Relationship="northopsModel.FK_Schedules_Users" FromRole="Users" ToRole="Schedules" />
           <NavigationProperty Name="UserClaims" Relationship="northopsModel.FK_UserClaims_Users" FromRole="Users" ToRole="UserClaims" />
           <NavigationProperty Name="UserLogins" Relationship="northopsModel.FK_UserLogins_Users" FromRole="Users" ToRole="UserLogins" />
-          <NavigationProperty Name="UsersInCampaignShift" Relationship="northopsModel.FK_UsersInCampaignShift_Users" FromRole="Users" ToRole="UsersInCampaignShift" />
-          <NavigationProperty Name="UserRoles" Relationship="northopsModel.UsersInRoles" FromRole="Users" ToRole="UserRoles" />
           <NavigationProperty Name="Inventory" Relationship="northopsModel.FK_Inventory_Users" FromRole="Users" ToRole="Inventory" />
-          <NavigationProperty Name="Recordings" Relationship="northopsModel.FK_Recordings_Users" FromRole="Users" ToRole="Recordings" />
+          <NavigationProperty Name="UsersInCampaignShift" Relationship="northopsModel.FK_UsersInCampaignShift_Users" FromRole="Users" ToRole="UsersInCampaignShift" />
+          <NavigationProperty Name="Campaigns" Relationship="northopsModel.UsersInCampaigns" FromRole="Users" ToRole="Campaigns" />
+          <NavigationProperty Name="UserRoles" Relationship="northopsModel.UsersInRoles" FromRole="Users" ToRole="UserRoles" />
+          <NavigationProperty Name="CreatedByUser" Relationship="northopsModel.FK_Recordings_CreatedBy" FromRole="Users" ToRole="Recordings" />
+          <NavigationProperty Name="DailyTimeRecords" Relationship="northopsModel.FK_DailyTimeRecords_Users" FromRole="Users" ToRole="DailyTimeRecords" />
+          <NavigationProperty Name="DailyTimeRecordsCreatedBy" Relationship="northopsModel.FK_DailyTimeRecords_Users1" FromRole="Users" ToRole="DailyTimeRecords" />
+          <NavigationProperty Name="OvertimesCreatedBy" Relationship="northopsModel.FK_Overtimes_CreatedBy" FromRole="Users" ToRole="Overtimes" />
+          <NavigationProperty Name="OvertimesModifiedBy" Relationship="northopsModel.FK_Overtimes_ModifiedBy" FromRole="Users" ToRole="Overtimes" />
+          <NavigationProperty Name="Schedules" Relationship="northopsModel.FK_Schedules_Users" FromRole="Users" ToRole="Schedules" />
         </EntityType>
-        <EntityType Name="UsersInCampaignShift">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CampaignId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ShiftId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Campaigns" Relationship="northopsModel.FK_UsersInCampaignShift_Campaigns" FromRole="UsersInCampaignShift" ToRole="Campaigns" />
-          <NavigationProperty Name="Shifts" Relationship="northopsModel.FK_UsersInCampaignShift_Shifts" FromRole="UsersInCampaignShift" ToRole="Shifts" />
-          <NavigationProperty Name="Users" Relationship="northopsModel.FK_UsersInCampaignShift_Users" FromRole="UsersInCampaignShift" ToRole="Users" />
-        </EntityType>
-        <EntityType Name="Videos">
-          <Key>
-            <PropertyRef Name="VideoId" />
-          </Key>
-          <Property Name="VideoId" Type="Guid" Nullable="false" />
-          <Property Name="ExamId" Type="Guid" />
-          <Property Name="VideoName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="VideoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Video" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Extension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Exams" Relationship="northopsModel.FK_Video_ExamId" FromRole="Videos" ToRole="Exams" />
-          <NavigationProperty Name="Questions" Relationship="northopsModel.FK_Question_VideoId" FromRole="Videos" ToRole="Questions" />
-        </EntityType>
-        <Association Name="FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId">
-          <End Type="northopsModel.AddressStateProvinces" Role="AddressStateProvinces" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="northopsModel.AddressTownCities" Role="AddressTownCities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AddressStateProvinces">
-              <PropertyRef Name="StateProvinceId" />
-            </Principal>
-            <Dependent Role="AddressTownCities">
-              <PropertyRef Name="StateProvinceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Users_AddressTownCities">
           <End Type="northopsModel.AddressTownCities" Role="AddressTownCities" Multiplicity="0..1" />
           <End Type="northopsModel.Users" Role="Users" Multiplicity="*" />
@@ -1787,32 +2407,6 @@
             </Principal>
             <Dependent Role="Users">
               <PropertyRef Name="TownCity" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ApplicantAnswer_ChoiceId">
-          <End Type="northopsModel.Choices" Role="Choices" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="northopsModel.ApplicantAnswers" Role="ApplicantAnswers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Choices">
-              <PropertyRef Name="ChoiceId" />
-            </Principal>
-            <Dependent Role="ApplicantAnswers">
-              <PropertyRef Name="ChoiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ApplicantAnswer_QuestionId">
-          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="0..1" />
-          <End Type="northopsModel.ApplicantAnswers" Role="ApplicantAnswers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Questions">
-              <PropertyRef Name="QuestionId" />
-            </Principal>
-            <Dependent Role="ApplicantAnswers">
-              <PropertyRef Name="QuestionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1830,20 +2424,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Applicants_ExamId">
-          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="northopsModel.Applicants" Role="Applicants" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Exams">
-              <PropertyRef Name="ExamId" />
-            </Principal>
-            <Dependent Role="Applicants">
-              <PropertyRef Name="ExamId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Applicants_UserId">
           <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1855,18 +2435,6 @@
             </Principal>
             <Dependent Role="Applicants">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attendances_Biometrics">
-          <End Type="northopsModel.Biometrics" Role="Biometrics" Multiplicity="1" />
-          <End Type="northopsModel.Attendances" Role="Attendances" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Biometrics">
-              <PropertyRef Name="BiometricId" />
-            </Principal>
-            <Dependent Role="Attendances">
-              <PropertyRef Name="BiometricId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1894,44 +2462,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UsersInCampaignShift_Campaigns">
-          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="1" />
-          <End Type="northopsModel.UsersInCampaignShift" Role="UsersInCampaignShift" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Campaigns">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UsersInCampaignShift">
-              <PropertyRef Name="CampaignId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Exam_CategoryId">
-          <End Type="northopsModel.Categories" Role="Categories" Multiplicity="0..1" />
-          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Categories">
-              <PropertyRef Name="CategoryId" />
-            </Principal>
-            <Dependent Role="Exams">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Choice_Question">
-          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="northopsModel.Choices" Role="Choices" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Questions">
-              <PropertyRef Name="QuestionId" />
-            </Principal>
-            <Dependent Role="Choices">
-              <PropertyRef Name="QuestionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Users_Departments">
           <End Type="northopsModel.Departments" Role="Departments" Multiplicity="0..1" />
           <End Type="northopsModel.Users" Role="Users" Multiplicity="*" />
@@ -1953,6 +2483,18 @@
             </Principal>
             <Dependent Role="Users">
               <PropertyRef Name="DivisionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documents_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Documents" Role="Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="AddedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1994,44 +2536,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Question_ExamId">
-          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Exams">
-              <PropertyRef Name="ExamId" />
-            </Principal>
-            <Dependent Role="Questions">
-              <PropertyRef Name="ExamId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TypingSpeed_ExamId">
-          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1" />
-          <End Type="northopsModel.TypingSpeeds" Role="TypingSpeeds" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Exams">
-              <PropertyRef Name="ExamId" />
-            </Principal>
-            <Dependent Role="TypingSpeeds">
-              <PropertyRef Name="ExamId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Video_ExamId">
-          <End Type="northopsModel.Exams" Role="Exams" Multiplicity="0..1" />
-          <End Type="northopsModel.Videos" Role="Videos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Exams">
-              <PropertyRef Name="ExamId" />
-            </Principal>
-            <Dependent Role="Videos">
-              <PropertyRef Name="ExamId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_JobApplications_Users">
           <End Type="northopsModel.Users" Role="Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2042,6 +2546,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="JobApplications">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Overtimes_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Overtimes" Role="Overtimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Overtimes">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2060,15 +2576,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Question_VideoId">
-          <End Type="northopsModel.Videos" Role="Videos" Multiplicity="0..1" />
-          <End Type="northopsModel.Questions" Role="Questions" Multiplicity="*" />
+        <Association Name="FK_Recordings_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Recordings" Role="Recordings" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Videos">
-              <PropertyRef Name="VideoId" />
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Questions">
-              <PropertyRef Name="VideoId" />
+            <Dependent Role="Recordings">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2081,30 +2597,6 @@
             </Principal>
             <Dependent Role="RestDays">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Schedules_Users">
-          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
-          <End Type="northopsModel.Schedules" Role="Schedules" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Schedules">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UsersInCampaignShift_Shifts">
-          <End Type="northopsModel.Shifts" Role="Shifts" Multiplicity="1" />
-          <End Type="northopsModel.UsersInCampaignShift" Role="UsersInCampaignShift" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Shifts">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UsersInCampaignShift">
-              <PropertyRef Name="ShiftId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2136,60 +2628,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UsersInCampaignShift_Users">
-          <End Type="northopsModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="northopsModel.UsersInCampaignShift" Role="UsersInCampaignShift" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UsersInCampaignShift">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="CampaignsInShifts">
-          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="*" />
-          <End Type="northopsModel.Shifts" Role="Shifts" Multiplicity="*" />
-        </Association>
-        <Association Name="UsersInRoles">
-          <End Type="northopsModel.UserRoles" Role="UserRoles" Multiplicity="*" />
-          <End Type="northopsModel.Users" Role="Users" Multiplicity="*" />
-        </Association>
-        <EntityType Name="Inventory">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ItemId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Qty" Type="Int32" />
-          <Property Name="DateReleased" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Inventory_Users" FromRole="Inventory" ToRole="Users" />
-          <NavigationProperty Name="Items" Relationship="northopsModel.FK_Inventory_ItemTypes" FromRole="Inventory" ToRole="Items" />
-        </EntityType>
-        <EntityType Name="Items">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ItemTypeId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Barcode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Serial" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="SKU" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ItemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Inventory" Relationship="northopsModel.FK_Inventory_ItemTypes" FromRole="Items" ToRole="Inventory" />
-          <NavigationProperty Name="ItemTypes" Relationship="northopsModel.FK_Items_ItemTypes" FromRole="Items" ToRole="ItemTypes" />
-        </EntityType>
-        <EntityType Name="ItemTypes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ItemType" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Items" Relationship="northopsModel.FK_Items_ItemTypes" FromRole="ItemTypes" ToRole="Items" />
-        </EntityType>
         <Association Name="FK_Inventory_Users">
           <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
           <End Type="northopsModel.Inventory" Role="Inventory" Multiplicity="*" />
@@ -2202,56 +2640,47 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Inventory_ItemTypes">
-          <End Type="northopsModel.Items" Role="Items" Multiplicity="0..1" />
-          <End Type="northopsModel.Inventory" Role="Inventory" Multiplicity="*" />
+        <Association Name="FK_UsersInCampaignShift_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="northopsModel.UsersInCampaignShift" Role="UsersInCampaignShift" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Items">
+            <Principal Role="Users">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Inventory">
-              <PropertyRef Name="ItemId" />
+            <Dependent Role="UsersInCampaignShift">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Items_ItemTypes">
-          <End Type="northopsModel.ItemTypes" Role="ItemTypes" Multiplicity="0..1" />
-          <End Type="northopsModel.Items" Role="Items" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ItemTypes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Items">
-              <PropertyRef Name="ItemTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
+        <Association Name="UsersInCampaigns">
+          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="*" />
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="*" />
         </Association>
-        <EntityType Name="Recordings">
+        <Association Name="UsersInRoles">
+          <End Type="northopsModel.UserRoles" Role="UserRoles" Multiplicity="*" />
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ErrorTypes">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CampaignId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Recording" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="CallDate" Type="DateTime" Precision="3" />
-          <Property Name="Number" Type="Int32" />
-          <NavigationProperty Name="Campaigns" Relationship="northopsModel.FK_Recordings_Campaigns" FromRole="Recordings" ToRole="Campaigns" />
-          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Recordings_Users" FromRole="Recordings" ToRole="Users" />
+          <Property Name="ErrorType" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Recordings" Relationship="northopsModel.FK_Recordings_ErrorTypes" FromRole="ErrorTypes" ToRole="Recordings" />
         </EntityType>
-        <Association Name="FK_Recordings_Campaigns">
-          <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="0..1" />
+        <Association Name="FK_Recordings_ErrorTypes">
+          <End Type="northopsModel.ErrorTypes" Role="ErrorTypes" Multiplicity="0..1" />
           <End Type="northopsModel.Recordings" Role="Recordings" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Campaigns">
+            <Principal Role="ErrorTypes">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Recordings">
-              <PropertyRef Name="CampaignId" />
+              <PropertyRef Name="ErrorTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Recordings_Users">
+        <Association Name="FK_Recordings_CreatedBy">
           <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
           <End Type="northopsModel.Recordings" Role="Recordings" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2259,7 +2688,147 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Recordings">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DailyTimeRecords">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateFrom" Type="DateTime" Precision="7" />
+          <Property Name="DateTo" Type="DateTime" Precision="7" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_DailyTimeRecords_Users" FromRole="DailyTimeRecords" ToRole="Users" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CreatedByUser" Relationship="northopsModel.FK_DailyTimeRecords_Users1" FromRole="DailyTimeRecords" ToRole="Users" />
+          <Property Name="isAgentApproved" Type="Boolean" />
+          <Property Name="isAdminApproved" Type="Boolean" />
+          <NavigationProperty Name="Schedules" Relationship="northopsModel.FK_DailyTimeRecords_Schedules" FromRole="DailyTimeRecords" ToRole="Schedules" />
+        </EntityType>
+        <Association Name="FK_DailyTimeRecords_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.DailyTimeRecords" Role="DailyTimeRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyTimeRecords">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyTimeRecords_Users1">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.DailyTimeRecords" Role="DailyTimeRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyTimeRecords">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Overtimes_CreatedBy">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Overtimes" Role="Overtimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Overtimes">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Overtimes_ModifiedBy">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Overtimes" Role="Overtimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Overtimes">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Schedules">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleDateFrom" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ScheduleDateTo" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ScheduleDate" Type="DateTime" Precision="7" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="DailyTimeRecords" Relationship="northopsModel.FK_DailyTimeRecords_Schedules" FromRole="Schedules" ToRole="DailyTimeRecords" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Schedules_Users" FromRole="Schedules" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_DailyTimeRecords_Schedules">
+          <End Type="northopsModel.Schedules" Role="Schedules" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="northopsModel.DailyTimeRecords" Role="DailyTimeRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedules">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyTimeRecords">
+              <PropertyRef Name="ScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedules_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Schedules" Role="Schedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Schedules">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Holidays">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Holiday" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HolidayDate" Type="DateTime" Precision="7" />
+          <Property Name="Type" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Attendances">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BiometricId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LogDateTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="InOutState" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <Property Name="DateModified" Type="DateTime" Precision="7" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <NavigationProperty Name="Biometrics" Relationship="northopsModel.FK_Attendances_Biometrics" FromRole="Attendances" ToRole="Biometrics" />
+        </EntityType>
+        <Association Name="FK_Attendances_Biometrics">
+          <End Type="northopsModel.Biometrics" Role="Biometrics" Multiplicity="1" />
+          <End Type="northopsModel.Attendances" Role="Attendances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Biometrics">
+              <PropertyRef Name="BiometricId" />
+            </Principal>
+            <Dependent Role="Attendances">
+              <PropertyRef Name="BiometricId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2309,21 +2878,6 @@
                 <ScalarProperty Name="ExamId" ColumnName="ExamId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ApplicantId" ColumnName="ApplicantId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Attendances">
-            <EntityTypeMapping TypeName="northopsModel.Attendances">
-              <MappingFragment StoreEntitySet="Attendances">
-                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="InOutState" ColumnName="InOutState" />
-                <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="BiometricId" ColumnName="BiometricId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2453,6 +3007,7 @@
           <EntitySetMapping Name="JobApplications">
             <EntityTypeMapping TypeName="northopsModel.JobApplications">
               <MappingFragment StoreEntitySet="JobApplications">
+                <ScalarProperty Name="IsExamPassedDate" ColumnName="IsExamPassedDate" />
                 <ScalarProperty Name="IsOnBoardingPassed" ColumnName="IsOnBoardingPassed" />
                 <ScalarProperty Name="IsTrainingPassed" ColumnName="IsTrainingPassed" />
                 <ScalarProperty Name="IsPhoneInterviewPassed" ColumnName="IsPhoneInterviewPassed" />
@@ -2532,15 +3087,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Schedules">
-            <EntityTypeMapping TypeName="northopsModel.Schedules">
-              <MappingFragment StoreEntitySet="Schedules">
-                <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Shifts">
             <EntityTypeMapping TypeName="northopsModel.Shifts">
               <MappingFragment StoreEntitySet="Shifts">
@@ -2587,6 +3133,128 @@
               <MappingFragment StoreEntitySet="UserRoles">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Videos">
+            <EntityTypeMapping TypeName="northopsModel.Videos">
+              <MappingFragment StoreEntitySet="Videos">
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="Video" ColumnName="Video" />
+                <ScalarProperty Name="VideoPath" ColumnName="VideoPath" />
+                <ScalarProperty Name="VideoName" ColumnName="VideoName" />
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
+                <ScalarProperty Name="VideoId" ColumnName="VideoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CampaignsInShifts" TypeName="northopsModel.CampaignsInShifts" StoreEntitySet="CampaignsInShifts">
+            <EndProperty Name="Shifts">
+              <ScalarProperty Name="Id" ColumnName="ShiftId" />
+            </EndProperty>
+            <EndProperty Name="Campaigns">
+              <ScalarProperty Name="Id" ColumnName="CampaignId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Inventory">
+            <EntityTypeMapping TypeName="northopsModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="DateReleased" ColumnName="DateReleased" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="northopsModel.Items">
+              <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+                <ScalarProperty Name="Serial" ColumnName="Serial" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemTypes">
+            <EntityTypeMapping TypeName="northopsModel.ItemTypes">
+              <MappingFragment StoreEntitySet="ItemTypes">
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recordings">
+            <EntityTypeMapping TypeName="northopsModel.Recordings">
+              <MappingFragment StoreEntitySet="Recordings">
+                <ScalarProperty Name="CoachingDate" ColumnName="CoachingDate" />
+                <ScalarProperty Name="AcknowledgmentDate" ColumnName="AcknowledgmentDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Commitment" ColumnName="Commitment" />
+                <ScalarProperty Name="RootCauseAnalysis" ColumnName="RootCauseAnalysis" />
+                <ScalarProperty Name="ErrorDateTime" ColumnName="ErrorDateTime" />
+                <ScalarProperty Name="ErrorTypeId" ColumnName="ErrorTypeId" />
+                <ScalarProperty Name="CallerNumber" ColumnName="CallerNumber" />
+                <ScalarProperty Name="Errors" ColumnName="Errors" />
+                <ScalarProperty Name="CallDate" ColumnName="CallDate" />
+                <ScalarProperty Name="Recording" ColumnName="Recording" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="northopsModel.Documents">
+              <MappingFragment StoreEntitySet="Documents">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DocumentContent" ColumnName="DocumentContent" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsersInCampaignShift">
+            <EntityTypeMapping TypeName="northopsModel.UsersInCampaignShift">
+              <MappingFragment StoreEntitySet="UsersInCampaignShift">
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Overtimes">
+            <EntityTypeMapping TypeName="northopsModel.Overtimes">
+              <MappingFragment StoreEntitySet="Overtimes">
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="isApproved" ColumnName="isApproved" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leaves">
+            <EntityTypeMapping TypeName="northopsModel.Leaves">
+              <MappingFragment StoreEntitySet="Leaves">
+                <ScalarProperty Name="isApproved" ColumnName="isApproved" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2650,38 +3318,18 @@
                 <ScalarProperty Name="BranchId" ColumnName="BranchId" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="BiometricId" ColumnName="BiometricId" />
+                <ScalarProperty Name="Rfid" ColumnName="Rfid" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UsersInCampaignShift">
-            <EntityTypeMapping TypeName="northopsModel.UsersInCampaignShift">
-              <MappingFragment StoreEntitySet="UsersInCampaignShift">
-                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Videos">
-            <EntityTypeMapping TypeName="northopsModel.Videos">
-              <MappingFragment StoreEntitySet="Videos">
-                <ScalarProperty Name="Extension" ColumnName="Extension" />
-                <ScalarProperty Name="Video" ColumnName="Video" />
-                <ScalarProperty Name="VideoPath" ColumnName="VideoPath" />
-                <ScalarProperty Name="VideoName" ColumnName="VideoName" />
-                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
-                <ScalarProperty Name="VideoId" ColumnName="VideoId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="CampaignsInShifts" TypeName="northopsModel.CampaignsInShifts" StoreEntitySet="CampaignsInShifts">
-            <EndProperty Name="Shifts">
-              <ScalarProperty Name="Id" ColumnName="ShiftId" />
+          <AssociationSetMapping Name="UsersInCampaigns" TypeName="northopsModel.UsersInCampaigns" StoreEntitySet="UsersInCampaigns">
+            <EndProperty Name="Users">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
             <EndProperty Name="Campaigns">
-              <ScalarProperty Name="Id" ColumnName="CampaignId" />
+              <ScalarProperty Name="Id" ColumnName="CampaingId" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="UsersInRoles" TypeName="northopsModel.UsersInRoles" StoreEntitySet="UsersInRoles">
@@ -2692,46 +3340,62 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Inventory">
-            <EntityTypeMapping TypeName="northopsModel.Inventory">
-              <MappingFragment StoreEntitySet="Inventory">
-                <ScalarProperty Name="DateReleased" ColumnName="DateReleased" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <EntitySetMapping Name="ErrorTypes">
+            <EntityTypeMapping TypeName="northopsModel.ErrorTypes">
+              <MappingFragment StoreEntitySet="ErrorTypes">
+                <ScalarProperty Name="ErrorType" ColumnName="ErrorType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyTimeRecords">
+            <EntityTypeMapping TypeName="northopsModel.DailyTimeRecords">
+              <MappingFragment StoreEntitySet="DailyTimeRecords">
+                <ScalarProperty Name="isAdminApproved" ColumnName="isAdminApproved" />
+                <ScalarProperty Name="isAgentApproved" ColumnName="isAgentApproved" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="northopsModel.Schedules">
+              <MappingFragment StoreEntitySet="Schedules">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+                <ScalarProperty Name="ScheduleDateTo" ColumnName="ScheduleDateTo" />
+                <ScalarProperty Name="ScheduleDateFrom" ColumnName="ScheduleDateFrom" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="northopsModel.Items">
-              <MappingFragment StoreEntitySet="Items">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="SKU" ColumnName="SKU" />
-                <ScalarProperty Name="Serial" ColumnName="Serial" />
-                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-                <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+          <EntitySetMapping Name="Holidays">
+            <EntityTypeMapping TypeName="northopsModel.Holidays">
+              <MappingFragment StoreEntitySet="Holidays">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="HolidayDate" ColumnName="HolidayDate" />
+                <ScalarProperty Name="Holiday" ColumnName="Holiday" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ItemTypes">
-            <EntityTypeMapping TypeName="northopsModel.ItemTypes">
-              <MappingFragment StoreEntitySet="ItemTypes">
-                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Recordings">
-            <EntityTypeMapping TypeName="northopsModel.Recordings">
-              <MappingFragment StoreEntitySet="Recordings">
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="CallDate" ColumnName="CallDate" />
-                <ScalarProperty Name="Recording" ColumnName="Recording" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+          <EntitySetMapping Name="Attendances">
+            <EntityTypeMapping TypeName="northopsModel.Attendances">
+              <MappingFragment StoreEntitySet="Attendances">
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="InOutState" ColumnName="InOutState" />
+                <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="BiometricId" ColumnName="BiometricId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

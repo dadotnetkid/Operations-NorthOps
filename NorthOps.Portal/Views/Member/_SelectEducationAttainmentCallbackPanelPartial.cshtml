@@ -1,0 +1,23 @@
+@Html.DevExpress().CallbackPanel(settings => {
+    settings.Name = "SelectEducationAttainmentCallbackPanel";
+    settings.CallbackRouteValues = new { Controller = "Member", Action = "SelectEducationAttainmentCallbackPanelPartial",  userId = ViewBag.userId,elementary= ViewBag.elementary,highSchool=ViewBag.highSchool,college=ViewBag.college };
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Percentage(100);
+
+    settings.SetContent(() =>
+    {
+        Html.RenderAction("SelectEducationAttainmentPartial", new { elementary = ViewBag.elementary, highSchool = ViewBag.highSchool, college = ViewBag.college });
+        if (ViewBag.elementary == true)
+        {
+            Html.RenderAction("EducationalAttainmentGridViewPartial", new { userId = ViewBag.userId, elementary = ViewBag.elementary,GridName= "ElementaryEducationalAttainmentGridView" });
+        }
+        if (ViewBag.highSchool == true)
+        {
+            Html.RenderAction("EducationalAttainmentGridViewPartial", new { userId = ViewBag.userId, highSchool = ViewBag.highSchool, GridName = "HighSchoolEducationalAttainmentGridView" });
+        }
+        if (ViewBag.college == true)
+        {
+            Html.RenderAction("EducationalAttainmentGridViewPartial", new { userId = ViewBag.userId, college = ViewBag.college, GridName = "CollegeEducationalAttainmentGridView" });
+        }
+    });
+}).GetHtml()

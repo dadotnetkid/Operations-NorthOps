@@ -148,6 +148,12 @@ namespace NorthOps.Models.Repository
             dbSet.Remove(res);
             return await context.SaveChangesAsync();
         }
+        public virtual void Delete(Expression<Func<TEntity, bool>> filter)
+        {
+            var res =  this.Find(filter);
+            dbSet.Attach(res);
+            dbSet.Remove(res);
+        }
         public virtual void Delete(TEntity entityToDelete)
         {
             if (context.Entry(entityToDelete).State == EntityState.Detached)

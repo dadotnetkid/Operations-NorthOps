@@ -1,0 +1,29 @@
+﻿
+@using DevExpress.Pdf
+@model Documents
+
+
+@{
+    //var request = HttpContext.Current.Request;
+    //var baseurl= string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
+}
+
+
+<div class="row">
+    <div class="col-lg-12 align-center">
+        @if ((DocumentType)Model.DocumentType == DocumentType.Video)
+        {
+            @*<video width="100%" height="500" controls preload="auto">
+                    <source src="@Url.Content("~/")api/video/@Model.Id" />
+                </video>*@
+        <video width="100%" height="500" controls preload="auto">
+            @*<source src="@Url.Action("GetVideo",new{documentId=Model.Id})" />*@
+            <source src="@Url.Content("~/")api/video/@Model.Id" />
+        </video>
+        }
+        else
+        {
+            <a href="@Url.Content("~/")api/document/@Model.Id">Download</a>
+        }
+    </div>
+</div>

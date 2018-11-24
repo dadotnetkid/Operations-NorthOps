@@ -77,6 +77,7 @@ namespace NorthOps.Services.Helpers
 
         public static void ExportGridColumn(GridViewSettings settings)
         {
+            settings.Columns.Add("Rfid");
             settings.Columns.Add("BiometricId");
             settings.Columns.Add("FirstName");
             settings.Columns.Add("MiddleName");

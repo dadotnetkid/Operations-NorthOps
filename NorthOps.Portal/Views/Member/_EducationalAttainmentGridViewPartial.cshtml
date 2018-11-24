@@ -1,9 +1,12 @@
+
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
+
         settings.Name = "EducationalAttainmentGridView";
         settings.Width = Unit.Percentage(100);
         settings.CallbackRouteValues = new { Controller = "Member", Action = "EducationalAttainmentGridViewPartial", UserId = ViewBag.UserId };
+
 
         settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Member", Action = "EducationalAttainmentGridViewPartialAddNew", UserId = ViewBag.UserId };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Member", Action = "EducationalAttainmentGridViewPartialUpdate", UserId = ViewBag.UserId };
@@ -28,18 +31,18 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
-
-        settings.Columns.Add("SchoolName");
         settings.Columns.Add(col =>
         {
             col.FieldName = "EducationAttainment";
             col.ColumnType = MVCxGridViewColumnType.ComboBox;
-            var colset = col.PropertiesEdit as ComboBoxProperties;
-            colset.DataSource = Enum.GetValues(typeof(EducationAttainment)).Cast<EducationAttainment>().Select(x => new {Id = x});
-            colset.TextField = "Id";
-            colset.ValueField = "Id";
-            
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.TextField = "Name";
+            cbo.ValueField = "Id";
+            cbo.ValueType = typeof(EducationAttainment);
+            cbo.DataSource = Enum.GetValues(typeof(EducationAttainment)).Cast<EducationAttainment>().Select(x => new { Id = (int)x, Name = x.ToString() });
         });
+        settings.Columns.Add("SchoolName");
+
         settings.ClientSideEvents.EndCallback = "function(s,e){btnEducationAttainmentTabNext.SetEnabled(true)}";
         settings.Columns.Add(col =>
         {
@@ -56,5 +59,8 @@
     {
         grid.SetEditErrorText((string)ViewData["EditError"]);
     }
+}
+@{
+
 }
 @grid.Bind(Model).GetHtml()

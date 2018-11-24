@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Documents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        @Html.DevExpress().Button(settings =>
+        {
+            settings.Name = "btnFileManager";
+            settings.ClientSideEvents.Click = "function(s,e){showFileManager(s,e)}";
+            settings.Text = "File Manager";
+        }).GetHtml()
+        @Html.Partial("_FileManagerPopupControl")
+
+    </div>
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-12">
+        @Html.Action("DocumentsGridViewPartial")
+
+    </div>
+</div>
+<script>
+    function SelectFile(s, e) {
+        if (FileManager.GetSelectedFile() != null) {
+            Path.SetValue(FileManager.GetSelectedFile().id);
+            FileManagerPopupControl.Hide();
+        }
+
+    }
+    function unSelecFile(s, e) {
+
+    }
+    function selectedFile(s, e) {
+        btnSelect.SetEnabled(true);
+    }
+    function showFileManager(s, e) {
+        FileManagerPopupControl.PerformCallback({ isSelectShow:false });
+        FileManagerPopupControl.Show();
+       
+    }
+    function pathFocus(s, e) {
+        FileManagerPopupControl.PerformCallback({ isSelectShow: true });
+        FileManager.PerformCallback({ isUploadShow: false });
+        FileManagerPopupControl.Show();
+    }
+</script>

@@ -10,6 +10,7 @@ using DevExpress.Web.ASPxScheduler;
 
 namespace NorthOps.Ops.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class CampaignsController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -42,7 +43,7 @@ namespace NorthOps.Ops.Controllers
         public ActionResult cboEmployeesPartial(string UserId = "")
         {
             ViewBag.UserId = UserId;
-            var model = unitOfWork.UserRepository.Get();
+            var model = unitOfWork.UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"));
             return PartialView("_cboEmployeesPartial", model);
         }
 
@@ -82,17 +83,24 @@ namespace NorthOps.Ops.Controllers
                 try
                 {
                     var shifts = Request["ShiftId"];
+                    var users = Request["UserId"];
 
                     item.Id = Guid.NewGuid().ToString();
                     unitOfWork.CampaignsRepo.Insert(item);
                     #region Adding Shifts in Campaign
-                    var campaign = unitOfWork.CampaignsRepo.Find(m => m.Id == item.Id, includeProperties: "Shifts");
+                    var campaign = unitOfWork.CampaignsRepo.Find(m => m.Id == item.Id, includeProperties: "Shifts,Users");
                     campaign?.Shifts?.Clear();
+
                     if (!string.IsNullOrEmpty(shifts))
                         foreach (var i in shifts.Split(','))
                         {
                             campaign.Shifts.Add(unitOfWork.ShiftsRepo.Find(m => m.Id == i));
                         }
+
+                    foreach (var i in users.Split(','))
+                    {
+                        campaign?.Users.Add(unitOfWork.UserRepository.Find(m => m.Id == i));
+                    }
                     #endregion
                     await unitOfWork.SaveAsync();
                 }
@@ -118,12 +126,29 @@ namespace NorthOps.Ops.Controllers
                     unitOfWork.CampaignsRepo.Update(item);
                     //await unitOfWork.SaveAsync();
                     var shifts = Request["ShiftId"];
+                    var users = Request["UserId"].ToString();
                     #region Adding Shifts in Campaign
-                    var campaign = unitOfWork.CampaignsRepo.Find(m => m.Id == item.Id, includeProperties: "Shifts");
+                    var campaign = unitOfWork.CampaignsRepo.Find(m => m.Id == item.Id, includeProperties: "Shifts,Users");
                     campaign.Shifts.Clear();
                     foreach (var i in shifts.Split(','))
                     {
                         campaign.Shifts.Add(unitOfWork.ShiftsRepo.Find(m => m.Id == i));
+                    }
+                    #endregion
+
+                    #region MyRegion
+
+                    /*   foreach (var i in users.Split(','))
+                       {
+                           campaign.Users.Remove(unitOfWork.UserRepository.Find(m => m.Id == i));
+                           unitOfWork.Save();
+                       }*/
+                    campaign.Users.Clear();
+
+
+                    foreach (var i in users.Split(','))
+                    {
+                        campaign.Users.Add(unitOfWork.UserRepository.Find(m => m.Id == i));
                     }
                     #endregion
                     await unitOfWork.SaveAsync();
@@ -194,8 +219,9 @@ namespace NorthOps.Ops.Controllers
                     var campaigns = Request["CampaignId"];
                     item.Id = Guid.NewGuid().ToString();
                     unitOfWork.ShiftsRepo.Insert(item);
+                    unitOfWork.Save();
                     #region Adding Campaign in Shifts
-                    var shifts = unitOfWork.ShiftsRepo.Find(m => m.Id == item.Id, includeProperties: "Campaigns,Users");
+                    var shifts = unitOfWork.ShiftsRepo.Find(m => m.Id == item.Id, includeProperties: "Campaigns");
 
                     shifts.Campaigns.Clear();
                     foreach (var i in campaigns.Split(','))
@@ -363,7 +389,16 @@ namespace NorthOps.Ops.Controllers
         }
         #endregion
 
+        #region User in Campaign 
 
+        public ActionResult TokenBoxUsersInCampaignsPartial([ModelBinder(typeof(DevExpressEditorsBinder))]string CampaignId)
+        {
+            var model = unitOfWork.CampaignsRepo.Find(m => m.Id == CampaignId);
+            ViewBag.CampaignId = CampaignId;
+            return PartialView("TokenBoxUsersInCampaignsPartial", model: model);
+        }
+
+        #endregion
 
     }
 

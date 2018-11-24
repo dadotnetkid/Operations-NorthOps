@@ -220,3 +220,82 @@
         }
     </div>
 </div>
+@if (User.IsInRole("Employee"))
+{
+    <div class="row">
+        <div class="col-md-4">
+            @{
+                Html.DevExpress().TextBoxFor(m => m.SSSNo, txt =>
+                {
+                    txt.Width = Unit.Percentage(100);
+                    txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    txt.Properties.ValidationSettings.SetFocusOnError = true;
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    txt.Properties.Caption = "SSS Number";
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-md-4">
+            @{
+                Html.DevExpress().TextBoxFor(m => m.PhilHealthNo, txt =>
+                {
+                    txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    txt.Properties.ValidationSettings.SetFocusOnError = true;
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+
+
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    txt.Properties.Caption = "Phil Health Number";
+                    txt.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-md-4">
+            @{
+                Html.DevExpress().TextBoxFor(m => m.HDMFNo, txt =>
+                {
+                    txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    txt.Properties.ValidationSettings.SetFocusOnError = true;
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+
+
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    txt.Properties.Caption = "HDMF No";
+                    txt.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            @{
+                Html.DevExpress().TextBoxFor(m => m.TinNo, txt =>
+                {
+                    txt.Width = Unit.Percentage(100);
+                    txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    txt.Properties.ValidationSettings.SetFocusOnError = true;
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    txt.Properties.Caption = "Tin Number";
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-md-4">
+            @{
+                Html.DevExpress().TextBoxFor(m => m.BankAccountNo, txt =>
+                {
+                    txt.Width = Unit.Percentage(100);
+                    txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    txt.Properties.ValidationSettings.SetFocusOnError = true;
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    txt.Properties.Caption = "Bank Account Number";
+                }).GetHtml();
+            }
+        </div>
+
+    </div>
+}

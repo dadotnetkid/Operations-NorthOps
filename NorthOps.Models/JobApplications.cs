@@ -34,6 +34,7 @@ namespace NorthOps.Models
         public Nullable<bool> IsPhoneInterviewPassed { get; set; }
         public Nullable<bool> IsTrainingPassed { get; set; }
         public Nullable<bool> IsOnBoardingPassed { get; set; }
+        public Nullable<System.DateTime> IsExamPassedDate { get; set; }
     
         public virtual Users Users { get; set; }
     }

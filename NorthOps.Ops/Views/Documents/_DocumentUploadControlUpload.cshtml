@@ -1,0 +1,28 @@
+﻿@{
+    using (Html.BeginForm("DocumentUploadControlUpload", "Documents", FormMethod.Post))
+    {
+        @Html.DevExpress().UploadControl(settings => {
+       settings.Name = "DocumentUploadControl";
+       settings.CallbackRouteValues = new { Controller = "Documents", Action = "DocumentUploadControlUpload" };
+
+       settings.AdvancedModeSettings.EnableFileList = true;
+       settings.AdvancedModeSettings.EnableDragAndDrop = true;
+
+       settings.ShowUploadButton = true;
+       settings.ShowProgressPanel = true;
+
+       settings.ValidationSettings.Assign(NorthOps.Ops.Controllers.DocumentsControllerDocumentUploadControlSettings.UploadValidationSettings);
+   
+       //settings.PreRender=(s, e)=>
+       //{
+       //    var uc = s as UploadControlSettings;
+       //};
+
+   }).GetHtml()
+    }
+ 
+}
+
+
+
+

@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Schedules";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+
+@*@Html.Action("SchedulesGridViewPartial")*@
+
+
+
+
+@Html.Action("SchedulerCallbackPanelPartial")
+@Html.Action("pcAddSchedulerPartial")
+
+<script>
+    function onComplete() {
+        Scheduler.InplaceEditFormSave();
+    }
+    function onDelete(s, e) {
+        var selectedApptIDs = s.GetSelectedAppointmentIds();
+        if (selectedApptIDs.length > 0) {
+            var currentAppointment = s.GetAppointmentById(selectedApptIDs[0]);
+            s.DeleteAppointment(currentAppointment);
+        }
+    }
+</script>

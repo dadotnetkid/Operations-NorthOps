@@ -20,7 +20,7 @@ namespace NorthOps.Models
         public Nullable<int> Qty { get; set; }
         public Nullable<System.DateTime> DateReleased { get; set; }
     
-        public virtual Users Users { get; set; }
         public virtual Items Items { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NorthOps.Models;
 
 namespace ZKTeco.SDK.Model
 {
@@ -24,11 +25,7 @@ namespace ZKTeco.SDK.Model
         public VerifiedType Verified { get; set; }
         
     }
-    public enum InOutState
-    {
-        CheckIn=10,
-        CheckOut=11
-    }
+    
 
 
 

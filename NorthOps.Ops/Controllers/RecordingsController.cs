@@ -5,10 +5,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DevExpress.Web;
+using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Services.Helpers;
 
 namespace NorthOps.Ops.Controllers
 {
+    [Authorize(Roles = "Administrator,Team Leader")]
     public class RecordingsController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -21,7 +24,7 @@ namespace NorthOps.Ops.Controllers
         public ActionResult Download(int recordingId)
         {
             var model = unitOfWork.RecordingsRepo.Find(m => m.Id == recordingId);
-            return File(model.Recording, "audio/mpeg3", $"{model.Number}-{model.CallDate}.wav");
+            return File(model.Recording, "audio/mpeg3", $"{model.CallerNumber}-{model.CallDate}.wav");
         }
         [ValidateInput(false)]
         public ActionResult RecordingsGridViewPartial()
@@ -31,9 +34,9 @@ namespace NorthOps.Ops.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult RecordingsGridViewPartialAddNew(NorthOps.Models.Recordings item)
+        public ActionResult RecordingsGridViewPartialAddNew([ModelBinder(typeof(DevExpressEditorsBinder))]Recordings item)
         {
-            
+
             if (ModelState.IsValid)
             {
                 try
@@ -57,12 +60,12 @@ namespace NorthOps.Ops.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult RecordingsGridViewPartialUpdate(NorthOps.Models.Recordings item)
         {
-            var model = new object[0];
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Insert here a code to update the item in your model
+                   
                 }
                 catch (Exception e)
                 {
@@ -71,12 +74,13 @@ namespace NorthOps.Ops.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
+            var model = unitOfWork.RecordingsRepo.Get();
             return PartialView("_RecordingsGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult RecordingsGridViewPartialDelete(System.Int32 Id)
+        public ActionResult RecordingsGridViewPartialDelete([ModelBinder(typeof(DevExpressEditorsBinder))] int? Id)
         {
-            var model = new object[0];
+
             if (Id >= 0)
             {
                 try
@@ -89,16 +93,22 @@ namespace NorthOps.Ops.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
+            var model = unitOfWork.RecordingsRepo.Get();
             return PartialView("_RecordingsGridViewPartial", model);
         }
 
+        public ActionResult AddEditRecordingPartials([ModelBinder(typeof(DevExpressEditorsBinder))]int? recordingId)
+        {
+            var model = unitOfWork.RecordingsRepo.Find(m => m.Id == recordingId);
+            return PartialView("_AddEditRecordingPartials", model);
+        }
         public ActionResult UploadControlUpload()
         {
-            Session["callRecording"] = UploadControlExtension.GetUploadedFiles("UploadControl", CallRecordingControllerUploadControlSettings.UploadValidationSettings, CallRecordingControllerUploadControlSettings.FileUploadComplete);
+            Session["callRecording"] = UploadControlExtension.GetUploadedFiles("UploadControl", RecordingsControllerUploadControlSettings.UploadValidationSettings, RecordingsControllerUploadControlSettings.FileUploadComplete);
             return null;
         }
     }
-    public class CallRecordingControllerUploadControlSettings
+    public class RecordingsControllerUploadControlSettings
     {
         public static DevExpress.Web.UploadControlValidationSettings UploadValidationSettings = new DevExpress.Web.UploadControlValidationSettings()
         {

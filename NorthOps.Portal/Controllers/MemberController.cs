@@ -173,7 +173,7 @@ namespace NorthOps.Portal.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("login", "member");
                 }
                 AddErrors(result);
             }
@@ -214,6 +214,11 @@ namespace NorthOps.Portal.Controllers
                 user.Skills = model.Skills;
                 user.Email = model.Email;
                 user.UserName = model.Email;
+                user.SSSNo = model.SSSNo;
+                user.PhilHealthNo = model.PhilHealthNo;
+                user.HDMFNo = model.HDMFNo;
+                user.TinNo = model.TinNo;
+                user.BankAccountNo = user.BankAccountNo;
                 await UserManager.UpdateAsync(user);
                 // unitOfWork.UserRepository.Update(user);
                 // await unitOfWork.SaveAsync();
@@ -261,7 +266,17 @@ namespace NorthOps.Portal.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+
+            if (User.IsInRole("Employee"))
+            {
+                return RedirectToAction("Index", "DailyTimeRecord");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+               
+            }
+            
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
@@ -337,22 +352,27 @@ namespace NorthOps.Portal.Controllers
 
         #region Education Attainment
         [ValidateInput(false)]
-        public ActionResult EducationalAttainmentGridViewPartial(string UserId)
+        public ActionResult EducationalAttainmentGridViewPartial(string userId)
         {
-            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.Id == UserId);
-            ViewBag.UserId = UserId;
+            var model = unitOfWork.EducationAttainmentsRepo.Fetch(m => m.UserId == userId).ToList();
+            ViewBag.UserId = userId;
             return PartialView("_EducationalAttainmentGridViewPartial", model);
         }
 
         [HttpPost, ValidateInput(false)]
-        public async Task<ActionResult> EducationalAttainmentGridViewPartialAddNew(NorthOps.Models.EducationAttainments item)
+        public async Task<ActionResult> EducationalAttainmentGridViewPartialAddNew([ModelBinder(typeof(DevExpressEditorsBinder))]NorthOps.Models.EducationAttainments item)
         {
-            ViewBag.UserId = item.UserId;
+
+            var model = unitOfWork.EducationAttainmentsRepo.Fetch(m => m.UserId == item.UserId);
             if (ModelState.IsValid)
             {
                 try
                 {
+
+
                     item.Id = Guid.NewGuid().ToString();
+
+
                     unitOfWork.EducationAttainmentsRepo.Insert(item);
                     await unitOfWork.SaveAsync();
                 }
@@ -363,13 +383,14 @@ namespace NorthOps.Portal.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.UserId == item.UserId);
-            return PartialView("_EducationalAttainmentGridViewPartial", model);
+            ViewBag.UserId = item.UserId;
+            return PartialView("_EducationalAttainmentGridViewPartial", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> EducationalAttainmentGridViewPartialUpdate(NorthOps.Models.EducationAttainments item)
         {
-            ViewBag.UserId = item.UserId;
+
+            var model = unitOfWork.EducationAttainmentsRepo.Fetch(m => m.UserId == item.UserId);
             if (ModelState.IsValid)
             {
                 try
@@ -384,20 +405,23 @@ namespace NorthOps.Portal.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.UserId == item.UserId);
-            return PartialView("_EducationalAttainmentGridViewPartial", model);
+            ViewBag.UserId = item.UserId;
+            return PartialView("_EducationalAttainmentGridViewPartial", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> EducationalAttainmentGridViewPartialDelete([ModelBinder(typeof(DevExpressEditorsBinder))]System.String Id, [ModelBinder(typeof(DevExpressEditorsBinder))] string UserId)
         {
-            ViewBag.UserId = Id;
+
+            var model = unitOfWork.EducationAttainmentsRepo.Fetch(m => m.UserId == UserId);
             if (Id != null)
             {
                 try
                 {
+                    var item = new EducationAttainments();
                     unitOfWork.EducationAttainmentsRepo.Delete(
-                        unitOfWork.EducationAttainmentsRepo.Find(m => m.UserId == Id));
+                          unitOfWork.EducationAttainmentsRepo.Find(m => m.Id == Id));
                     await unitOfWork.SaveAsync();
+
 
                 }
                 catch (Exception e)
@@ -405,8 +429,8 @@ namespace NorthOps.Portal.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            var model = unitOfWork.EducationAttainmentsRepo.Get(m => m.UserId == UserId);
-            return PartialView("_EducationalAttainmentGridViewPartial", model);
+
+            return PartialView("_EducationalAttainmentGridViewPartial", model.ToList());
         }
 
 
@@ -522,6 +546,11 @@ namespace NorthOps.Portal.Controllers
         public async Task<ActionResult> ForgotPassword(string EmailAddress)
         {
             var user = await UserManager.FindByEmailAsync(EmailAddress);
+            if (user == null)
+            {
+                ViewBag.emailNotFound = true;
+                return PartialView("_forgotPasswordContentPartial");
+            }
             var Token = await UserManager.GeneratePasswordResetTokenAsync(user?.Id);
             var confirmationlink = $"<h3>Forgot Password</h3><br/><a href='{Url.Action("ChangeForgotPasswordViewPartial", "Member", new { Email = user.Email, Token = Token }, Request.Url.Scheme)}'>Click here to change your Password</a>";
             await UserManager.SendEmailAsync(userId: user.Id, subject: "Forgot Password", body: confirmationlink);
@@ -534,5 +563,9 @@ namespace NorthOps.Portal.Controllers
             return PartialView("_PcForgotPasswordPartial");
         }
         #endregion
+
+     
+
+     
     }
 }

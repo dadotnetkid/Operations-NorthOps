@@ -1,0 +1,38 @@
+﻿
+
+@{
+
+    @Html.DevExpress().PopupControl(settings => {
+    settings.Name = "FileManagerPopupControl";
+    settings.CallbackRouteValues = new {Controller = "Documents", Action = "FileManagerPopupControl", isSelectShow = ViewBag.isSelectShow };
+    settings.AllowResize = true;
+    settings.ShowHeader = true;
+    settings.ShowOnPageLoad = false;
+    settings.AllowDragging = true;
+    settings.CloseAction = CloseAction.CloseButton;
+    settings.CloseOnEscape = false;
+    settings.Modal = false;
+    settings.Width = Unit.Pixel(800);
+    settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    settings.HeaderText = "File Manager";
+
+    settings.SetContent(() =>
+    {
+        using (Html.BeginForm())
+        {
+            Html.RenderAction("FileManagerPartial",new{ isSelectShow =ViewBag.isSelectShow });
+        }
+        if (ViewBag.isSelectShow == true)
+        {
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnSelect";
+                btn.Text = "Select";
+                btn.ClientEnabled = false;
+                btn.ClientSideEvents.Click = "function(s,e){SelectFile(s,e)}";
+            }).GetHtml();
+        }
+
+    });
+}).GetHtml()
+}
