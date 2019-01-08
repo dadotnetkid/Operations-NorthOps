@@ -3,35 +3,47 @@
 
 
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         @{
             Html.DevExpress().ComboBoxFor(m => m.BiometricId, settings =>
               {
+                  settings.Width = Unit.Percentage(100);
                   settings.Properties.TextField = "FullName";
                   settings.Properties.ValueField = "BiometricId";
               }).BindList(new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"))).GetHtml();
         }
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         @{
             Html.DevExpress().DateEditFor(m => m.LogDateTime, settings =>
             {
+                settings.Width = Unit.Percentage(100);
                 settings.Properties.TimeSectionProperties.Visible = true;
                 settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
                 settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
 
-                
+
             }).GetHtml();
         }
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         @{
-            Html.DevExpress().Button( settings =>
+            Html.DevExpress().ComboBoxFor(m => m.InOutState, settings =>
             {
-                settings.Name = "btnUpdate";
-                settings.Text = "Update";
-                settings.ClientSideEvents.Click = "function(s,e){AttendanceLogGridView.UpdateEdit()}";
-            }).GetHtml();
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TextField = "Name";
+                settings.Properties.ValueField = "Id";
+            }).BindList(Enum.GetValues(typeof(InOutState)).Cast<InOutState>().Select(x => new { Id = (int)x, Name = x.ToString() })).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().Button(settings =>
+           {
+               settings.Name = "btnUpdate";
+               settings.Text = "Update";
+               settings.ClientSideEvents.Click = "function(s,e){AttendanceLogGridView.UpdateEdit()}";
+           }).GetHtml();
             Html.DevExpress().Button(settings =>
             {
                 settings.Text = "Cancel";

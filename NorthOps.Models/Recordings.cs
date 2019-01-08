@@ -14,6 +14,12 @@ namespace NorthOps.Models
     
     public partial class Recordings
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Recordings()
+        {
+            this.Sanctions = new HashSet<Sanctions>();
+        }
+    
         public int Id { get; set; }
         public string CampaignId { get; set; }
         public string UserId { get; set; }
@@ -28,10 +34,15 @@ namespace NorthOps.Models
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> AcknowledgmentDate { get; set; }
         public Nullable<System.DateTime> CoachingDate { get; set; }
+        public Nullable<bool> isAgentAcknowledge { get; set; }
+        public Nullable<bool> isAdministratorAcknowledge { get; set; }
+        public string AcknowledgeToken { get; set; }
     
         public virtual Campaigns Campaigns { get; set; }
         public virtual Users Users { get; set; }
         public virtual ErrorTypes ErrorTypes { get; set; }
         public virtual Users CreatedByUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sanctions> Sanctions { get; set; }
     }
 }

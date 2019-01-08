@@ -39,10 +39,19 @@
             @if (User.IsInRole("Employee"))
             {
                 <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("dailytimerecord") ? "active" : "")">
+                    <a href="@Url.Action("index", "break")"><i class="fa fa-calendar"></i> <span>Break Monitoring</span></a>
+                </li>
+                <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("dailytimerecord") ? "active" : "")">
                     <a href="@Url.Action("index", "dailytimerecord")"><i class="fa fa-calendar"></i> <span>Daily Time Record</span></a>
+                </li>
+                <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("restdays") ? "active" : "")">
+                    <a href="@Url.Action("index", "restdays")"><i class="fa fa-calendar-times-o"></i> <span>Rest Days</span></a>
                 </li>
                 <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("recording") ? "active" : "")">
                     <a href="@Url.Action("Index", "recording")"><i class="fa fa-music"></i> <span>Coaching Logs</span></a>
+                </li>
+                <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("violations") ? "active" : "")">
+                    <a href="@Url.Action("Index", "violations")"><i class="fa fa-minus-square"></i> <span>Violation Logs</span></a>
                 </li>
                 <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("documents") ? "active" : "")">
                     <a href="@Url.Action("index", "documents")"><i class="fa fa-file-archive-o"></i> <span>Documents</span></a>
@@ -56,6 +65,7 @@
                 <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("attendance") ? "active" : "")">
                     <a href="@Url.Action("index", "attendance")"><i class="fa fa-calendar-times-o"></i> <span>Raw Attendance</span></a>
                 </li>
+
             }
 
             <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("member") ? "active" : "")">

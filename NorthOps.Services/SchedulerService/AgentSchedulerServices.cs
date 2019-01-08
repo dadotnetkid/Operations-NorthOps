@@ -28,19 +28,19 @@ namespace NorthOps.Services.SchedulerService
 
                     if (i.RestDays.Count() < 2)
                     {
-                        if (unitOfWork.RestDaysRepo.Get().Count(n => n.RestDate == Convert.ToDateTime($"01-{d}-2018")) <= 3)
+                        if (unitOfWork.RestDaysRepo.Get().Count(n => n.RestDay == Convert.ToDateTime($"01-{d}-2018")) <= 3)
                         {
                             unitOfWork.RestDaysRepo.Insert(new Models.RestDays()
                             {
 
                                 UserId = i.Id,
-                                RestDate = Convert.ToDateTime($"01-{d}-2018")
+                                RestDay = Convert.ToDateTime($"01-{d}-2018")
 
                             });
                             unitOfWork.Save();
                         }
                         else
-                        if (i.RestDays.All(m => m.RestDate != Convert.ToDateTime($"01-{d}-2018")))
+                        if (i.RestDays.All(m => m.RestDay != Convert.ToDateTime($"01-{d}-2018")))
                         {
                             unitOfWork.SchedulesRepo.Insert(new Models.Schedules()
                             {
@@ -52,7 +52,7 @@ namespace NorthOps.Services.SchedulerService
                     }
                     else
                     {
-                        if (i.RestDays.All(m => m.RestDate != Convert.ToDateTime($"01-{d}-2018")))
+                        if (i.RestDays.All(m => m.RestDay != Convert.ToDateTime($"01-{d}-2018")))
                         {
                             unitOfWork.SchedulesRepo.Insert(new Models.Schedules()
                             {

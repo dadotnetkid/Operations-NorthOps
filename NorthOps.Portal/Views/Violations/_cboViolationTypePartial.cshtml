@@ -1,0 +1,11 @@
+﻿@{
+    Html.DevExpress().ComboBox(settings =>
+    {
+        settings.Name = "ViolationTypeId";
+        settings.CallbackRouteValues = new { Controller = "Violations", Action = "cboViolationTypePartial", ViolationTypeId = ViewBag.ViolationTypeId };
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "Violationtype";
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.NullText = @"Violation Type";
+    }).BindList(Model).Bind(ViewBag.ViolationTypeId).GetHtml();
+}

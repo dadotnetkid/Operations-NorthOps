@@ -23,7 +23,7 @@ namespace NorthOps.Ops.Controllers
             return View();
         }
 
-        public async Task<ActionResult> DtrReportGeneratePartial(DtrReportViewModel model = null)
+        public async Task<ActionResult> DtrReportGeneratePartial(DailyTimeRecordViewModel model = null)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace NorthOps.Ops.Controllers
         }
 
      
-        public ActionResult dtrReportSearchPartial(DtrReportViewModel model = null)
+        public ActionResult dtrReportSearchPartial(DailyTimeRecordViewModel model = null)
         {
             try
             {

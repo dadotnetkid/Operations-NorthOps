@@ -1,0 +1,46 @@
+﻿
+@model RestDays
+
+
+<div class="row">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().ComboBoxFor(m => m.UserId, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TextField = "FullName";
+                settings.Properties.ValueField = "Id";
+                settings.Properties.NullText = "Employee";
+            }).BindList(new UnitOfWork().UserRepository.Get(m=>m.UserRoles.Any(x=>x.Name=="Employee"))).GetHtml();
+        }
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().DateEditFor(m => m.RestDay, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.NullText = "Rest Day";
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row margin-top-5">
+    <div class="col-lg-6">
+        @{
+            Html.DevExpress().Button( settings =>
+            {
+                settings.Name = "btnUpdate";
+                settings.Text = "Update";
+                settings.ClientSideEvents.Click = "function(s,e){RestDaysGridView.UpdateEdit()}";
+            }).GetHtml();
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnCancel";
+                settings.Text = "Cancel";
+                settings.ClientSideEvents.Click = "function(s,e){RestDaysGridView.CancelEdit()}";
+            }).GetHtml();
+        }
+    </div>
+
+
+</div>

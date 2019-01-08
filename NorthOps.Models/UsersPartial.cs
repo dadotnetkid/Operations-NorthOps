@@ -12,7 +12,7 @@ namespace NorthOps.Models
 {
     public partial class Users : IUser<string>
     {
-        private List<DtrReportViewModel> _dtrReportViewModels;
+        private List<DailyTimeRecordViewModel> _dtrReportViewModels;
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Users, string> manager)
         {
@@ -41,12 +41,12 @@ namespace NorthOps.Models
         //public int? BiometricId => new UnitOfWork().BiometricsRepo.Fetch(m => m.UserId == this.Id).FirstOrDefault()?.BiometricId;
         //public int _BiometricId { get; set; }
 
-        public List<DtrReportViewModel> DtrReportViewModels
+        public List<DailyTimeRecordViewModel> DtrReportViewModels
         {
             get
             {
                 if (_dtrReportViewModels == null)
-                    _dtrReportViewModels = new List<DtrReportViewModel>();
+                    _dtrReportViewModels = new List<DailyTimeRecordViewModel>();
                 return _dtrReportViewModels;
             }
             set => _dtrReportViewModels = value;

@@ -46,6 +46,7 @@
             var dt = col.PropertiesEdit as DateEditProperties;
             dt.TimeSectionProperties.Visible = true;
             dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+            col.Settings.AutoFilterCondition = AutoFilterCondition.GreaterOrEqual;
         });
         settings.Columns.Add(col =>
         {

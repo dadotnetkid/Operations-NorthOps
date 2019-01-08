@@ -113,7 +113,6 @@ public class DTRReport : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell7 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell8 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.DetailReport1 = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail2 = new DevExpress.XtraReports.UI.DetailBand();
             this.xrTable3 = new DevExpress.XtraReports.UI.XRTable();
@@ -130,11 +129,12 @@ public class DTRReport : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell16 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell17 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell18 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
@@ -143,6 +143,7 @@ public class DTRReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel1,
             this.xrTable1});
             this.Detail.Dpi = 100F;
+            this.Detail.Expanded = false;
             this.Detail.HeightF = 60.41667F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
@@ -296,6 +297,7 @@ public class DTRReport : DevExpress.XtraReports.UI.XtraReport
             this.DetailReport.DataMember = "Schedules";
             this.DetailReport.DataSource = this.objectDataSource1;
             this.DetailReport.Dpi = 100F;
+            this.DetailReport.Expanded = false;
             this.DetailReport.Level = 0;
             this.DetailReport.Name = "DetailReport";
             // 
@@ -375,11 +377,6 @@ public class DTRReport : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell8.Name = "xrTableCell8";
             this.xrTableCell8.Text = "xrTableCell8";
             this.xrTableCell8.Weight = 1D;
-            // 
-            // objectDataSource1
-            // 
-            this.objectDataSource1.DataSource = typeof(NorthOps.Models.Users);
-            this.objectDataSource1.Name = "objectDataSource1";
             // 
             // DetailReport1
             // 
@@ -529,6 +526,11 @@ public class DTRReport : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell18.Text = "Modified";
             this.xrTableCell18.Weight = 1.0751130220733258D;
             // 
+            // objectDataSource1
+            // 
+            this.objectDataSource1.DataSource = typeof(NorthOps.Models.Users);
+            this.objectDataSource1.Name = "objectDataSource1";
+            // 
             // DTRReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -552,9 +554,9 @@ public class DTRReport : DevExpress.XtraReports.UI.XtraReport
             this.Version = "16.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

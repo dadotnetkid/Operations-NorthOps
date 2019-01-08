@@ -73,6 +73,24 @@
           <Property Name="BranchName" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="Breaks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="BreakTypeId" Type="int" />
+          <Property Name="StartTime" Type="datetime2" Precision="7" />
+          <Property Name="EndTime" Type="datetime2" Precision="7" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="BreakTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BreakType" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Campaigns">
           <Key>
             <PropertyRef Name="Id" />
@@ -106,6 +124,14 @@
           <Property Name="Choice" Type="varchar(max)" />
           <Property Name="IsAnswer" Type="bit" />
           <Property Name="DateCreated" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="CoachingLogsInSanctions">
+          <Key>
+            <PropertyRef Name="SanctionId" />
+            <PropertyRef Name="CoachingLogId" />
+          </Key>
+          <Property Name="SanctionId" Type="int" Nullable="false" />
+          <Property Name="CoachingLogId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyTimeRecords">
           <Key>
@@ -257,6 +283,13 @@
           <Property Name="DateCreated" Type="datetime2" Precision="7" />
           <Property Name="isApproved" Type="bit" />
         </EntityType>
+        <EntityType Name="MachineConfigs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IpAddress" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="NotificationsTemplates">
           <Key>
             <PropertyRef Name="Id" />
@@ -331,6 +364,9 @@
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
           <Property Name="AcknowledgmentDate" Type="datetime2" Precision="7" />
           <Property Name="CoachingDate" Type="datetime2" Precision="7" />
+          <Property Name="isAgentAcknowledge" Type="bit" />
+          <Property Name="isAdministratorAcknowledge" Type="bit" />
+          <Property Name="AcknowledgeToken" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RestDays">
           <Key>
@@ -338,7 +374,18 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="RestDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="RestDay" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" />
+          <Property Name="DateModified" Type="datetime2" Precision="7" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Sanctions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sanction" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Schedules">
           <Key>
@@ -498,6 +545,31 @@
           <Property Name="Video" Type="varbinary(max)" />
           <Property Name="Extension" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Violations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Violation" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ViolationTypeId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RootCauseAnalysis" Type="nvarchar(max)" />
+          <Property Name="Commitment" Type="nvarchar(max)" />
+          <Property Name="ViolationDateTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="AcknowledgmentDate" Type="datetime2" Precision="7" />
+          <Property Name="isAgentAcknowledge" Type="bit" />
+          <Property Name="isAdministratorAcknowledge" Type="bit" />
+          <Property Name="AcknowledgeToken" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ViolationTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Violationtype" Type="nvarchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="Inventory">
           <Key>
             <PropertyRef Name="Id" />
@@ -619,6 +691,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Breaks_BreakTypes">
+          <End Role="BreakTypes" Type="Self.BreakTypes" Multiplicity="0..1" />
+          <End Role="Breaks" Type="Self.Breaks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BreakTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Breaks">
+              <PropertyRef Name="BreakTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Breaks_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Breaks" Type="Self.Breaks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Breaks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CampaignsInShifts_Campaigns1">
           <End Role="Campaigns" Type="Self.Campaigns" Multiplicity="1" />
           <End Role="CampaignsInShifts" Type="Self.CampaignsInShifts" Multiplicity="*" />
@@ -654,6 +750,30 @@
             </Principal>
             <Dependent Role="Choices">
               <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CoachingLogsInSanctions_Recordings">
+          <End Role="Recordings" Type="Self.Recordings" Multiplicity="1" />
+          <End Role="CoachingLogsInSanctions" Type="Self.CoachingLogsInSanctions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recordings">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CoachingLogsInSanctions">
+              <PropertyRef Name="CoachingLogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CoachingLogsInSanctions_Sanctions">
+          <End Role="Sanctions" Type="Self.Sanctions" Multiplicity="1" />
+          <End Role="CoachingLogsInSanctions" Type="Self.CoachingLogsInSanctions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sanctions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CoachingLogsInSanctions">
+              <PropertyRef Name="SanctionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -969,6 +1089,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RestDays_CreatedBy">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="RestDays" Type="Self.RestDays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestDays">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestDays_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="RestDays" Type="Self.RestDays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestDays">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Schedules_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Schedules" Type="Self.Schedules" Multiplicity="*" />
@@ -1169,6 +1313,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Violations_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Violations" Type="Self.Violations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Violations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Violations_ViolationTypes">
+          <End Role="ViolationTypes" Type="Self.ViolationTypes" Multiplicity="1" />
+          <End Role="Violations" Type="Self.Violations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ViolationTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Violations">
+              <PropertyRef Name="ViolationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="northopsModelStoreContainer">
           <EntitySet Name="AddressStateProvinces" EntityType="Self.AddressStateProvinces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressTownCities" EntityType="Self.AddressTownCities" Schema="dbo" store:Type="Tables" />
@@ -1177,10 +1345,13 @@
           <EntitySet Name="Attendances" EntityType="Self.Attendances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Biometrics" EntityType="Self.Biometrics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Breaks" EntityType="Self.Breaks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BreakTypes" EntityType="Self.BreakTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Campaigns" EntityType="Self.Campaigns" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CampaignsInShifts" EntityType="Self.CampaignsInShifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Choices" EntityType="Self.Choices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CoachingLogsInSanctions" EntityType="Self.CoachingLogsInSanctions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyTimeRecords" EntityType="Self.DailyTimeRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
@@ -1194,6 +1365,7 @@
           <EntitySet Name="Holidays" EntityType="Self.Holidays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobApplications" EntityType="Self.JobApplications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Leaves" EntityType="Self.Leaves" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MachineConfigs" EntityType="Self.MachineConfigs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationsTemplates" EntityType="Self.NotificationsTemplates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Overtimes" EntityType="Self.Overtimes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonalityResults" EntityType="Self.PersonalityResults" Schema="dbo" store:Type="Tables" />
@@ -1201,6 +1373,7 @@
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recordings" EntityType="Self.Recordings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RestDays" EntityType="Self.RestDays" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sanctions" EntityType="Self.Sanctions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedules" EntityType="Self.Schedules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shifts" EntityType="Self.Shifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypingSpeeds" EntityType="Self.TypingSpeeds" Schema="dbo" store:Type="Tables" />
@@ -1212,6 +1385,8 @@
           <EntitySet Name="UsersInCampaignShift" EntityType="Self.UsersInCampaignShift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Videos" EntityType="Self.Videos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Violations" EntityType="Self.Violations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViolationTypes" EntityType="Self.ViolationTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="northops" store:Type="Tables" />
           <EntitySet Name="Items" EntityType="Self.Items" Schema="northops" store:Type="Tables" />
           <EntitySet Name="ItemTypes" EntityType="Self.ItemTypes" Schema="northops" store:Type="Tables" />
@@ -1243,6 +1418,14 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Biometrics" EntitySet="Biometrics" />
           </AssociationSet>
+          <AssociationSet Name="FK_Breaks_BreakTypes" Association="Self.FK_Breaks_BreakTypes">
+            <End Role="BreakTypes" EntitySet="BreakTypes" />
+            <End Role="Breaks" EntitySet="Breaks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Breaks_Users" Association="Self.FK_Breaks_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Breaks" EntitySet="Breaks" />
+          </AssociationSet>
           <AssociationSet Name="FK_CampaignsInShifts_Campaigns1" Association="Self.FK_CampaignsInShifts_Campaigns1">
             <End Role="Campaigns" EntitySet="Campaigns" />
             <End Role="CampaignsInShifts" EntitySet="CampaignsInShifts" />
@@ -1254,6 +1437,14 @@
           <AssociationSet Name="FK_Choice_Question" Association="Self.FK_Choice_Question">
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Choices" EntitySet="Choices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CoachingLogsInSanctions_Recordings" Association="Self.FK_CoachingLogsInSanctions_Recordings">
+            <End Role="Recordings" EntitySet="Recordings" />
+            <End Role="CoachingLogsInSanctions" EntitySet="CoachingLogsInSanctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CoachingLogsInSanctions_Sanctions" Association="Self.FK_CoachingLogsInSanctions_Sanctions">
+            <End Role="Sanctions" EntitySet="Sanctions" />
+            <End Role="CoachingLogsInSanctions" EntitySet="CoachingLogsInSanctions" />
           </AssociationSet>
           <AssociationSet Name="FK_DailyTimeRecords_Schedules" Association="Self.FK_DailyTimeRecords_Schedules">
             <End Role="Schedules" EntitySet="Schedules" />
@@ -1355,6 +1546,14 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Recordings" EntitySet="Recordings" />
           </AssociationSet>
+          <AssociationSet Name="FK_RestDays_CreatedBy" Association="Self.FK_RestDays_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RestDays" EntitySet="RestDays" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestDays_Users" Association="Self.FK_RestDays_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RestDays" EntitySet="RestDays" />
+          </AssociationSet>
           <AssociationSet Name="FK_Schedules_Users" Association="Self.FK_Schedules_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Schedules" EntitySet="Schedules" />
@@ -1419,6 +1618,14 @@
             <End Role="Exams" EntitySet="Exams" />
             <End Role="Videos" EntitySet="Videos" />
           </AssociationSet>
+          <AssociationSet Name="FK_Violations_Users" Association="Self.FK_Violations_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Violations" EntitySet="Violations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Violations_ViolationTypes" Association="Self.FK_Violations_ViolationTypes">
+            <End Role="ViolationTypes" EntitySet="ViolationTypes" />
+            <End Role="Violations" EntitySet="Violations" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1446,7 +1653,6 @@
           <EntitySet Name="PersonalityResults" EntityType="northopsModel.PersonalityResults" />
           <EntitySet Name="Positions" EntityType="northopsModel.Positions" />
           <EntitySet Name="Questions" EntityType="northopsModel.Questions" />
-          <EntitySet Name="RestDays" EntityType="northopsModel.RestDays" />
           <EntitySet Name="Shifts" EntityType="northopsModel.Shifts" />
           <EntitySet Name="TypingSpeeds" EntityType="northopsModel.TypingSpeeds" />
           <EntitySet Name="UserClaims" EntityType="northopsModel.UserClaims" />
@@ -1590,10 +1796,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Recordings" EntitySet="Recordings" />
           </AssociationSet>
-          <AssociationSet Name="FK_DayOff_Users" Association="northopsModel.FK_DayOff_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="RestDays" EntitySet="RestDays" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserClaims_Users" Association="northopsModel.FK_UserClaims_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserClaims" EntitySet="UserClaims" />
@@ -1658,6 +1860,45 @@
           <AssociationSet Name="FK_Attendances_Biometrics" Association="northopsModel.FK_Attendances_Biometrics">
             <End Role="Biometrics" EntitySet="Biometrics" />
             <End Role="Attendances" EntitySet="Attendances" />
+          </AssociationSet>
+          <EntitySet Name="MachineConfigs" EntityType="northopsModel.MachineConfigs" />
+          <EntitySet Name="Sanctions" EntityType="northopsModel.Sanctions" />
+          <AssociationSet Name="CoachingLogsInSanctions" Association="northopsModel.CoachingLogsInSanctions">
+            <End Role="Recordings" EntitySet="Recordings" />
+            <End Role="Sanctions" EntitySet="Sanctions" />
+          </AssociationSet>
+          <EntitySet Name="ViolationTypes" EntityType="northopsModel.ViolationTypes" />
+          <EntitySet Name="RestDays" EntityType="northopsModel.RestDays" />
+          <AssociationSet Name="FK_DayOff_Users" Association="northopsModel.FK_DayOff_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RestDays" EntitySet="RestDays" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestDays_CreatedBy" Association="northopsModel.FK_RestDays_CreatedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RestDays" EntitySet="RestDays" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestDays_Users" Association="northopsModel.FK_RestDays_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RestDays" EntitySet="RestDays" />
+          </AssociationSet>
+          <EntitySet Name="Violations" EntityType="northopsModel.Violations" />
+          <AssociationSet Name="FK_Violations_Users" Association="northopsModel.FK_Violations_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Violations" EntitySet="Violations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Violations_ViolationTypes" Association="northopsModel.FK_Violations_ViolationTypes">
+            <End Role="ViolationTypes" EntitySet="ViolationTypes" />
+            <End Role="Violations" EntitySet="Violations" />
+          </AssociationSet>
+          <EntitySet Name="Breaks" EntityType="northopsModel.Breaks" />
+          <EntitySet Name="BreakTypes" EntityType="northopsModel.BreakTypes" />
+          <AssociationSet Name="FK_Breaks_BreakTypes" Association="northopsModel.FK_Breaks_BreakTypes">
+            <End Role="BreakTypes" EntitySet="BreakTypes" />
+            <End Role="Breaks" EntitySet="Breaks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Breaks_Users" Association="northopsModel.FK_Breaks_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Breaks" EntitySet="Breaks" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AddressStateProvinces">
@@ -1913,15 +2154,6 @@
           <NavigationProperty Name="Choices" Relationship="northopsModel.FK_Choice_Question" FromRole="Questions" ToRole="Choices" />
           <NavigationProperty Name="Exams" Relationship="northopsModel.FK_Question_ExamId" FromRole="Questions" ToRole="Exams" />
           <NavigationProperty Name="Videos" Relationship="northopsModel.FK_Question_VideoId" FromRole="Questions" ToRole="Videos" />
-        </EntityType>
-        <EntityType Name="RestDays">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="RestDate" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Users" Relationship="northopsModel.FK_DayOff_Users" FromRole="RestDays" ToRole="Users" />
         </EntityType>
         <EntityType Name="Shifts">
           <Key>
@@ -2203,6 +2435,10 @@
           <NavigationProperty Name="CreatedByUser" Relationship="northopsModel.FK_Recordings_CreatedBy" FromRole="Recordings" ToRole="Users" />
           <Property Name="AcknowledgmentDate" Type="DateTime" Precision="7" />
           <Property Name="CoachingDate" Type="DateTime" Precision="7" />
+          <Property Name="isAgentAcknowledge" Type="Boolean" />
+          <Property Name="isAdministratorAcknowledge" Type="Boolean" />
+          <Property Name="AcknowledgeToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Sanctions" Relationship="northopsModel.CoachingLogsInSanctions" FromRole="Recordings" ToRole="Sanctions" />
         </EntityType>
         <Association Name="FK_Recordings_Campaigns">
           <End Type="northopsModel.Campaigns" Role="Campaigns" Multiplicity="0..1" />
@@ -2384,7 +2620,6 @@
           <NavigationProperty Name="Overtimes" Relationship="northopsModel.FK_Overtimes_Users" FromRole="Users" ToRole="Overtimes" />
           <NavigationProperty Name="PersonalityResults" Relationship="northopsModel.FK_PersonalityResult_UserId" FromRole="Users" ToRole="PersonalityResults" />
           <NavigationProperty Name="Recordings" Relationship="northopsModel.FK_Recordings_Users" FromRole="Users" ToRole="Recordings" />
-          <NavigationProperty Name="RestDays" Relationship="northopsModel.FK_DayOff_Users" FromRole="Users" ToRole="RestDays" />
           <NavigationProperty Name="UserClaims" Relationship="northopsModel.FK_UserClaims_Users" FromRole="Users" ToRole="UserClaims" />
           <NavigationProperty Name="UserLogins" Relationship="northopsModel.FK_UserLogins_Users" FromRole="Users" ToRole="UserLogins" />
           <NavigationProperty Name="Inventory" Relationship="northopsModel.FK_Inventory_Users" FromRole="Users" ToRole="Inventory" />
@@ -2397,6 +2632,11 @@
           <NavigationProperty Name="OvertimesCreatedBy" Relationship="northopsModel.FK_Overtimes_CreatedBy" FromRole="Users" ToRole="Overtimes" />
           <NavigationProperty Name="OvertimesModifiedBy" Relationship="northopsModel.FK_Overtimes_ModifiedBy" FromRole="Users" ToRole="Overtimes" />
           <NavigationProperty Name="Schedules" Relationship="northopsModel.FK_Schedules_Users" FromRole="Users" ToRole="Schedules" />
+          <NavigationProperty Name="RestDays" Relationship="northopsModel.FK_DayOff_Users" FromRole="Users" ToRole="RestDays" />
+          <NavigationProperty Name="CreatedBy_User" Relationship="northopsModel.FK_RestDays_CreatedBy" FromRole="Users" ToRole="RestDays" />
+          <NavigationProperty Name="ModifiedBy_User" Relationship="northopsModel.FK_RestDays_Users" FromRole="Users" ToRole="RestDays" />
+          <NavigationProperty Name="Violations" Relationship="northopsModel.FK_Violations_Users" FromRole="Users" ToRole="Violations" />
+          <NavigationProperty Name="Breaks" Relationship="northopsModel.FK_Breaks_Users" FromRole="Users" ToRole="Breaks" />
         </EntityType>
         <Association Name="FK_Users_AddressTownCities">
           <End Type="northopsModel.AddressTownCities" Role="AddressTownCities" Multiplicity="0..1" />
@@ -2584,18 +2824,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Recordings">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DayOff_Users">
-          <End Type="northopsModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="northopsModel.RestDays" Role="RestDays" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RestDays">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2829,6 +3057,173 @@
             </Principal>
             <Dependent Role="Attendances">
               <PropertyRef Name="BiometricId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MachineConfigs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IpAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Sanctions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sanction" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Recordings" Relationship="northopsModel.CoachingLogsInSanctions" FromRole="Sanctions" ToRole="Recordings" />
+        </EntityType>
+        <Association Name="CoachingLogsInSanctions">
+          <End Type="northopsModel.Recordings" Role="Recordings" Multiplicity="*" />
+          <End Type="northopsModel.Sanctions" Role="Sanctions" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ViolationTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Violationtype" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Violations" Relationship="northopsModel.FK_Violations_ViolationTypes" FromRole="ViolationTypes" ToRole="Violations" />
+          </EntityType>
+        <EntityType Name="RestDays">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RestDay" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <Property Name="DateModified" Type="DateTime" Precision="7" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_DayOff_Users" FromRole="RestDays" ToRole="Users" />
+          <NavigationProperty Name="CreatedBy_User" Relationship="northopsModel.FK_RestDays_CreatedBy" FromRole="RestDays" ToRole="Users" />
+          <NavigationProperty Name="ModifiedBy_User" Relationship="northopsModel.FK_RestDays_Users" FromRole="RestDays" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_DayOff_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="northopsModel.RestDays" Role="RestDays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestDays">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestDays_CreatedBy">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.RestDays" Role="RestDays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestDays">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestDays_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.RestDays" Role="RestDays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestDays">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Violations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Violation" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ViolationTypeId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RootCauseAnalysis" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Commitment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ViolationDateTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AcknowledgmentDate" Type="DateTime" Precision="7" />
+          <Property Name="isAgentAcknowledge" Type="Boolean" />
+          <Property Name="isAdministratorAcknowledge" Type="Boolean" />
+          <Property Name="AcknowledgeToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Violations_Users" FromRole="Violations" ToRole="Users" />
+          <NavigationProperty Name="ViolationTypes" Relationship="northopsModel.FK_Violations_ViolationTypes" FromRole="Violations" ToRole="ViolationTypes" />
+        </EntityType>
+        <Association Name="FK_Violations_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="northopsModel.Violations" Role="Violations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Violations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Violations_ViolationTypes">
+          <End Type="northopsModel.ViolationTypes" Role="ViolationTypes" Multiplicity="1" />
+          <End Type="northopsModel.Violations" Role="Violations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ViolationTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Violations">
+              <PropertyRef Name="ViolationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Breaks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BreakTypeId" Type="Int32" />
+          <Property Name="StartTime" Type="DateTime" Precision="7" />
+          <Property Name="EndTime" Type="DateTime" Precision="7" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="BreakTypes" Relationship="northopsModel.FK_Breaks_BreakTypes" FromRole="Breaks" ToRole="BreakTypes" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Breaks_Users" FromRole="Breaks" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="BreakTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BreakType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Breaks" Relationship="northopsModel.FK_Breaks_BreakTypes" FromRole="BreakTypes" ToRole="Breaks" />
+        </EntityType>
+        <Association Name="FK_Breaks_BreakTypes">
+          <End Type="northopsModel.BreakTypes" Role="BreakTypes" Multiplicity="0..1" />
+          <End Type="northopsModel.Breaks" Role="Breaks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BreakTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Breaks">
+              <PropertyRef Name="BreakTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Breaks_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Breaks" Role="Breaks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Breaks">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3078,15 +3473,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RestDays">
-            <EntityTypeMapping TypeName="northopsModel.RestDays">
-              <MappingFragment StoreEntitySet="RestDays">
-                <ScalarProperty Name="RestDate" ColumnName="RestDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Shifts">
             <EntityTypeMapping TypeName="northopsModel.Shifts">
               <MappingFragment StoreEntitySet="Shifts">
@@ -3192,6 +3578,9 @@
           <EntitySetMapping Name="Recordings">
             <EntityTypeMapping TypeName="northopsModel.Recordings">
               <MappingFragment StoreEntitySet="Recordings">
+                <ScalarProperty Name="AcknowledgeToken" ColumnName="AcknowledgeToken" />
+                <ScalarProperty Name="isAdministratorAcknowledge" ColumnName="isAdministratorAcknowledge" />
+                <ScalarProperty Name="isAgentAcknowledge" ColumnName="isAgentAcknowledge" />
                 <ScalarProperty Name="CoachingDate" ColumnName="CoachingDate" />
                 <ScalarProperty Name="AcknowledgmentDate" ColumnName="AcknowledgmentDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -3396,6 +3785,90 @@
                 <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="BiometricId" ColumnName="BiometricId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MachineConfigs">
+            <EntityTypeMapping TypeName="northopsModel.MachineConfigs">
+              <MappingFragment StoreEntitySet="MachineConfigs">
+                <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sanctions">
+            <EntityTypeMapping TypeName="northopsModel.Sanctions">
+              <MappingFragment StoreEntitySet="Sanctions">
+                <ScalarProperty Name="Sanction" ColumnName="Sanction" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CoachingLogsInSanctions" TypeName="northopsModel.CoachingLogsInSanctions" StoreEntitySet="CoachingLogsInSanctions">
+            <EndProperty Name="Sanctions">
+              <ScalarProperty Name="Id" ColumnName="SanctionId" />
+            </EndProperty>
+            <EndProperty Name="Recordings">
+              <ScalarProperty Name="Id" ColumnName="CoachingLogId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ViolationTypes">
+            <EntityTypeMapping TypeName="northopsModel.ViolationTypes">
+              <MappingFragment StoreEntitySet="ViolationTypes">
+                <ScalarProperty Name="Violationtype" ColumnName="Violationtype" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestDays">
+            <EntityTypeMapping TypeName="northopsModel.RestDays">
+              <MappingFragment StoreEntitySet="RestDays">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="RestDay" ColumnName="RestDay" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Violations">
+            <EntityTypeMapping TypeName="northopsModel.Violations">
+              <MappingFragment StoreEntitySet="Violations">
+                <ScalarProperty Name="AcknowledgeToken" ColumnName="AcknowledgeToken" />
+                <ScalarProperty Name="isAdministratorAcknowledge" ColumnName="isAdministratorAcknowledge" />
+                <ScalarProperty Name="isAgentAcknowledge" ColumnName="isAgentAcknowledge" />
+                <ScalarProperty Name="AcknowledgmentDate" ColumnName="AcknowledgmentDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ViolationDateTime" ColumnName="ViolationDateTime" />
+                <ScalarProperty Name="Commitment" ColumnName="Commitment" />
+                <ScalarProperty Name="RootCauseAnalysis" ColumnName="RootCauseAnalysis" />
+                <ScalarProperty Name="ViolationTypeId" ColumnName="ViolationTypeId" />
+                <ScalarProperty Name="Violation" ColumnName="Violation" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Breaks">
+            <EntityTypeMapping TypeName="northopsModel.Breaks">
+              <MappingFragment StoreEntitySet="Breaks">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="BreakTypeId" ColumnName="BreakTypeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BreakTypes">
+            <EntityTypeMapping TypeName="northopsModel.BreakTypes">
+              <MappingFragment StoreEntitySet="BreakTypes">
+                <ScalarProperty Name="BreakType" ColumnName="BreakType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

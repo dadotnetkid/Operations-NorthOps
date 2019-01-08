@@ -1,0 +1,46 @@
+@{
+        var grid = Html.DevExpress().GridView(settings =>
+        {
+        settings.Width = Unit.Percentage(100);
+        settings.Name = "RestDaysGridView";
+        settings.CallbackRouteValues = new { Controller = "RestDays", Action = "RestDaysGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "RestDays", Action = "RestDaysGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "RestDays", Action = "RestDaysGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "RestDays", Action = "RestDaysGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("Users.FullName");
+        settings.Columns.Add("RestDay");
+         
+        settings.SetEditFormTemplateContent(col =>
+        {
+            ViewContext.Writer.Write(Html.AntiForgeryToken().ToHtmlString());
+            Html.RenderAction("AddEditRestDayPartial", new { RestDayId = col.KeyValue });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -34,7 +34,7 @@ namespace NorthOps.Ops.Controllers
         {
             try
             {
-                item.InOutState = (int)InOutState.CheckOut;
+
                 unitOfWork.AttendancesRepo.Insert(item);
                 unitOfWork.Save();
             }
@@ -47,12 +47,12 @@ namespace NorthOps.Ops.Controllers
             return PartialView("_AttendanceLogGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]
-        public async Task<ActionResult> AttendanceLogGridViewPartialUpdate()
+        public async Task<ActionResult> GetAttendanceLog(DateTime dateFrom,DateTime dateTo)
         {
             try
             {
-                DtrServices dtrServices = new DtrServices(new AttendanceServices());
-                await dtrServices.SaveAttendanceLog();
+                DailyTimeRecordServices dtrServices = new DailyTimeRecordServices(new AttendanceServices());
+                await dtrServices.SaveAttendanceLog(dateFrom, dateTo);
             }
             catch (Exception e)
             {
@@ -63,6 +63,46 @@ namespace NorthOps.Ops.Controllers
             return PartialView("_AttendanceLogGridViewPartial", model);
         }
 
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> AttendanceLogGridViewPartialUpdate([ModelBinder(typeof(DevExpressEditorsBinder))]Attendances item)
+        {
+            try
+            {
+                unitOfWork.AttendancesRepo.Update(item);
+                await unitOfWork.SaveAsync();
+            }
+            catch (Exception e)
+            {
+                ViewData["EditError"] = e.Message;
+            }
+
+            var model = unitOfWork.AttendancesRepo.Get();
+            return PartialView("_AttendanceLogGridViewPartial", model);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> AttendanceLogGridViewPartialDelete([ModelBinder(typeof(DevExpressEditorsBinder))]int Id)
+        {
+            try
+            {
+                unitOfWork.AttendancesRepo.Delete(m=>m.Id==Id);
+                await unitOfWork.SaveAsync();
+            }
+            catch (Exception e)
+            {
+                ViewData["EditError"] = e.Message;
+            }
+
+            var model = unitOfWork.AttendancesRepo.Get();
+            return PartialView("_AttendanceLogGridViewPartial", model);
+        }
+
+        public ActionResult AddEditAttendancePartial([ModelBinder(typeof(DevExpressEditorsBinder))] Attendances item)
+        {
+            var model = unitOfWork.AttendancesRepo.Find(m => m.Id == item.Id);
+            return PartialView("_AddEditAttendancePartial", model);
+        }
         public ActionResult DTR()
         {
             return View();
@@ -100,6 +140,7 @@ namespace NorthOps.Ops.Controllers
 
             return PartialView("_SchedulerPartial");
         }
+
     }
     public class AttendanceControllerSchedulerSettings
     {

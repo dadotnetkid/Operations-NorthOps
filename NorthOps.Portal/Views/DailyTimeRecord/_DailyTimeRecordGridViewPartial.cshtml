@@ -33,17 +33,30 @@
             col.FieldName = "Schedule";
             col.Caption = @"Schedule";
 
+
         });
 
         settings.Columns.Add(col =>
         {
             col.FieldName = "DateFrom";
             col.Caption = @"Check In";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+
+            col.Settings.AutoFilterCondition = AutoFilterCondition.GreaterOrEqual;
         });
         settings.Columns.Add(col =>
         {
             col.FieldName = "DateTo";
             col.Caption = @"Check Out";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+
+            col.Settings.AutoFilterCondition = AutoFilterCondition.LessOrEqual;
         });
         settings.Columns.Add(col =>
         {

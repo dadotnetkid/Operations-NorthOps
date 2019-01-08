@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using NorthOps.Services.SmsService;
 using RestSharp;
 
 namespace NorthOps.SendSMSServices
@@ -22,36 +23,44 @@ namespace NorthOps.SendSMSServices
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
-
-
-            RestClient restClient = new RestClient("http://192.168.8.1");
-
-            RestRequest restRequest = new RestRequest();
-            var res = restClient.Execute(restRequest);
-
-            restRequest = new RestRequest("../api/user/state-login");
-
-            HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
-            htmlDocument.LoadHtml(res.Content);
-            var verToken = htmlDocument.DocumentNode.SelectNodes("//meta").First().Attributes["content"].Value;
-           //  verToken = "Rh2vE59DV5IhCep7KwsXvnuUWILU187G";
-            var SessionId = res.Cookies.FirstOrDefault(m => m.Name == "SessionID")?.Value;
-            //restRequest.AddHeader("content-type", "application/x-www-form-urlencoded");
-          //  SessionId ="PnGYiUBTEVbt1/v5wNz6MjHrujBeYfJ91MUOiOeTm6HO0vxDxv53ElHAF3nnFwkDySr7PcOoJCNoxAx/lJHI6X6Zlt1lDZFX9muE/tk1T+MNxBMLMwzfQMqAuCAqtTOK";
-            restRequest.AddCookie("SessionID",SessionId);
-            var respassword = XmlPassword("Rh2vE59DV5IhCep7KwsXvnuUWILU187G");
-            //restRequest.AddParameter("application/x-www-form-urlencoded", "<?xml version: \"1.0\" encoding=\"UTF-8\"?><request><Username>admin</Username><Password>MGM5MWM0ZmQ2NDFiZDAyMTc3ZDc3NDRkNWFhODhjNDg2MDA5OGQwODBlMmY0N2U0YzU5N2NjMDQ0YjkyNjFjMw==</Password><password_type>4</password_type></request>", ParameterType.RequestBody);
-            restRequest.AddXmlBody(respassword);
-
-             res = restClient.Execute(restRequest);
-
+            SpeedWiFi speedWiFi = new SpeedWiFi(new Uri("http://192.168.254.254/"));
+            var res = await speedWiFi.LoginAsync("user", "@l03e1t3");
+          
 
 
         }
 
+        string SessionId(IRestResponse res)
+        {
+            return res.Cookies.FirstOrDefault(m => m.Name == "SessionID")?.Value;
+        }
+        string VerificationToken(string content)
+        {
+            HtmlAgilityPack.HtmlDocument htmlDocument = new HtmlAgilityPack.HtmlDocument();
+            htmlDocument.LoadHtml(content);
+            var verToken = htmlDocument.DocumentNode.SelectNodes("//meta").First().Attributes["content"].Value;
+            return verToken;
+        }
+        void sendSms(string sessionId)
+        {
+            RestClient client = new RestClient("http://192.168.8.1/html/smsinbox.html");
 
+            var restRequest = new RestRequest();
+            restRequest.AddCookie("SessionID", sessionId);
+            var res = client.Execute(restRequest);
+
+
+            client = new RestClient("http://192.168.8.1");
+            var token = VerificationToken(res.Content);
+            restRequest = new RestRequest("api/sms/send-sms");
+            restRequest.AddCookie("SessionID", sessionId);
+            restRequest.AddHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+            restRequest.AddHeader("__RequestVerificationToken", token);
+            restRequest.AddParameter("application/x-www-form-urlencoded", SendData("222", "bal"), ParameterType.RequestBody);
+            res = client.Post(restRequest);
+        }
 
 
         public string Sha256(string strData)
@@ -72,14 +81,15 @@ namespace NorthOps.SendSMSServices
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
-        string SendData()
+        string SendData(string phoneNumber, string message)
         {
-            return $"<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><Index>-1</Index><Phones><Phone>222</Phone></Phones><Sca></Sca><Content>bal1</Content><Length>4</Length><Reserved>1</Reserved><Date>{DateTime.Now:yyyy-MM-dd HH:mm:ss}</Date></request>";
+            //<?xml version: "1.0" encoding="UTF-8"?><request><Index>-1</Index><Phones><Phone>222</Phone></Phones><Sca></Sca><Content>bal</Content><Length>3</Length><Reserved>1</Reserved><Date>2018-11-29 16:08:30</Date></request>
+            return $"<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><Index>-1</Index><Phones><Phone>{phoneNumber}</Phone></Phones><Sca></Sca><Content>{message}</Content><Length>{message.Length - 1}</Length><Reserved>1</Reserved><Date>{DateTime.Now:yyyy-MM-dd HH:mm:ss}</Date></request>";
 
         }
         string XmlPassword(string psd)
         {
-            psd = Base64Encode(Sha256("admin" + Base64Encode(Sha256("admin")) +psd));
+            psd = Base64Encode(Sha256("admin" + Base64Encode(Sha256("admin")) + psd));
             //psd = Base64Encode(psd);
             return $"<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><Username>admin</Username><Password>{psd}</Password><password_type>4</password_type></request>";
         }

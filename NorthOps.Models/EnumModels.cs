@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace NorthOps.Models
 {
+    public enum BreakInOut
+    {
+        In,Out
+    }
     public enum ScheduleType
     {
         Grid,

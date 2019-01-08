@@ -1,0 +1,64 @@
+﻿@model Breaks
+
+
+    <div class="col-lg-6">
+        @Html.DevExpress().ComboBoxFor(m=>m.BreakTypeId,settings =>
+        {
+            settings.Properties.ValueField = "Id";
+            settings.Properties.TextField = "BreakType";
+        }).BindList(new UnitOfWork().BreakTypesRepo.Get()).GetHtml()
+    </div>
+    <div class="col-lg-6" >
+    @{
+
+        if (Model == null)
+        {
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnBreak";
+                settings.RouteValues = new {Controller = "Break", Action = "BreakInOutPartial", BreakInOut = BreakInOut.Out};
+                settings.Text = "Break Out";
+                settings.UseSubmitBehavior = true;
+            }).GetHtml();
+        }
+        else if (Model.EndTime == null)
+
+        {
+            Html.DevExpress().Button(settings =>
+            {
+                settings.UseSubmitBehavior = true;
+                settings.Name = "btnBreakIn";
+                settings.RouteValues = new {Controller = "Break", Action = "BreakInOutPartial", BreakInOut = BreakInOut.In};
+                settings.Text = "Break In";
+            }).GetHtml();
+        }
+        else
+        {
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnBreak";
+                settings.RouteValues = new {Controller = "Break", Action = "BreakInOutPartial", BreakInOut = BreakInOut.Out};
+                settings.Text = "Break Out";
+                settings.UseSubmitBehavior = true;
+            }).GetHtml();
+        }
+    }
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

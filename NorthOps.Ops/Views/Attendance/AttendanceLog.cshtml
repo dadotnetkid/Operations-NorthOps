@@ -7,21 +7,51 @@
 
 
 @{
-    using (Ajax.BeginForm("AttendanceLogGridViewPartialUpdate", "Attendance", new AjaxOptions()
+    using (Ajax.BeginForm("GetAttendanceLog", "Attendance", new AjaxOptions()
     {
-        OnBegin= "ldpAttendance.Show()",
+        OnBegin = "ldpAttendance.Show()",
 
         OnComplete = "RefreshGrid()"
     }))
     {
-        Html.DevExpress().Button(settings =>
-        {
-            settings.Name = "btnRetrienveAttendance";
-            settings.UseSubmitBehavior = true;
-            settings.Text = "Retrieve Attendance";
 
-            settings.ControlStyle.CssClass = "pull-right margin-bottom-10";
-        }).GetHtml();
+
+        <div class="row margin-bottom-10">
+            <div class="col-lg-3">
+                @{
+                    Html.DevExpress().DateEdit(settings =>
+                    {
+                        settings.Name = "dateFrom";
+
+
+                    }).GetHtml();
+                }
+            </div>
+            <div class="col-lg-3">
+                @{
+                    Html.DevExpress().DateEdit(settings =>
+                    {
+                        settings.Name = "dateTo";
+
+                    }).GetHtml();
+                }
+
+            </div>
+            <div class="col-lg-3">
+                @{
+                    Html.DevExpress().Button(settings =>
+                    {
+                        settings.Name = "btnRetrienveAttendance";
+                        settings.UseSubmitBehavior = true;
+                        settings.Text = "Retrieve Attendance";
+
+                        //settings.ControlStyle.CssClass = "pull-right margin-bottom-10";
+                    }).GetHtml();
+                }
+            </div>
+        </div>
+
+
     }
 
 }
@@ -37,8 +67,8 @@
     {
         settings.Name = "ldpAttendance";
         settings.Modal = true;
-        
-        
+
+
     }).GetHtml();
 }
 

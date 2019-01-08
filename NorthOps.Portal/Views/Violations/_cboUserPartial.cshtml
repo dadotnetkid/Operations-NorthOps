@@ -1,0 +1,13 @@
+﻿@model Violations
+@{
+    Html.DevExpress().ComboBoxFor(m=>m.UserId,settings =>
+    {
+        settings.ShowModelErrors=true;
+        settings.Properties.ValidationSettings.Display = Display.Dynamic;
+        //settings.CallbackRouteValues = new {Action = "cboUserPartial", Controller = "Violations", userId = ViewBag.UserId};
+        settings.Properties.TextField = "FullName";
+        settings.Properties.ValueField = "Id";
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.NullText = @"Employee";
+    }).BindList(new UnitOfWork().UserRepository.Get(m=>m.UserRoles.Any(x=>x.Name=="Employee"))).GetHtml();
+}

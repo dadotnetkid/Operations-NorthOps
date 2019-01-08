@@ -8,12 +8,11 @@ namespace NorthOps.Models.ViewModels
 {
     public class DailyTimeRecordViewModel
     {
-        private List<Overtimes> _overtimes;
-        private List<Schedules> _schedules;
-        private List<DailyTimeRecords> _dailyTimeRecords;
-        
+        private IList<Overtimes> _overtimes;
+        private IList<Schedules> _schedules;
+        private IList<DailyTimeRecords> _dailyTimeRecords;
 
-        public List<Overtimes> Overtimes
+        public IList<Overtimes> Overtimes
         {
             get
             {
@@ -27,7 +26,7 @@ namespace NorthOps.Models.ViewModels
             set => _overtimes = value;
         }
 
-        public List<Schedules> Schedules
+        public IList<Schedules> Schedules
         {
             get
             {
@@ -43,10 +42,23 @@ namespace NorthOps.Models.ViewModels
 
         public Users Users { get; set; }
 
-        public List<DailyTimeRecords> DailyTimeRecords
+        public IList<DailyTimeRecords> DailyTimeRecords
         {
             get => _dailyTimeRecords;
             set => _dailyTimeRecords = value;
         }
+
+        public IList<RestDays> RestDays { get; set; }
+
+
+        public int Id { get; set; }
+        public string TimeIn { get; set; }
+        public string TimeOut { get; set; }
+        public DateTime? DateLogFrom { get; set; }
+        public DateTime? DateLogTo { get; set; }
+        public string UserId { get; set; }
+        public DateTime? LogDate { get; set; }
+        public string DateLog { get; set; }
+        public bool isGenerated { get; set; }
     }
 }

@@ -16,8 +16,14 @@ namespace NorthOps.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public System.DateTime RestDate { get; set; }
+        public System.DateTime RestDay { get; set; }
+        public Nullable<System.DateTime> DateCreated { get; set; }
+        public Nullable<System.DateTime> DateModified { get; set; }
+        public string CreatedBy { get; set; }
+        public string ModifiedBy { get; set; }
     
         public virtual Users Users { get; set; }
+        public virtual Users CreatedBy_User { get; set; }
+        public virtual Users ModifiedBy_User { get; set; }
     }
 }

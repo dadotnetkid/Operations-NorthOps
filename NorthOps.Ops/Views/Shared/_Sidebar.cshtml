@@ -27,8 +27,11 @@
 
             @if (User.IsInRoles("Administrator", "Team Leader"))
             {
-                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(RecordingsController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "CallRecording" ? "active" : "")">
-                    <a href="@Url.Action("Index", "Recordings")"><i class="fa fa-music"></i> <span>Call Recording</span></a>
+                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(RecordingController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "CallRecording" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Recording")"><i class="fa fa-music"></i> <span>Coaching Logs</span></a>
+                </li>
+                <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(RecordingController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "CallRecording" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Violations")"><i class="fa fa-music"></i> <span>Violation Logs</span></a>
                 </li>
             }
             @if (User.IsInRole("Administrator"))

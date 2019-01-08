@@ -12,7 +12,7 @@ using NorthOps.Services.Helpers;
 namespace NorthOps.Ops.Controllers
 {
     [Authorize(Roles = "Administrator,Team Leader")]
-    public class RecordingsController : Controller
+    public class _RecordingsController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
         public ActionResult Index()

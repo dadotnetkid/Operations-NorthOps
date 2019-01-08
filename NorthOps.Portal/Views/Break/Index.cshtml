@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Breaks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Ajax.BeginForm("BreakInOutPartial", "Break", new AjaxOptions() { OnBegin = "onBegin()", OnComplete = "OnComplete()", UpdateTargetId = "_btnBreakInOut" }))
+{
+    <div class="row" id="_btnBreakInOut">
+        @Html.Action("btnBreakInOut")
+    </div>
+}
+
+@Html.Action("BreaksGridViewPartial")
+<script>
+    function OnComplete() {
+        BreaksGridView.PerformCallback();
+        onBegin();
+        startInterval();
+    }
+    var min = 0;
+    var hr = 0;
+    var sec = 0;
+    var timer = null;
+    var counter = 0;
+    function onBegin() {
+        clearInterval(timer);
+        counter = 0;
+        min = 0;
+        sec = 0;
+        hr = 0;
+    }
+
+    function startInterval() {
+       
+        timer = setInterval("beginCounter()", 1000);
+       
+    }
+    function beginCounter() {
+        
+        if (counter == 60) {
+            counter = 0;
+        }
+        counter++;
+        sec++;
+        if (sec == 60) {
+            sec = 0;
+            min++;
+        }
+        if (min == 60) {
+            min = 0;
+            hr++;
+        }
+        try {
+
+            btnBreakIn.SetText("Break In (" + hr + ":" + min + ":" + sec + ")");
+        } catch (e) {
+            onBegin();
+        } 
+    }
+
+
+</script>

@@ -46,7 +46,6 @@ namespace NorthOps.Models
         public virtual DbSet<PersonalityResults> PersonalityResults { get; set; }
         public virtual DbSet<Positions> Positions { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
-        public virtual DbSet<RestDays> RestDays { get; set; }
         public virtual DbSet<Shifts> Shifts { get; set; }
         public virtual DbSet<TypingSpeeds> TypingSpeeds { get; set; }
         public virtual DbSet<UserClaims> UserClaims { get; set; }
@@ -67,5 +66,12 @@ namespace NorthOps.Models
         public virtual DbSet<Schedules> Schedules { get; set; }
         public virtual DbSet<Holidays> Holidays { get; set; }
         public virtual DbSet<Attendances> Attendances { get; set; }
+        public virtual DbSet<MachineConfigs> MachineConfigs { get; set; }
+        public virtual DbSet<Sanctions> Sanctions { get; set; }
+        public virtual DbSet<ViolationTypes> ViolationTypes { get; set; }
+        public virtual DbSet<RestDays> RestDays { get; set; }
+        public virtual DbSet<Violations> Violations { get; set; }
+        public virtual DbSet<Breaks> Breaks { get; set; }
+        public virtual DbSet<BreakTypes> BreakTypes { get; set; }
     }
 }

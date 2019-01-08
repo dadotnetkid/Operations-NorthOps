@@ -2,12 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using DevExpress.Web;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json;
+using NorthOps.AspIdentity;
 using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Models.ViewModels;
 using NorthOps.Services.Helpers;
 
 namespace NorthOps.Portal.Controllers
@@ -15,12 +20,23 @@ namespace NorthOps.Portal.Controllers
     [Authorize(Roles = "Employee")]
     public class RecordingController : Controller
     {
+
+        public ApplicationUserManager UserManager
+        {
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
+
+        }
+
         public string userId
         {
             get { return User.Identity.GetUserId(); }
         }
 
         private UnitOfWork unitOfWork = new UnitOfWork();
+
+        private ApplicationUserManager _userManager;
+
         // GET: Recording
         public ActionResult Index()
         {
@@ -49,7 +65,22 @@ namespace NorthOps.Portal.Controllers
                     if (!User.IsInRoles("Administrator"))
                     {
                         item.UserId = string.IsNullOrEmpty(item.UserId) ? User.Identity.GetUserId() : item.UserId;
+                        item.isAgentAcknowledge = true;
                     }
+                    else
+                    {
+                        item.isAdministratorAcknowledge = true;
+                    }
+
+                    var UserId = User.Identity.GetUserId();
+                    item.AcknowledgeToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
+                        new AcknowledgeTokenViewModel()
+                        {
+                            Password = UserManager.PasswordHasher.HashPassword(item.AcknowledgeTokenViewModel.Password),
+                            AcknowledgeDate = DateTime.Now,
+                            AcknowledgeBy = unitOfWork.UserRepository.Get(m => m.Id == userId).Select(x => new { FirstName = x.FirstName, MiddleName = x.MiddleName, LastName = x.LastName }).FirstOrDefault(),
+                            ModifiedBy = unitOfWork.UserRepository.Get(m => m.Id == userId).Select(x => new { FirstName = x.FirstName, MiddleName = x.MiddleName, LastName = x.LastName }).FirstOrDefault()
+                        })));
 
                     var uploadedFile = Session["callRecording"] as UploadedFile[];
                     item.Recording = uploadedFile?.FirstOrDefault()?.FileBytes;
@@ -124,6 +155,36 @@ namespace NorthOps.Portal.Controllers
                         ? recording.Commitment
                         : item.Commitment;
                     recording.AcknowledgmentDate = DateTime.Now;
+
+
+
+
+
+
+                    if (!User.IsInRoles("Administrator"))
+                    {
+                        item.UserId = string.IsNullOrEmpty(item.UserId) ? User.Identity.GetUserId() : item.UserId;
+                        item.isAgentAcknowledge = true;
+                    }
+                    else
+                    {
+                        item.isAdministratorAcknowledge = true;
+                    }
+
+
+                    item.AcknowledgeToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
+                        new AcknowledgeTokenViewModel()
+                        {
+                            Password = UserManager.PasswordHasher.HashPassword(item.AcknowledgeTokenViewModel.Password),
+                            AcknowledgeDate = DateTime.Now,
+                            AcknowledgeBy = unitOfWork.UserRepository.Get(m => m.Id == userId).Select(x => new { FirstName = x.FirstName, MiddleName = x.MiddleName, LastName = x.LastName }).FirstOrDefault(),
+                            ModifiedBy = unitOfWork.UserRepository.Get(m => m.Id == userId).Select(x => new { FirstName = x.FirstName, MiddleName = x.MiddleName, LastName = x.LastName }).FirstOrDefault(),
+                            DateModified=DateTime.Now 
+                        })));
+
+
+
+
                     unitOfWork.Save();
                 }
                 catch (Exception e)
@@ -162,7 +223,7 @@ namespace NorthOps.Portal.Controllers
 
         public ActionResult AddEditRecordingsPartial(int? recordingId)
         {
-            var model = unitOfWork.RecordingsRepo.Find(m => m.Id == recordingId) ?? new Recordings();
+            var model = unitOfWork.RecordingsRepo.Find(m => m.Id == recordingId) ?? new Recordings() { Id = new Random().Next(0, 1000) };
             return PartialView("_AddEditRecordingsPartial", model);
         }
 
@@ -178,7 +239,10 @@ namespace NorthOps.Portal.Controllers
             return File(model.Recording, "audio/mpeg3", $"{model.CallerNumber}-{model.CallDate}.wav");
         }
 
-
+        public ActionResult ConfirmPasswordPopupControlPartial([ModelBinder(typeof(DevExpressEditorsBinder))] Recordings model)
+        {
+            return PartialView("_ConfirmPasswordPopupControlPartial", model);
+        }
 
         public ActionResult UploadControlUpload()
         {
@@ -187,6 +251,14 @@ namespace NorthOps.Portal.Controllers
             Session["callRecording"] = file;
             return null;
         }
+
+        public JsonResult CheckPassword(string password)
+        {
+            var res = UserManager.CheckPassword(UserManager.FindById(userId), password);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
     public class RecordingControllerUploadControlSettings
     {

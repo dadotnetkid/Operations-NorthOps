@@ -35,10 +35,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.zkemkeeper">
-      <HintPath>..\..\..\..\ZKTeco.DTR\ZKTeco.SDKHelper\bin\Debug\Interop.zkemkeeper.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -80,6 +76,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NorthOps.Models\NorthOps.Models.csproj">
+      <Project>{9EE5721E-2F42-4917-B742-6F13FA293BBF}</Project>
+      <Name>NorthOps.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <COMReference Include="zkemkeeper">
       <Guid>{FE9DED34-E159-408E-8490-B720A5E632C7}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -89,12 +91,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NorthOps.Models\NorthOps.Models.csproj">
-      <Project>{9EE5721E-2F42-4917-B742-6F13FA293BBF}</Project>
-      <Name>NorthOps.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

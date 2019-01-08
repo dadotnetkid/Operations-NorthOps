@@ -34,10 +34,10 @@
     <Reference Include="DevExpress.Web.Mvc5.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Web.v16.2, Version=16.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -55,22 +55,22 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\..\..\..\Development Cache\.nuget\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -100,6 +100,12 @@
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Branch.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Breaks.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BreakTypes.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Campaigns.cs">
@@ -162,6 +168,9 @@
     <Compile Include="Leaves.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="MachineConfigs.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="NotificationsTemplates.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
@@ -185,11 +194,15 @@
     <Compile Include="Recordings.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="RecordingsPartial.cs" />
     <Compile Include="Repository\Bootstrap.cs" />
     <Compile Include="Repository\DataHelper.cs" />
     <Compile Include="Repository\Excel.cs" />
     <Compile Include="Repository\UnitOfWorkPartial.cs" />
     <Compile Include="RestDays.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sanctions.cs">
       <DependentUpon>NorthOpsDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Schedules.cs">
@@ -256,9 +269,14 @@
     <Compile Include="UserStore.cs" />
     <Compile Include="ViewModels\ApplicationExamModel.cs" />
     <Compile Include="ViewModels\DailyTimeRecordViewModel.cs" />
-    <Compile Include="ViewModels\DtrReportViewModel.cs" />
     <Compile Include="ViewModels\IdentificationExamViewModel.cs" />
     <Compile Include="ViewModels\SmsViewModel.cs" />
+    <Compile Include="Violations.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViolationTypes.cs">
+      <DependentUpon>NorthOpsDb.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="NorthOpsDb.edmx">

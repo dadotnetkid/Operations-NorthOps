@@ -1,0 +1,286 @@
+﻿@using NorthOps.Services.Helpers
+@model Recordings
+@{
+    var unitOfWork = new UnitOfWork();
+
+}
+@if (User.IsInRoles("Administrator"))
+{
+
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Date:</label>
+        </div>
+        <div class="col-lg-9">
+            @Model.CallDate
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Acknowledgment Date  </label>
+        </div>
+        <div class="col-lg-9">
+            <span>
+                @Model.AcknowledgmentDate
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <label>No. of times committed this error: </label>
+        </div>
+        <div class="col-lg-9">
+            @if (Model != null)
+            {
+                <p>@unitOfWork.RecordingsRepo.Fetch(m => m.UserId == Model.UserId && m.ErrorTypeId == Model.ErrorTypeId).Count()</p>
+            }
+            else
+            {
+                <p>0</p>
+            }
+        </div>
+    </div>
+    <div class="row">
+        @if (Model?.ErrorTypes == null)
+        {
+            <div class="col-lg-3">
+                <label>Error Type: </label>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-3">
+                <label>Error Type: </label>
+            </div>
+            <div class="col-lg-9">
+                @Model.ErrorTypes.ErrorType
+            </div>
+        }
+
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Errors</label>
+        </div>
+        <div class="col-lg-9">
+            @Model.Errors
+        </div>
+    </div>
+  
+
+}
+else
+{
+    if (User.IsInRoles("Team Leader"))
+    {
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Agent Name</label>
+            </div>
+            <div class="col-lg-9">
+
+                @{
+                    Html.DevExpress().ComboBoxFor(m => m.UserId, settings =>
+                    {
+                        settings.Properties.ClientSideEvents.KeyUp = "function(s,e){checkValue()}";
+                        settings.Properties.NullText = "Agent Name";
+                        settings.Properties.ValueField = "Id";
+                        settings.Properties.TextField = "FullName";
+                    }).BindList(unitOfWork.UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"))).GetHtml();
+                }
+
+            </div>
+        </div>
+    }
+
+
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Number</label>
+        </div>
+        <div class="col-lg-9">
+
+            @{
+                Html.DevExpress().TextBoxFor(m => m.CallerNumber, settings =>
+                {
+                    settings.Properties.ClientSideEvents.KeyUp = "function(s,e){checkValue()}";
+                    settings.Properties.NullText = "Number";
+                }).GetHtml();
+            }
+
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Call Date</label>
+        </div>
+        <div class="col-lg-9">
+
+            @{
+                Html.DevExpress().DateEditFor(m => m.CallDate, settings =>
+                {
+                    settings.Properties.ClientSideEvents.DateChanged = "function(s,e){checkValue()}";
+                    settings.Properties.NullText = "Call Date";
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm:ss tt";
+                    settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm:ss tt";
+                }).GetHtml();
+            }
+
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Coaching Date</label>
+        </div>
+        <div class="col-lg-9">
+
+            @{
+                Html.DevExpress().DateEditFor(m => m.CoachingDate, settings =>
+                {
+                    settings.Properties.ClientSideEvents.DateChanged = "function(s,e){checkValue()}";
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.NullText = "Coaching Date";
+                    settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm:ss tt";
+                    settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm:ss tt";
+                }).GetHtml();
+            }
+
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Acknowledgment Date</label>
+        </div>
+        <div class="col-lg-9">
+
+            @{
+                Html.DevExpress().DateEditFor(m => m.AcknowledgmentDate, settings =>
+                {
+                    settings.Properties.ClientSideEvents.DateChanged = "function(s,e){checkValue()}";
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.NullText = "Acknowledgment Date";
+                    settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm:ss tt";
+                    settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm:ss tt";
+                }).GetHtml();
+            }
+
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Error Date Time</label>
+        </div>
+     
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Error Type</label>
+        </div>
+        <div class="col-lg-9">
+            @{
+                Html.DevExpress().ComboBoxFor(m => m.ErrorTypeId, settings =>
+                {
+                    settings.Properties.ClientSideEvents.ValueChanged = "function(s,e){checkValue()}";
+                    settings.Properties.NullText = "Error Type";
+                    settings.Properties.TextField = "ErrorType";
+                    settings.Properties.ValueField = "Id";
+                }).BindList(unitOfWork.ErrorTypesRepo.Get()).GetHtml();
+            }
+
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Errors</label>
+        </div>
+        <div class="col-lg-9">
+            @{
+                Html.DevExpress().MemoFor(m => m.Errors, settings =>
+                {
+                    settings.Properties.ClientSideEvents.KeyUp = "function(s,e){checkValue()}";
+                    settings.Width = Unit.Percentage(100);
+                    settings.Properties.Height = Unit.Pixel(400);
+                    settings.Properties.NullText = @"Errors";
+                }).GetHtml();
+            }
+
+        </div>
+    </div>
+
+    <div class="row margin-top-10">
+        <div class="col-lg-3">
+            <label>Recording File</label>
+        </div>
+        <div class="col-lg-9">
+            @Html.Partial("_UploadControl")
+        </div>
+    </div>
+}
+<div class="row margin-top-10">
+
+    <div class="col-lg-12">
+        <label>Root Cause Analysis</label>
+        @Html.DevExpress().MemoFor(m => m.RootCauseAnalysis, settings =>
+        {
+            settings.Height = Unit.Pixel(100);
+            settings.Properties.ClientSideEvents.KeyUp = "function(s,e){checkValue()}";
+            settings.Properties.NullText = "Root Cause Analysis";
+            settings.Properties.Height = Unit.Pixel(400);
+            settings.Width = Unit.Percentage(100);
+        }).GetHtml()
+    </div>
+</div>
+<div class="row margin-top-10">
+    <div class="col-lg-12">
+        <label>Commitment</label>
+        @Html.DevExpress().MemoFor(m => m.Commitment, settings =>
+        {
+            settings.Height = Unit.Pixel(100);
+            settings.Properties.ClientSideEvents.KeyUp = "function(s,e){checkValue()}";
+            settings.Properties.NullText = "Commitment";
+            settings.Properties.Height = Unit.Pixel(400);
+            settings.Width = Unit.Percentage(100);
+        }).GetHtml()
+    </div>
+</div>
+<div class="row margin-top-10">
+    <div class="col-lg-12">
+        @{
+
+
+
+            if (User.IsInRole("Administrator"))
+            {
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "btnAcknowledge";
+                    settings.ClientEnabled = false;
+                    settings.Text = "Acknowledge";
+
+                    settings.ClientSideEvents.Click = "function(s,e){RecordingGridView.UpdateEdit();}";
+                }).GetHtml();
+            }
+            else
+            {
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = "btnUpdate";
+                    settings.ClientEnabled = false;
+                    settings.Text = "Acknowledge";
+
+                    settings.ClientSideEvents.Click = "function(s,e){ConfirmPopupControl.Show();}";
+                }).GetHtml();
+            }
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnCancel";
+                settings.Text = "Cancel";
+                settings.ClientSideEvents.Click = "function(s,e){RecordingGridView.CancelEdit()}";
+            }).GetHtml();
+        }
+    </div>
+</div>
+
+
+@Html.Action("ConfirmPasswordPopupControlPartial", new { Model })

@@ -15,8 +15,8 @@
 
         settings.CommandColumn.Visible = true;
         settings.CommandColumn.ShowNewButtonInHeader = true;
-        settings.CommandColumn.ShowDeleteButton = false;
-        settings.CommandColumn.ShowEditButton = false;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
 
         settings.KeyFieldName = "Id";
 
@@ -30,10 +30,26 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        settings.Columns.Add("Biometrics.Users.FullName");
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.DataSource = new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"));
+            col.FieldName = "Biometrics.Users.FullName";
+            cbo.TextField = "FullName";
+            cbo.ValueField = "FullName";
+
+        });
         settings.Columns.Add(col =>
         {
             col.FieldName = "LogDateTime";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            col.Settings.AutoFilterCondition = AutoFilterCondition.GreaterOrEqual;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"MM/dd/yyyy hh:mm:ss tt";
+            dt.EditFormatString = @"MM/dd/yyyy hh:mm:ss tt";
+
         });
 
         settings.Columns.Add(col =>
@@ -51,7 +67,8 @@
 
         settings.SetEditFormTemplateContent(col =>
         {
-            Html.RenderPartial("_addeditattendancepartial", new Attendances());
+            var Id = col.KeyValue == null ? 0 : (int)col.KeyValue;
+            Html.RenderAction("addeditattendancepartial", new { Id = Id });
         });
 
     });

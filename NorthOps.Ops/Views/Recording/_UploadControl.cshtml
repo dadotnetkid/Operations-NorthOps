@@ -1,0 +1,25 @@
+﻿<div class="row">
+    <div class="col-lg-3">
+        @using (Html.BeginForm("UploadControlUpload", "Recording", FormMethod.Post))
+        {
+            @Html.DevExpress().UploadControl(settings => {
+                                                             settings.Name = "UploadControl";
+                                                             settings.CallbackRouteValues = new { Controller = "Recording", Action = "UploadControlUpload" };
+                                                             settings.AutoStartUpload = true;
+                                                             settings.AdvancedModeSettings.EnableFileList = true;
+                                                             settings.AdvancedModeSettings.EnableDragAndDrop = true;
+
+                                                             settings.ShowUploadButton = false;
+                                                             settings.ShowProgressPanel = false;
+                                                             settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadComplete(e); }";
+                                                             settings.ValidationSettings.Assign(NorthOps.Portal.Controllers.RecordingControllerUploadControlSettings.UploadValidationSettings);
+            }).GetHtml()
+
+        }
+    </div>
+    <div class="col-lg-2">
+        <span id="lbl-fileName"></span>
+    </div>
+</div>
+
+

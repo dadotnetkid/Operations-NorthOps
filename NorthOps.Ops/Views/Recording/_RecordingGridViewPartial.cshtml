@@ -1,0 +1,61 @@
+@using NorthOps.Services.Helpers
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Width = Unit.Percentage(100);
+        settings.Name = "RecordingGridView";
+        settings.CallbackRouteValues = new { Controller = "Recording", Action = "RecordingGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Recording", Action = "RecordingGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Recording", Action = "RecordingGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Recording", Action = "RecordingGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowDeleteButton = User.IsInRoles("Team Leader", "Administrator") ? true : false;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add("Users.FullName");
+        settings.Columns.Add("CallDate");
+        settings.Columns.Add("CallerNumber");
+        settings.Columns.Add("Errors");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Recording";
+            col.SetDataItemTemplateContent(set =>
+            {
+                Html.DevExpress().HyperLink(lnk =>
+                {
+                    lnk.Properties.Text = "Download";
+                    lnk.NavigateUrl = Url.Action("download", new { recordingId = set.KeyValue });
+                }).GetHtml();
+            });
+        });
+
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderAction("AddEditRecordingsPartial", new { recordingId = col.KeyValue });
+        });
+
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
