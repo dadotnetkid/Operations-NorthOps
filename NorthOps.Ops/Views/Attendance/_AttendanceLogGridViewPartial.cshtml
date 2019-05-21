@@ -35,7 +35,7 @@
             col.ColumnType = MVCxGridViewColumnType.ComboBox;
             var cbo = col.PropertiesEdit as ComboBoxProperties;
             cbo.DataSource = new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"));
-            col.FieldName = "Biometrics.Users.FullName";
+            col.FieldName = "FullName";
             cbo.TextField = "FullName";
             cbo.ValueField = "FullName";
 
@@ -77,4 +77,7 @@
         grid.SetEditErrorText((string)ViewData["EditError"]);
     }
 }
-@grid.Bind(Model).GetHtml()
+@grid.BindToEF(string.Empty, string.Empty, (s, e) =>
+{
+    e.QueryableSource = Model;
+}).GetHtml();

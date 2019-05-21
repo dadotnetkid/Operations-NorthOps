@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
-using NorthOps.AspIdentity;
 using NorthOps.Models;
+using NorthOps.Models.Config;
 using NorthOps.Models.Repository;
 using NorthOps.Services.Helpers;
 
@@ -86,6 +86,18 @@ namespace NorthOps.Ops.Controllers
                     res.BiometricId = item.BiometricId ?? res.BiometricId;
                     res.Rfid = item.Rfid ?? res.Rfid;
                     unitOfWork.Save();
+                    if (!res.Biometrics.Any())
+                    {
+                        unitOfWork.BiometricsRepo.Delete(m => m.BiometricId == res.BiometricId);
+                        unitOfWork.Save();
+                        unitOfWork.BiometricsRepo.Insert(new Biometrics() {BiometricId = res.BiometricId.Value,UserId=res.Id});
+                        unitOfWork.Save();
+                    }
+                    else
+                    {
+                        unitOfWork.BiometricsRepo.Insert(new Biometrics() { BiometricId = res.BiometricId.Value, UserId = res.Id });
+                        unitOfWork.Save();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -121,6 +133,18 @@ namespace NorthOps.Ops.Controllers
                     res.Rfid = item.Rfid ?? res.Rfid;
 
                     unitOfWork.Save();
+                    if (res.Biometrics.Any())
+                    {
+                        unitOfWork.BiometricsRepo.Delete(m => m.BiometricId == res.BiometricId);
+                        unitOfWork.Save();
+                        unitOfWork.BiometricsRepo.Insert(new Biometrics() { BiometricId =item.BiometricId.Value, UserId = res.Id });
+                        unitOfWork.Save();
+                    }
+                    else
+                    {
+                        unitOfWork.BiometricsRepo.Insert(new Biometrics() { BiometricId = item.BiometricId.Value, UserId = res.Id });
+                        unitOfWork.Save();
+                    }
                 }
                 catch (Exception e)
                 {

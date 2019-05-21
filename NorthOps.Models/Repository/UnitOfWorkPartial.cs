@@ -169,6 +169,29 @@ namespace NorthOps.Models.Repository
         }
 
 
+        private GenericRepository<Leaves> _LeavesRepo;
+        public GenericRepository<Leaves> LeavesRepo
+        {
+            get
+            {
+                if (this._LeavesRepo == null)
+                    this._LeavesRepo = new GenericRepository<Leaves>(context);
+                return _LeavesRepo;
+            }
+            set { _LeavesRepo = value; }
+        }
+
+        private GenericRepository<LeaveTypes> _LeaveTypesRepo;
+        public GenericRepository<LeaveTypes> LeaveTypesRepo
+        {
+            get
+            {
+                if (this._LeaveTypesRepo == null)
+                    this._LeaveTypesRepo = new GenericRepository<LeaveTypes>(context);
+                return _LeaveTypesRepo;
+            }
+            set { _LeaveTypesRepo = value; }
+        }
         
     }
 }

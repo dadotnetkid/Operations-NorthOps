@@ -1,0 +1,63 @@
+﻿
+
+@{
+    ViewBag.Title = "Bulk Email Sending";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Ajax.BeginForm("Send", new AjaxOptions()
+{
+    Confirm="Do you want to continue",
+    OnBegin= "showldpPanel()",
+    OnComplete= "hideldpPanel()",
+    HttpMethod="POST",
+
+}))
+{
+    Html.RenderPartial("bulkEmailSendPartial");
+}
+
+@Html.DevExpress().LoadingPanel(settings =>
+{
+    settings.Name = "ldpPanel";
+}).GetHtml()
+<script>
+    var selectedIDs;
+    function showldpPanel() {
+        ldpPanel.Show();
+    }
+    function hideldpPanel() {
+        ldpPanel.Hide();
+    }
+
+    
+    function selectBulkEmail() {
+        
+    }
+    function GetSelectedFieldValuesCallback(values) {
+
+        //Capture all selected keys
+        selectedIDs = values.join(',');
+        btnEnabled();
+        $('#email').attr('value',selectedIDs);
+    }
+    function OnSelectionChanged(s, e) {
+        s.GetSelectedFieldValues("Email", GetSelectedFieldValuesCallback);
+    
+    }
+    function btnEnabled() {
+
+        if (selectedIDs == null || selectedIDs=="") {
+            btnSend.SetEnabled(false);
+        }
+        else if (subject.GetValue() === null) {
+            btnSend.SetEnabled(false);
+        }
+        else if (body.GetHtml() === "") {
+            btnSend.SetEnabled(false);
+        }
+        else {
+            btnSend.SetEnabled(true);
+        }
+    }
+</script>

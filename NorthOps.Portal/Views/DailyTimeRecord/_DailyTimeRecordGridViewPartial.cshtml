@@ -12,7 +12,7 @@
         settings.SettingsBehavior.ConfirmDelete = true;
 
         settings.CommandColumn.Visible = true;
-        settings.CommandColumn.ShowNewButtonInHeader = true;
+        settings.CommandColumn.ShowNewButtonInHeader = false;
         settings.CommandColumn.ShowDeleteButton = true;
         settings.CommandColumn.ShowEditButton = true;
 
@@ -28,6 +28,23 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+
+        settings.CommandButtonInitialize = (s, e) =>
+        {
+            var grd = s as MVCxGridView;
+
+            var val = grd.GetRow(e.VisibleIndex) as DailyTimeRecords;
+            if (e.ButtonType == ColumnCommandButtonType.Delete || e.ButtonType == ColumnCommandButtonType.Edit)
+            {
+                if (val.isAdminApproved!=null)
+                {
+                    e.Visible = false;
+                }
+            }
+
+        };
+
         settings.Columns.Add(col =>
         {
             col.FieldName = "Schedule";
@@ -67,6 +84,11 @@
         {
             col.FieldName = "Users.FullName";
             col.Caption = @"Modified By";
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "ModifyStatus";
+            col.Caption = @"Status";
         });
         settings.SetEditFormTemplateContent(col =>
         {

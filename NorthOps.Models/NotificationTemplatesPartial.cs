@@ -8,7 +8,7 @@ namespace NorthOps.Models
 {
     public partial class NotificationsTemplates
     {
-
+        public string Status => this.isActive == true ?"Active":"Not Active";
     }
 
     public enum NotificationType

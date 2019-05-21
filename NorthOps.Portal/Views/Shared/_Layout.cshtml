@@ -45,7 +45,7 @@
             new Script { ExtensionSuite = ExtensionSuite.Scheduler }
 
             );
-      
+
     }
     @Scripts.Render("~/bundles/js")
 
@@ -85,7 +85,7 @@
         Html.DevExpress().LoadingPanel(ldp =>
         {
             ldp.Name = "ldpLoading";
-            
+
         }).GetHtml();
     }
     @RenderSection("scripts", required: false)
@@ -98,4 +98,27 @@
     function hideldpLoading() {
         ldpLoading.Hide();
     }
+</script>
+
+
+
+<script>
+
+    function dateChange(s, e,dateTo) {
+        var day = s.GetDate().getDate();
+        var month = s.GetDate().getMonth();
+        var year = s.GetDate().getFullYear();
+        dateTo.SetMinDate(new Date(year, month, day));
+    }
+
+    function setMinDate(s, dateTo) {
+        if (s.GetDate() != null) {
+            var day = s.GetDate().getDate();
+            var month = s.GetDate().getMonth();
+            var year = s.GetDate().getFullYear();
+            dateTo.SetMinDate(new Date(year, month, day));
+        }
+      
+    }
+
 </script>

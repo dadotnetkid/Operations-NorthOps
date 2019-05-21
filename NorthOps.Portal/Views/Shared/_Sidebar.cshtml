@@ -62,9 +62,16 @@
                 <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("schedules") ? "active" : "")">
                     <a href="@Url.Action("index", "schedules")"><i class="fa fa-calendar-times-o"></i> <span>Schedules</span></a>
                 </li>
+                <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("leaves") ? "active" : "")">
+                    <a href="@Url.Action("index", "leaves")"><i class="fa fa-calendar-times-o"></i> <span> Leaves</span></a>
+                </li>
                 <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("attendance") ? "active" : "")">
                     <a href="@Url.Action("index", "attendance")"><i class="fa fa-calendar-times-o"></i> <span>Raw Attendance</span></a>
                 </li>
+                <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("attendance") ? "active" : "")">
+                    <a href="@Url.Action("index", "dailytimerecordreport")"><i class="fa fa-calendar-times-o"></i> <span>DTR Report</span></a>
+                </li>
+
 
             }
 

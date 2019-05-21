@@ -59,10 +59,17 @@ namespace NorthOps.Ops.Controllers
             {
                 try
                 {
-                    item.Id = Guid.NewGuid().ToString();
-                    
-                    unitOfWork.SchedulesRepo.Insert(item);
-                    unitOfWork.Save();
+                    var scheds = unitOfWork.SchedulesRepo.Find(m => m.UserId == item.UserId && (m.ScheduleDateFrom==item.ScheduleDateFrom && m.ScheduleDateTo==item.ScheduleDateTo));
+                    if (scheds == null)
+                    {
+                        item.Id = Guid.NewGuid().ToString();
+                        unitOfWork.SchedulesRepo.Insert(item);
+                        unitOfWork.Save();
+                    }
+                    else
+                    {
+                        ViewData["EditError"] = "Schedule is already exists";
+                    }
                     // Insert here a code to insert the new item in your model
                 }
                 catch (Exception e)
@@ -83,7 +90,7 @@ namespace NorthOps.Ops.Controllers
             {
                 try
                 {
-                   
+
                     unitOfWork.SchedulesRepo.Update(item);
                     unitOfWork.Save();
                 }
@@ -94,13 +101,13 @@ namespace NorthOps.Ops.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            var model = unitOfWork.SchedulesRepo.Get(includeProperties:"Users");
+            var model = unitOfWork.SchedulesRepo.Get(includeProperties: "Users");
             return PartialView("_SchedulesGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult SchedulesGridViewPartialDelete([ModelBinder(typeof(DevExpressEditorsBinder))]System.String Id)
         {
-         
+
             if (Id != null)
             {
                 try

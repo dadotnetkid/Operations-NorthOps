@@ -14,10 +14,19 @@ namespace NorthOps.Models
     
     public partial class Leaves
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public Nullable<int> LeaveTypeId { get; set; }
         public string UserId { get; set; }
-        public Nullable<System.DateTime> LeaveDate { get; set; }
+        public Nullable<System.DateTime> DateFrom { get; set; }
+        public Nullable<System.DateTime> DateTo { get; set; }
+        public Nullable<bool> isAdminApproved { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
-        public Nullable<bool> isApproved { get; set; }
+        public Nullable<System.DateTime> DateModified { get; set; }
+        public string ModifiedBy { get; set; }
+        public Nullable<int> NumberOfDays { get; set; }
+    
+        public virtual LeaveTypes LeaveTypes { get; set; }
+        public virtual Users Modified_Users { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

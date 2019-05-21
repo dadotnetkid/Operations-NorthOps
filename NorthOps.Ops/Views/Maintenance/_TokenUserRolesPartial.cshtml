@@ -1,0 +1,30 @@
+﻿
+@{
+
+    Html.DevExpress().TokenBox(settings =>
+    {
+        settings.Name = "userRole";
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.AllowCustomTokens = true;
+        settings.Properties.ShowDropDownOnFocus = ShowDropDownOnFocusMode.Always;
+        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+        settings.CallbackRouteValues = new { Controller = "Employee", Action = "TokenUserRolesPartial" };
+        settings.Properties.ValueField = "Name";
+        settings.Properties.TextField = "Name";
+        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+        settings.PreRender = (s, e) =>
+        {
+            ASPxTokenBox tb = (ASPxTokenBox)s;
+            if (ViewBag.UserRoles != null)
+            {
+                foreach (var i in ViewBag.UserRoles as IEnumerable<UserRoles>)
+                {
+                    tb.Tokens.Add(i.Name);
+                }
+            }
+
+
+        };
+    }).BindList(Model).GetHtml();
+
+}

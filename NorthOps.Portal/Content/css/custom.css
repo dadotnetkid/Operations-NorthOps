@@ -21,3 +21,20 @@
 .margin-bottom-10 {
     margin-bottom:10px;
 }
+
+.dxscApt .dxsc-apt-wrapper {
+    min-height: 70px;
+}
+
+.dxsc-apt-time-container .dxeBase_Moderno {
+   
+}
+
+
+.dxsc-horizontal-same-day-apt .dxsc-apt-time-container span, .dxsc-horizontal-same-day-apt .dxsc-apt-time-container span {
+    font-size: 16px !important;
+}
+
+.margin-top-36 {
+    margin-top: 36px !important;
+}

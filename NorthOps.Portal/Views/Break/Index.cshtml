@@ -16,6 +16,15 @@
         BreaksGridView.PerformCallback();
         onBegin();
         startInterval();
+        enable();
+    }
+
+    var btn;
+    function disable(_btn) {
+        btn = _btn;
+    }
+    function enable() {
+        btn.SetEnabled(true);
     }
     var min = 0;
     var hr = 0;
@@ -23,6 +32,8 @@
     var timer = null;
     var counter = 0;
     function onBegin() {
+
+        btn.SetEnabled(false);
         clearInterval(timer);
         counter = 0;
         min = 0;

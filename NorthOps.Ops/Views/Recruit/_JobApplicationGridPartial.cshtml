@@ -83,7 +83,6 @@ if (isExamPassed == true && isTraining == null)
             settings.Columns.Add(col =>
             {
                 col.FieldName = "Users.CreatedDate";
-                col.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
                 col.ColumnType = DevExpress.Web.Mvc.MVCxGridViewColumnType.DateEdit; col.PropertiesEdit.DisplayFormatString = "MM/dd/yyyy";
             });
         }

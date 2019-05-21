@@ -11,8 +11,8 @@
                 settings.Width = Unit.Percentage(100);
                 settings.Properties.Caption = "From";
                 settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-
-            }).GetHtml();
+                settings.Properties.ClientSideEvents.DateChanged = "function(s,e){dateChange(s,e,ScheduleDateTo)}";
+            }).Bind(Model?.ScheduleDateFrom ?? DateTime.Now).GetHtml();
         }
     </div>
     <div class="col-lg-3">
@@ -26,7 +26,8 @@
                 settings.Properties.EditFormatString = @"MM-dd-yyy hh:mm tt";
                 settings.Properties.NullText = @"Schedule To";
                 settings.Width = Unit.Percentage(100);
-            }).GetHtml();
+                settings.Properties.ClientSideEvents.Init = "function(s,e){        setMinDate(ScheduleDateFrom,s);}";
+            }).Bind(Model?.ScheduleDateTo ?? DateTime.Now).GetHtml();
         }
     </div>
 </div>

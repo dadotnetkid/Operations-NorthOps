@@ -1,4 +1,13 @@
 ﻿@model DailyTimeRecords
+@if (Model.isAbsent == true)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>You're absent this day</h3>
+        </div>
+    </div>
+}
+
 @using (Html.BeginForm())
 {
     <div class="row">
@@ -12,6 +21,9 @@
                     settings.Properties.TimeSectionProperties.Visible = true;
                     settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Enabled = Model.isAbsent != true;
+
+                    settings.Properties.ClientSideEvents.DateChanged = "function(s,e){dateChange(s,e,DateTo)}";
                 }).GetHtml();
 
             }
@@ -27,6 +39,22 @@
                     settings.Properties.TimeSectionProperties.Visible = true;
                     settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
+                    settings.Enabled = Model.isAbsent != true;
+                    settings.Properties.ClientSideEvents.Init = "function(s,e){        setMinDate(DateFrom,s);}";
+                }).GetHtml();
+            }
+        </div>
+    </div>
+    <div class="row margin-top-10 ">
+        <div class="col-lg-12">
+            @{
+
+                Html.DevExpress().MemoFor(m => m.Note, settings =>
+                {
+                    settings.ShowModelErrors = true;
+                    settings.Properties.NullText = @"Reason for modifying your Attendance";
+                    settings.Height = Unit.Pixel(100);
+                    settings.Width = Unit.Percentage(100);
                 }).GetHtml();
             }
         </div>
@@ -34,23 +62,29 @@
     <div class="row margin-top-10 ">
         <div class="col-lg-6">
             @{
+                if (Model.isAdminApproved == null)
+                {
+                    Html.DevExpress().Button(settings =>
+                    {
+                        settings.ControlStyle.CssClass = "margin-r-5";
+                        settings.Name = "btnUpdate";
+                        settings.Text = "Save";
+                        settings.UseSubmitBehavior = false;
+                        settings.ClientEnabled = Model.isAbsent != true;
 
-                Html.DevExpress().Button(settings =>
-                {
-                    settings.ControlStyle.CssClass = "margin-r-5";
-                    settings.Name = "btnUpdate";
-                    settings.Text = "Save";
-                    settings.UseSubmitBehavior = false;
-                    settings.ClientSideEvents.Click = "function(s,e){ DailyTimeRecordScheduler.InplaceEditFormSave();}";
-                }).GetHtml();
-                Html.DevExpress().Button(settings =>
-                {
-                    settings.Name = "btnCancel";
-                    settings.UseSubmitBehavior = false;
-                    settings.Text = "Cancel";
-                    settings.ClientSideEvents.Click = "function(s,e){ DailyTimeRecordScheduler.InplaceEditFormCancel();}";
-                }).GetHtml();
+                        settings.ClientSideEvents.Click = "function(s,e){ DailyTimeRecordScheduler.InplaceEditFormSave();}";
+                    }).GetHtml();
+                    Html.DevExpress().Button(settings =>
+                    {
+                        settings.Name = "btnCancel";
+                        settings.UseSubmitBehavior = false;
+                        settings.Text = "Cancel";
+                        settings.ClientSideEvents.Click = "function(s,e){ DailyTimeRecordScheduler.InplaceEditFormCancel();}";
+                    }).GetHtml();
+                }
+
             }
         </div>
     </div>
 }
+

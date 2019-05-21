@@ -15,7 +15,7 @@ using NorthOps.Services.Helpers;
 
 namespace NorthOps.Ops.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Team Leader")]
     public class MaintenanceController : IdentityController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -200,6 +200,13 @@ namespace NorthOps.Ops.Controllers
                     /* var roles = await UserManager.GetRolesAsync(user.Id);
                      await UserManager.RemoveFromRolesAsync(user.Id, roles.ToArray());
                      await UserManager.AddToRoleAsync(user.Id, item.userRole);*/
+
+                    var roles = Request.Params["UserRole"];
+                    await UserManager.RemoveFromRoleAsync(item.Id, "Applicant");
+                    foreach (var i in roles.Split(','))
+                    {
+                        await UserManager.AddToRoleAsync(item.Id, i);
+                    }
                     #endregion
 
                     if (item.Password != null)
@@ -266,6 +273,14 @@ namespace NorthOps.Ops.Controllers
             }
             ViewBag.TownCity = new UnitOfWork().TownCityRepo.Get();
             return PartialView("_useraddeditpartial", user);
+        }
+
+
+
+        public ActionResult TokenUserRolesPartial(string UserId)
+        {
+            ViewBag.UserRoles = unitOfWork.UserRepository.Find(m => m.Id == UserId)?.UserRoles;
+            return PartialView("_TokenUserRolesPartial", unitOfWork.RoleRepository.Get());
         }
         #endregion
         #region User Role

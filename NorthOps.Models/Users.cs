@@ -45,6 +45,8 @@ namespace NorthOps.Models
             this.ModifiedBy_User = new HashSet<RestDays>();
             this.Violations = new HashSet<Violations>();
             this.Breaks = new HashSet<Breaks>();
+            this.ModifiedBy_Leaves = new HashSet<Leaves>();
+            this.Leaves = new HashSet<Leaves>();
         }
     
         public string Id { get; set; }
@@ -106,6 +108,8 @@ namespace NorthOps.Models
         public Nullable<decimal> TaxRate { get; set; }
         public Nullable<bool> isActive { get; set; }
         public Nullable<int> ZipCode { get; set; }
+        public Nullable<int> ConfirmationCode { get; set; }
+        public Nullable<System.DateTime> CodeExpireDate { get; set; }
     
         public virtual AddressTownCities AddressTownCities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -167,5 +171,9 @@ namespace NorthOps.Models
         public virtual ICollection<Violations> Violations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Breaks> Breaks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Leaves> ModifiedBy_Leaves { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Leaves> Leaves { get; set; }
     }
 }

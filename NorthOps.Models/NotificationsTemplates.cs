@@ -17,5 +17,6 @@ namespace NorthOps.Models
         public string Id { get; set; }
         public Nullable<int> Type { get; set; }
         public string Template { get; set; }
+        public Nullable<bool> isActive { get; set; }
     }
 }

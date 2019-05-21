@@ -28,7 +28,7 @@ namespace NorthOps.Portal.Controllers
         [ValidateInput(false)]
         public ActionResult DailyTimeRecordGridViewPartial()
         {
-            var model = unitOfWork.DailyTimeRecordsRepo.Get(m => m.Schedules.UserId == UserId, includeProperties: "Schedules,CreatedByUser,Users");
+            var model = unitOfWork.DailyTimeRecordsRepo.Fetch(m => m.Schedules.UserId == UserId, includeProperties: "Schedules,CreatedByUser,Users").OrderByDescending(m=>m.DateFrom).ToList();
 
             return PartialView("_DailyTimeRecordGridViewPartial", model);
         }
@@ -42,7 +42,9 @@ namespace NorthOps.Portal.Controllers
                 try
                 {
                     item.CreatedBy = UserId;
+                    item.DateCreated = DateTime.Now;
                     unitOfWork.DailyTimeRecordsRepo.Insert(item);
+
                     unitOfWork.Save();
                 }
                 catch (Exception e)
@@ -52,7 +54,7 @@ namespace NorthOps.Portal.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            var model = unitOfWork.DailyTimeRecordsRepo.Get(m => m.Schedules.UserId == UserId, includeProperties: "Schedules,CreatedByUser,Users");
+            var model = unitOfWork.DailyTimeRecordsRepo.Fetch(m => m.Schedules.UserId == UserId, includeProperties: "Schedules,CreatedByUser,Users").OrderByDescending(m => m.DateFrom).ToList();
             return PartialView("_DailyTimeRecordGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]
@@ -65,6 +67,12 @@ namespace NorthOps.Portal.Controllers
                 {
                     var dailyTimeRecords = unitOfWork.DailyTimeRecordsRepo.Find(m => m.Id == item.Id);
                     dailyTimeRecords.ModifiedBy = UserId;
+                    if (dailyTimeRecords.OriginalDateFrom == null)
+                    {
+                        dailyTimeRecords.OriginalDateFrom = dailyTimeRecords.DateFrom;
+                        dailyTimeRecords.OriginalDateTo = dailyTimeRecords.DateTo;
+                    }
+
                     dailyTimeRecords.DateFrom = item.DateFrom;
                     dailyTimeRecords.DateTo = item.DateTo;
                     unitOfWork.Save();
@@ -76,7 +84,7 @@ namespace NorthOps.Portal.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            var model = unitOfWork.DailyTimeRecordsRepo.Get(m => m.Schedules.UserId == UserId, includeProperties: "Schedules,CreatedByUser,Users");
+            var model = unitOfWork.DailyTimeRecordsRepo.Fetch(m => m.Schedules.UserId == UserId, includeProperties: "Schedules,CreatedByUser,Users").OrderByDescending(m => m.DateFrom).ToList();
             return PartialView("_DailyTimeRecordGridViewPartial", model);
         }
         [HttpPost, ValidateInput(false)]

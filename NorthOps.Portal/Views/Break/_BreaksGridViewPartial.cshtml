@@ -1,3 +1,4 @@
+@using NorthOps.Services.Helpers
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
@@ -20,7 +21,14 @@
 
         settings.SettingsPager.Visible = true;
         settings.Settings.ShowGroupPanel = false;
-        settings.Settings.ShowFilterRow = false;
+        if (User.IsInRoles("Team Leader", "Administrator"))
+        {
+            settings.Settings.ShowFilterRow = true;
+        }
+        else
+        {
+            settings.Settings.ShowFilterRow = false;
+        }
         settings.SettingsBehavior.AllowSelectByRowClick = true;
 
         settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
@@ -28,10 +36,20 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+        if (User.IsInRoles("Team Leader", "Administrator"))
+        {
+            settings.Columns.Add(col => { col.FieldName = "Users.FullName";
+                col.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var cbo = col.PropertiesEdit as ComboBoxProperties;
+                cbo.DataSource = new UnitOfWork().UserRepository.Get(m=>m.UserRoles.Any(x=>x.Name== "Employee"));
+                cbo.TextField = "FullName";
+                cbo.ValueField= "FullName";
 
+            });
+        }
         settings.Columns.Add("BreakTypes.BreakType");
         settings.Columns.Add("StartTime");
-        settings.Columns.Add("EndTime");
+        settings.Columns.Add("EndTime"); settings.Columns.Add("TotalTime");
     });
     if (ViewData["EditError"] != null)
     {

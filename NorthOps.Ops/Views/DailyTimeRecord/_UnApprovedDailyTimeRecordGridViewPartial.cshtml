@@ -1,0 +1,114 @@
+@{
+    /**/
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+
+        settings.Width = Unit.Percentage(100);
+        settings.Name = "UnApprovedDailyTimeRecordGridView";
+        settings.CallbackRouteValues = new { Controller = "DailyTimeRecord", Action = "UnApprovedDailyTimeRecordGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "DailyTimeRecord", Action = "UnApprovedDailyTimeRecordGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "DailyTimeRecord", Action = "UnApprovedDailyTimeRecordGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "DailyTimeRecord", Action = "UnApprovedDailyTimeRecordGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = false;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 300;
+        settings.Columns.Add(col =>
+        {
+            col.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var cbo = col.PropertiesEdit as ComboBoxProperties;
+            cbo.DataSource = new UnitOfWork().UserRepository.Get(m => m.UserRoles.Any(x => x.Name == "Employee"));
+            cbo.ValueField = "Id";
+            cbo.TextField = "FullName";
+            col.FieldName = "Schedules.UserId";
+            col.Caption = @"Employee Name";
+
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Schedule";
+            col.Caption = @"Schedule";
+
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OriginalDateFrom";
+            col.Caption = @"Original Check In";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+
+            col.Settings.AutoFilterCondition = AutoFilterCondition.GreaterOrEqual;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OriginalDateTo";
+            col.Caption = @"Original Check Out";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+
+            col.Settings.AutoFilterCondition = AutoFilterCondition.LessOrEqual;
+        });
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateFrom";
+            col.Caption = @"Modified Check In";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+
+            col.Settings.AutoFilterCondition = AutoFilterCondition.GreaterOrEqual;
+        });
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "DateTo";
+            col.Caption = @"Modified Check Out";
+            col.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dt = col.PropertiesEdit as DateEditProperties;
+            dt.TimeSectionProperties.Visible = true;
+            dt.DisplayFormatString = @"ddd,MM-dd-yyyy hh:mm:ss tt";
+
+            col.Settings.AutoFilterCondition = AutoFilterCondition.LessOrEqual;
+        });
+
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Users.FullName";
+            col.Caption = @"Modified By";
+        });
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderAction("EditUnApprovedDailyTimeRecordPartial", new { Id = col.KeyValue });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

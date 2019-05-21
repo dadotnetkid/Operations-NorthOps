@@ -2100,7 +2100,71 @@ namespace ZKTeco.SDK.MachineManager
             }
             return ((operationSuccess == this.OperationSuccess) ? 0 : (operationSuccess - 0x186a0));
         }
+        protected int ClearGLogWithoutLock()
+        {
+            int operationSuccess = this.OperationSuccess;
+            int dwErrorCode = this.InitialCommunicationWithoutLock(10, false);
+            if (dwErrorCode != this.OperationSuccess)
+                return dwErrorCode;
+            if (!this.AloneSDK.ClearGLog(this.dev.MachineNumber))
+                this.AloneSDK.GetLastError(ref dwErrorCode);
+            if (dwErrorCode == this.OperationSuccess)
+                dwErrorCode = this.EndCommunicationWithoutLock(false, false);
+            else if (dwErrorCode != this.ErrOperationTimeOut)
+                this.AloneSDK.EnableDevice(this.dev.MachineNumber, true);
+            return dwErrorCode;
+        }
 
+        public int ClearGLog()
+        {
+            int num = this.OperationSuccess;
+            if (Monitor.TryEnter(this.ThreadLock, this.LockTimeOut))
+            {
+                try
+                {
+
+                    
+                    switch (this.dev.ConnectType)
+                    {
+                        case ConnectType.Com:
+                            ComToken comToken = ComTokenManager.GetComToken(this.dev.SerialPort);
+                            if (Monitor.TryEnter((object)comToken, this.LockTimeOut))
+                            {
+                                try
+                                {
+                                    num = this.ClearGLogWithoutLock();
+                                }
+                                catch (Exception ex)
+                                {
+                                    num = this.ErrUnknown;
+                                }
+                                Monitor.Exit((object)comToken);
+                                break;
+                            }
+                            num = this.ErrOperationTimeOut;
+                            break;
+                        case ConnectType.Net:
+                        {
+                            num = this.ClearGLogWithoutLock();
+                            break;
+                        }
+                        case ConnectType.Usb:
+                        {
+                            num = this.ClearGLogWithoutLock();
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    num = this.ErrUnknown;
+                }
+                Monitor.Exit(this.ThreadLock);
+            }
+            else
+                num = this.ErrOperationTimeOut;
+            return num == this.OperationSuccess ? 0 : num - 100000;
+        }
 
 
 

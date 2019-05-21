@@ -49,9 +49,9 @@ namespace NorthOps.Models
                 }
             }
         }
-        public string GetExamType(int type)
+        public string GetExamType(int? type)
         {
-            switch ((ExamTypes)this.ExamType)
+            switch ((ExamTypes)type)
             {
                 case ExamTypes.Multiple:
                     return "Multiple Choice";

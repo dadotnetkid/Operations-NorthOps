@@ -1,4 +1,25 @@
-﻿@model Users
+﻿@using NorthOps.Services.Helpers
+@model Users
+
+@if (User.IsInRoles("Employee"))
+{
+    <div class="row">
+        <div class="col-md-4">
+            @{
+                Html.DevExpress().TextBoxFor(m => m.BiometricId, txt =>
+                {
+                    txt.Properties.Caption = "BiometricId";
+                    txt.Width = Unit.Percentage(100);
+                    txt.Properties.NullText = "BiometricId";
+                    txt.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    txt.Properties.ValidationSettings.SetFocusOnError = true;
+                    txt.Properties.ValidationSettings.Display = Display.Dynamic;
+                    txt.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                }).GetHtml();
+            }
+        </div>
+    </div>
+}
 <div class="row">
     <div class="col-md-4">
         @{

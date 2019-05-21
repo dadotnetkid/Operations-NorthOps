@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
-using NorthOps.AspIdentity;
 using NorthOps.Models;
+using NorthOps.Models.Config;
 using NorthOps.Models.Repository;
 
 namespace NorthOps.Portal.Controllers
@@ -218,8 +218,23 @@ namespace NorthOps.Portal.Controllers
                 user.PhilHealthNo = model.PhilHealthNo;
                 user.HDMFNo = model.HDMFNo;
                 user.TinNo = model.TinNo;
-                user.BankAccountNo = user.BankAccountNo;
+                user.BankAccountNo = model.BankAccountNo;
+                user.BiometricId = model.BiometricId;
                 await UserManager.UpdateAsync(user);
+
+                if (user.Biometrics.Any())
+                {
+                    unitOfWork.BiometricsRepo.Delete(m => m.BiometricId == user.BiometricId);
+                    unitOfWork.Save();
+                    unitOfWork.BiometricsRepo.Insert(new Biometrics() { BiometricId = user.BiometricId.Value, UserId = user.Id });
+                    unitOfWork.Save();
+                }
+                else
+                {
+                    unitOfWork.BiometricsRepo.Insert(new Biometrics() { BiometricId = user.BiometricId.Value, UserId = user.Id });
+                    unitOfWork.Save();
+                }
+
                 // unitOfWork.UserRepository.Update(user);
                 // await unitOfWork.SaveAsync();
                 if (!user.EmailConfirmed)

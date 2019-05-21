@@ -112,6 +112,7 @@ namespace NorthOps.Services.Helpers
                 UnitOfWork unitOfWork = new UnitOfWork();
                 appointment.Id = Guid.NewGuid().ToString();
                 appointment.UserId = HttpContext.Current.User.Identity.GetUserId();
+                appointment.CreatedDate = DateTime.Now;
                 unitOfWork.SchedulesRepo.Insert(appointment);
                 
 

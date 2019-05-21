@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using NorthOps.Models;
 using NorthOps.Models.Repository;
+using NorthOps.Services.Helpers;
 
 namespace NorthOps.Portal.Controllers
 {
@@ -76,8 +77,12 @@ namespace NorthOps.Portal.Controllers
         [ValidateInput(false)]
         public ActionResult BreaksGridViewPartial()
         {
-            var model = unitOfWork.BreaksRepo.Fetch(includeProperties: "Users,BreakTypes", filter: m => m.UserId == UserId).OrderByDescending(m => m.DateCreated).ToList();
-            return PartialView("_BreaksGridViewPartial", model);
+            var model = unitOfWork.BreaksRepo.Fetch(includeProperties: "Users,BreakTypes" );
+            if (!User.IsInRoles("Team Leader", "Administrator"))
+            {
+                model = model.Where(m => m.UserId == UserId);
+            }
+            return PartialView("_BreaksGridViewPartial", model.OrderByDescending(m => m.DateCreated).ToList());
         }
 
         [HttpPost, ValidateInput(false)]

@@ -1,0 +1,22 @@
+﻿@model TestViewModel
+
+@{
+    Html.DevExpress().FormLayout(settings =>
+    {
+        settings.Name = "FormLayout";
+
+        var groupItem = settings.Items.AddGroupItem(groupSettings =>
+        {
+            groupSettings.Caption = "ModelGroup";
+            groupSettings.ShowCaption = DefaultBoolean.True;
+            groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
+        });
+
+        groupItem.Items.Add(m => m.Email, s =>
+        {
+            ((TextBoxSettings)s.NestedExtensionSettings).ShowModelErrors = true;
+        });
+
+
+    }).GetHtml();
+}

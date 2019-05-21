@@ -14,7 +14,8 @@
                     settings.Properties.TimeSectionProperties.Visible = true;
                     settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
-                }).GetHtml();
+                    settings.Properties.ClientSideEvents.DateChanged = "function(s,e){dateChange(s,e,ScheduleDateTo)}";
+                }).Bind(Model?.ScheduleDateFrom ?? DateTime.Now).GetHtml();
             }
         </div>
         <div class="col-lg-6">
@@ -27,7 +28,8 @@
                     settings.Properties.TimeSectionProperties.Visible = true;
                     settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
-                }).GetHtml();
+                    settings.Properties.ClientSideEvents.Init = "function(s,e){        setMinDate(ScheduleDateFrom,s);}";
+                }).Bind(Model?.ScheduleDateTo ?? DateTime.Now).GetHtml();
             }
         </div>
 

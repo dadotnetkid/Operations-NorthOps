@@ -14,6 +14,12 @@ namespace NorthOps.Models
     
     public partial class Overtimes
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Overtimes()
+        {
+            this.OvertimeAttendances = new HashSet<OvertimeAttendances>();
+        }
+    
         public string Id { get; set; }
         public string UserId { get; set; }
         public Nullable<bool> isApproved { get; set; }
@@ -26,5 +32,7 @@ namespace NorthOps.Models
         public virtual Users Users { get; set; }
         public virtual Users CreatedByUser { get; set; }
         public virtual Users ModifiedByUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OvertimeAttendances> OvertimeAttendances { get; set; }
     }
 }

@@ -31,6 +31,8 @@
                 settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
                 settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
                 settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.Properties.ClientSideEvents.DateChanged = "function(s,e){}";
+                
             }).GetHtml();
         }
     </div>
@@ -68,3 +70,10 @@
         }
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        dateChange(DateFrom, null);
+    })
+</script>

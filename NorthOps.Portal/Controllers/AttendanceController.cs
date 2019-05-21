@@ -24,7 +24,7 @@ namespace NorthOps.Portal.Controllers
         public ActionResult RawAttendanceGridViewPartial()
         {
             var user = unitOfWork.UserRepository.Find(m => m.Id == UserId);
-            var model = unitOfWork.AttendancesRepo.Get(m => m.BiometricId == user.BiometricId);
+            var model = unitOfWork.AttendancesRepo.Fetch(m => m.BiometricId == user.BiometricId).OrderByDescending(m=>m.LogDateTime).ToList();
             return PartialView("_RawAttendanceGridViewPartial", model);
         }
 

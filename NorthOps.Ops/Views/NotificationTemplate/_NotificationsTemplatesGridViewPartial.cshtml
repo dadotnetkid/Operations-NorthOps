@@ -40,6 +40,17 @@
             cbo.DataSource = Enum.GetValues(typeof(NotificationType)).Cast<NotificationType>().Select(x => new { Id = x, Name = x.ToString() });
         });
         settings.Columns.Add("Template");
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "Status";
+            col.Caption = "Status";
+
+
+        });
+        settings.SetEditFormTemplateContent(col =>
+        {
+            Html.RenderAction("AddEditNotificationTemplatesPartial", new { _Id = col.KeyValue});
+        });
     });
     if (ViewData["EditError"] != null)
     {

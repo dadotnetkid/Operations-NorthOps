@@ -9,8 +9,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using NorthOps.AspIdentity;
 using NorthOps.Models;
+using NorthOps.Models.Config;
 using NorthOps.Models.Repository;
 
 namespace NorthOps.Ops.Controllers

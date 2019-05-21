@@ -1,64 +1,112 @@
-﻿@model  DailyTimeRecords
+﻿@using NorthOps.Services.Helpers
+@model  DailyTimeRecords
 @{
     var userId = User.Identity.GetUserId();
 }
 <div class="row">
-    <div class="col-lg-4">
-        @{
-            Html.DevExpress().ComboBoxFor(m => m.ScheduleId, settings =>
-            {
-                settings.Width = Unit.Percentage(100);
-                settings.Properties.Caption = "Schedule";
-                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-                settings.Properties.ValueField = "Id";
-                settings.Properties.TextField = "Schedule";
-            }).BindList(new UnitOfWork().SchedulesRepo.Fetch(m => m.UserId == userId).ToList().Select(x => new { Schedule = x.ScheduleDateFrom.ToString("MM/dd/yy hh:mm tt") + " - " + x.ScheduleDateTo.ToString("MM/dd/yy hh:mm tt"), Id = x.Id }).ToList()).GetHtml();
-        }
-    </div>
-    <div class="col-lg-4">
-        @{
-            Html.DevExpress().DateEditFor(m => m.DateFrom, settings =>
-            {
-                settings.Width = Unit.Percentage(100);
-                settings.Properties.Caption = "Check In";
-                settings.Properties.TimeSectionProperties.Visible = true;
-                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-                settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
-                settings.Properties.DisplayFormatString= "MM-dd-yyyy hh:mm tt";
-            }).GetHtml();
-        }
-    </div>
-    <div class="col-lg-4">
-        @{
-            Html.DevExpress().DateEditFor(m => m.DateTo, settings =>
-            {
-                settings.Width = Unit.Percentage(100);
-                settings.Properties.TimeSectionProperties.Visible = true;
-                settings.Properties.Caption = "Check Out";
-                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-                settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
-                settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
-            }).GetHtml();
-        }
-    </div>
-</div>
-<div class="row margin-top-10 ">
     <div class="col-lg-12">
-        @{
-            Html.DevExpress().Button(settings =>
-            {
-                settings.Name = "btnSave";
-                settings.Text = "Save";
-
-                settings.ClientSideEvents.Click = "function(s,e){DailyTimeRecordGridView.UpdateEdit()}";
-                settings.ControlStyle.CssClass = "margin-r-5";
-            }).GetHtml();
-            Html.DevExpress().Button(settings =>
-            {
-                settings.Name = "btnCancel";
-                settings.Text = "Cancel";
-                settings.ClientSideEvents.Click = "function(s,e){DailyTimeRecordGridView.CancelEdit()}";
-            }).GetHtml();
-        }
+        <div class="alert alert-info" role="alert">
+            Information: You can update/edit your DTR after your shift.
+        </div>
     </div>
 </div>
+
+
+    <div class="row">
+        <div class="col-lg-4">
+            @{
+                Html.DevExpress().ComboBoxFor(m => m.ScheduleId, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                    settings.Properties.Caption = "Schedule";
+                    settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    settings.Properties.ValueField = "Id";
+                    settings.Properties.TextField = "Schedule";
+                }).BindList(new UnitOfWork().SchedulesRepo.Fetch(m => m.UserId == userId).ToList().Select(x => new { Schedule = x.ScheduleDateFrom.ToString("MM/dd/yy hh:mm tt") + " - " + x.ScheduleDateTo.ToString("MM/dd/yy hh:mm tt"), Id = x.Id }).ToList()).GetHtml();
+            }
+        </div>
+        <div class="col-lg-4">
+            @{
+                Html.DevExpress().DateEditFor(m => m.DateFrom, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                    settings.Properties.Caption = "Check In";
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
+                    settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
+                    settings.Properties.ClientSideEvents.DateChanged = "function(s,e){dateChange(s,e,DateTo)}";
+                }).GetHtml();
+            }
+        </div>
+        <div class="col-lg-4">
+            @{
+                Html.DevExpress().DateEditFor(m => m.DateTo, settings =>
+                {
+                    settings.Width = Unit.Percentage(100);
+                    settings.Properties.TimeSectionProperties.Visible = true;
+                    settings.Properties.Caption = "Check Out";
+                    settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
+                    settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
+                    settings.Properties.ClientSideEvents.Init = "function(s,e){setMinDate(DateFrom,s);}";
+                }).GetHtml();
+            }
+        </div>
+    </div>
+    <div class="row margin-top-10 ">
+        <div class="col-lg-12">
+            @{
+                Html.DevExpress().MemoFor(m => m.Note, settings =>
+                {
+                    settings.ShowModelErrors = true;
+                    settings.Properties.NullText = @"Reason for  modifying your Attendance";
+                    settings.Height = Unit.Pixel(100);
+                    settings.Width = Unit.Percentage(100);
+                }).GetHtml();
+            }
+        </div>
+    </div>
+    <div class="row margin-top-10 ">
+        <div class="col-lg-12">
+
+            @{
+                if (!PrincipalHelpers.UserIsInRoles(Model.ModifiedBy, "Administrator"))
+                {
+
+
+                    Html.DevExpress().Button(settings =>
+                    {
+                        settings.Name = "btnSave";
+                        settings.Text = "Save";
+
+                        settings.ClientSideEvents.Click = "function(s,e){DailyTimeRecordGridView.UpdateEdit()}";
+                        settings.ControlStyle.CssClass = "margin-r-5";
+                        if (Model.Schedules.ScheduleDateTo <= DateTime.Now)
+                        {
+                            settings.Enabled = true;
+                        }
+                        else
+                        {
+                            settings.Enabled = false;
+                        }
+
+                    }).GetHtml();
+                    Html.DevExpress().Button(settings =>
+                    {
+                        settings.Name = "btnCancel";
+                        settings.Text = "Cancel";
+                        settings.ClientSideEvents.Click = "function(s,e){DailyTimeRecordGridView.CancelEdit()}";
+                    }).GetHtml();
+                }
+
+            }
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            setMinDate(DateFrom);
+        })
+    </script>

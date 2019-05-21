@@ -11,5 +11,7 @@ namespace NorthOps.Services.DTRService
         Task<List<Transactions>> AttendanceLog();
         Task SaveAttendanceLog();
         Task SaveAttendanceLog(DateTime dateFrom,DateTime dateTo);
+        Task SaveAttendanceLogDaily();
+        void GetDailyTimeRecordsDaily();
     }
 }

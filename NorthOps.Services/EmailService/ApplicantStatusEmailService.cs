@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NorthOps.AspIdentity;
 using NorthOps.Models;
+using NorthOps.Models.Config;
 using NorthOps.Models.Repository;
 using NorthOps.Services.EmailService;
 

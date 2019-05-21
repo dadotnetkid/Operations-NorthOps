@@ -1,0 +1,11 @@
+@using NorthOps.Ops.Controllers;
+
+@Html.DevExpress().HtmlEditor(settings => {
+    settings.Name = "body";
+    settings.CallbackRouteValues = new { Controller = "BulkEmail", Action = "HtmlEditorPartial" };
+    
+    settings.ToolbarMode = HtmlEditorToolbarMode.Menu;
+                                              settings.Width = Unit.Percentage(100);
+                                              settings.ClientSideEvents.HtmlChanged = "function(s,e){btnEnabled();}";
+
+}).GetHtml()

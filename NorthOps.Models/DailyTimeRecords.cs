@@ -23,6 +23,12 @@ namespace NorthOps.Models
         public string CreatedBy { get; set; }
         public Nullable<bool> isAgentApproved { get; set; }
         public Nullable<bool> isAdminApproved { get; set; }
+        public Nullable<bool> isAbsent { get; set; }
+        public Nullable<System.DateTime> OriginalDateFrom { get; set; }
+        public Nullable<System.DateTime> OriginalDateTo { get; set; }
+        public string Note { get; set; }
+        public Nullable<int> Tardiness { get; set; }
+        public Nullable<decimal> TotalRenderedHrs { get; set; }
     
         public virtual Users Users { get; set; }
         public virtual Users CreatedByUser { get; set; }

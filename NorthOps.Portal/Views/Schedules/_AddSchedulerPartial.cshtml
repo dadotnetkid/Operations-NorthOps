@@ -15,8 +15,8 @@
                     settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
-
-                }).GetHtml();
+                    settings.Properties.ClientSideEvents.DateChanged = "function(s,e){dateChange(s,e,ScheduleDateTo)}";
+                }).Bind(Model?.ScheduleDateFrom ?? DateTime.Now).GetHtml();
             }
         </div>
         <div class="col-lg-6">
@@ -30,21 +30,24 @@
                     settings.Properties.DisplayFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.EditFormatString = "MM/dd/yyyy hh:mm tt";
                     settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                }).GetHtml();
+                    settings.Properties.ClientSideEvents.Init = "function(s,e){        setMinDate(ScheduleDateFrom,s);}";
+
+
+                }).Bind(Model?.ScheduleDateTo ?? DateTime.Now).GetHtml();
             }
         </div>
         @*<div class="col-lg-4">
-            @{
-                <span style="float:left;padding:4px;">Time Zone </span><br />
-                Html.DevExpress().ComboBoxFor(m => m.TimeZoneId, settings =>
-                   {
-                       settings.Width = Unit.Percentage(100);
-                       settings.Properties.ValueField = "Id";
-                       settings.Properties.TextField = "StandardName";
-                       settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
-                   }).BindList(new Schedules().TimeZones).GetHtml();
-            }
-        </div>*@
+                @{
+                    <span style="float:left;padding:4px;">Time Zone </span><br />
+                    Html.DevExpress().ComboBoxFor(m => m.TimeZoneId, settings =>
+                       {
+                           settings.Width = Unit.Percentage(100);
+                           settings.Properties.ValueField = "Id";
+                           settings.Properties.TextField = "StandardName";
+                           settings.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                       }).BindList(new Schedules().TimeZones).GetHtml();
+                }
+            </div>*@
     </div>
     <div class="row margin-top-10">
         <div class="col-lg-6">

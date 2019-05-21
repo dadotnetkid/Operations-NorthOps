@@ -59,7 +59,6 @@ namespace NorthOps.Models
         public virtual DbSet<Documents> Documents { get; set; }
         public virtual DbSet<UsersInCampaignShift> UsersInCampaignShift { get; set; }
         public virtual DbSet<Overtimes> Overtimes { get; set; }
-        public virtual DbSet<Leaves> Leaves { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<ErrorTypes> ErrorTypes { get; set; }
         public virtual DbSet<DailyTimeRecords> DailyTimeRecords { get; set; }
@@ -73,5 +72,8 @@ namespace NorthOps.Models
         public virtual DbSet<Violations> Violations { get; set; }
         public virtual DbSet<Breaks> Breaks { get; set; }
         public virtual DbSet<BreakTypes> BreakTypes { get; set; }
+        public virtual DbSet<LeaveTypes> LeaveTypes { get; set; }
+        public virtual DbSet<OvertimeAttendances> OvertimeAttendances { get; set; }
+        public virtual DbSet<Leaves> Leaves { get; set; }
     }
 }

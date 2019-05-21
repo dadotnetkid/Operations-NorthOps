@@ -22,8 +22,13 @@ namespace NorthOps.Services.AttendanceService
             STDDevComm devComm = new STDDevComm(new Machines(ip: "10.10.20.50"));
             var transaction = new List<Transactions>();
             devComm.GetAllTransaction(out transaction);
+
             return Task.FromResult(transaction);
         }
+        /// <summary>
+        /// TODO Retrieve Logs from Biometric Device
+        /// </summary>
+        /// <returns></returns>
         public async Task SaveAttendanceLog()
         {
             try
@@ -35,7 +40,7 @@ namespace NorthOps.Services.AttendanceService
                     if (!unitOfWork.AttendancesRepo.Fetch(m =>
                         m.LogDateTime == i.LogDateTime && m.BiometricId == i.Pin &&
                         m.InOutState == (int)i.InOutState).Any()
-                        && unitOfWork.UserRepository.Fetch(m => m.BiometricId == i.Pin).Any() && (i.InOutState == InOutState.CheckIn || i.InOutState == InOutState.CheckOut))
+                        && (i.InOutState == InOutState.CheckIn || i.InOutState == InOutState.CheckOut))
                     {
                         attendanceRepo.Add(new Attendances()
                         {
@@ -57,6 +62,10 @@ namespace NorthOps.Services.AttendanceService
             }
 
         }
+        /// <summary>
+        /// TODO Retrieve Logs from Biometric Device
+        /// </summary>
+        /// <returns></returns>
 
         public async Task SaveAttendanceLog(DateTime dateFrom, DateTime dateTo)
         {
@@ -91,6 +100,131 @@ namespace NorthOps.Services.AttendanceService
             }
         }
 
+
+        /// <summary>
+        /// TODO Retrieve Logs from Biometric Device Scheduled Daily
+        /// </summary>
+        /// <returns></returns>
+
+        public async Task SaveAttendanceLogDaily()
+        {
+            var res = await AttendanceLog();
+            var attendanceRepo = new List<Attendances>();
+            foreach (var i in res)
+            {
+                if (!unitOfWork.AttendancesRepo.Fetch(m =>
+                        m.LogDateTime == i.LogDateTime && m.BiometricId == i.Pin &&
+                        m.InOutState == (int)i.InOutState).Any()
+                    && (i.InOutState == InOutState.CheckIn || i.InOutState == InOutState.CheckOut))
+                {
+                    attendanceRepo.Add(new Attendances()
+                    {
+                        LogDateTime = i.LogDateTime,
+                        DateCreated = DateTime.Now,
+                        DateModified = DateTime.Now,
+                        BiometricId = i.Pin,
+                        InOutState = (int)i.InOutState,
+                    });
+                }
+            }
+
+            unitOfWork.AttendancesRepo.InsertRange(attendanceRepo);
+            await unitOfWork.SaveAsync();
+
+        }
+        /// <summary>
+        /// Description: Get Daily Time Records Daily
+        /// </summary>
+        public void GetDailyTimeRecordsDaily()
+        {
+            var users = unitOfWork.UserRepository.Fetch(m => m.UserRoles.Any(x => x.Name == "Employee"),
+                includeProperties:
+                "Schedules,Schedules.DailyTimeRecords,Overtimes,Overtimes.CreatedByUser,Overtimes.ModifiedByUser,Overtimes.Users");
+            int days = Convert.ToInt32(23 +
+                       (Convert.ToInt32(DateTime.Now.ToString("dd")) >= 7 && Convert.ToInt32(DateTime.Now.ToString("dd")) <= 23
+                    ? DateTime.Now - Convert.ToDateTime($"{DateTime.Now:MM}-23-{DateTime.Now:yy}")
+                    : DateTime.Now - Convert.ToDateTime($"{DateTime.Now:MM}-07-{DateTime.Now:yy}")).TotalDays);
+            var dateFrom = Convert.ToDateTime(DateTime.Now.AddDays(-days).ToShortDateString() + " 00:00");
+            var dateTo = Convert.ToDateTime(DateTime.Now.AddDays(1).ToShortDateString() + " 23:59");
+
+
+            foreach (var i in users.ToList())
+            {
+                var attendance = unitOfWork.AttendancesRepo.Get(m =>
+                    m.BiometricId == i.BiometricId &&
+                    (m.LogDateTime >= dateFrom && m.LogDateTime <= dateTo)).ToList();
+                var schedules = unitOfWork.SchedulesRepo.Get(m =>
+                        m.UserId == i.Id &&
+                        (m.ScheduleDateFrom >= dateFrom && m.ScheduleDateTo <= dateTo))
+                    .OrderBy(m => m.ScheduleDateFrom).ToList();
+
+                foreach (var s in schedules)
+                {
+                    var _dateFrom = Convert.ToDateTime(s.ScheduleDateFrom.ToShortDateString() + " 00:00");
+                    var _dateTo = Convert.ToDateTime(s.ScheduleDateTo.ToShortDateString() + " 23:59");
+
+                    var _attendance = attendance.Where(m => (m.LogDateTime >= _dateFrom) && (m.LogDateTime <= _dateTo))
+                        .ToList();
+                    var dtr = unitOfWork.DailyTimeRecordsRepo.Fetch(m => m.ScheduleId == s.Id);
+
+
+                    var _from = _attendance.OrderBy(m => m.LogDateTime)
+                        .FirstOrDefault(m => (InOutState)m.InOutState == InOutState.CheckIn)?.LogDateTime;
+                    var _to = _attendance.OrderByDescending(m => m.LogDateTime)
+                        .FirstOrDefault(m => (InOutState)m.InOutState == InOutState.CheckOut)?.LogDateTime;
+
+
+
+                    if (dtr.Any(x => x.ModifiedBy == null))
+                    {
+                        var _dtr = dtr.FirstOrDefault();
+                        _dtr.DateFrom = _from < s.ScheduleDateFrom ? s.ScheduleDateFrom : _from;
+                        _dtr.DateTo = _to > s.ScheduleDateTo ? s.ScheduleDateTo : _to;
+
+                        unitOfWork.Save();
+                    }
+
+
+
+
+                    if (!dtr.Any())
+                    {
+                        unitOfWork.DailyTimeRecordsRepo.Insert(new DailyTimeRecords()
+                        {
+                            ScheduleId = s.Id,
+                            DateFrom = _from < s.ScheduleDateFrom ? s.ScheduleDateFrom : _from,
+                            DateTo = _to > s.ScheduleDateTo ? s.ScheduleDateTo : _to,
+                            CreatedBy = HttpContext.Current?.User?.Identity?.GetUserId(),
+                            DateCreated = DateTime.Now
+                        });
+                        unitOfWork.Save();
+                    }
+
+
+                    var __dtr = dtr.FirstOrDefault();
+                    __dtr.isAbsent = !_attendance.Any();
+
+                    unitOfWork.Save();
+
+                    foreach (var _a in _attendance)
+                    {
+
+                        attendance.Remove(_a);
+                        if ((InOutState)_a.InOutState == InOutState.CheckOut)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Description: Get Daily Time Records by user intervention
+        /// </summary>
+        /// <param name="model"></param>
+
         public void GetDtrReport(DailyTimeRecordViewModel model)
         {
 
@@ -123,6 +257,8 @@ namespace NorthOps.Services.AttendanceService
                     var _to = _attendance.OrderByDescending(m => m.LogDateTime)
                         .FirstOrDefault(m => (InOutState)m.InOutState == InOutState.CheckOut)?.LogDateTime;
 
+               
+
 
 
                     if (dtr.Any(x => x.ModifiedBy == null))
@@ -130,6 +266,8 @@ namespace NorthOps.Services.AttendanceService
                         var _dtr = dtr.FirstOrDefault();
                         _dtr.DateFrom = _from < s.ScheduleDateFrom ? s.ScheduleDateFrom : _from;
                         _dtr.DateTo = _to > s.ScheduleDateTo ? s.ScheduleDateTo : _to;
+
+
                         unitOfWork.Save();
                     }
 
@@ -143,12 +281,29 @@ namespace NorthOps.Services.AttendanceService
                             ScheduleId = s.Id,
                             DateFrom = _from < s.ScheduleDateFrom ? s.ScheduleDateFrom : _from,
                             DateTo = _to > s.ScheduleDateTo ? s.ScheduleDateTo : _to,
-                            CreatedBy = HttpContext.Current.User.Identity.GetUserId()
+                            DateCreated = DateTime.Now,
+                            CreatedBy = HttpContext.Current.User.Identity.GetUserId(),
+         
                         });
                         unitOfWork.Save();
                     }
 
+                    var __dtr = dtr.FirstOrDefault();
+                    __dtr.isAbsent = !_attendance.Any();
+                   
 
+                    var tFrom = Convert.ToInt32((__dtr.DateFrom - s?.ScheduleDateFrom)?.TotalMinutes);
+                    var tTo = Convert.ToInt32((s?.ScheduleDateTo - __dtr.DateTo)?.TotalMinutes);
+                    tFrom = tFrom <= 0 ? 0 : tFrom;
+                    tTo = tTo <= 0 ? 0 : tTo;
+                    int? _tardiness = tFrom + tTo;
+
+                    decimal? _renderedHrs = Convert.ToDecimal(((__dtr.DateTo ?? __dtr.DateFrom ?? DateTime.Now) - (__dtr.DateFrom ?? __dtr.DateTo ?? DateTime.Now)).TotalMinutes / 60);
+
+
+                    __dtr.Tardiness = _tardiness;
+                    __dtr.TotalRenderedHrs = _renderedHrs;
+                    unitOfWork.Save();
 
 
 

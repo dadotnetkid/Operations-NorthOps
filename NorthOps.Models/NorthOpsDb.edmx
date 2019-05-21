@@ -146,6 +146,12 @@
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
           <Property Name="isAgentApproved" Type="bit" />
           <Property Name="isAdminApproved" Type="bit" />
+          <Property Name="isAbsent" Type="bit" />
+          <Property Name="OriginalDateFrom" Type="datetime2" Precision="7" />
+          <Property Name="OriginalDateTo" Type="datetime2" Precision="7" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="Tardiness" Type="int" />
+          <Property Name="TotalRenderedHrs" Type="money" />
         </EntityType>
         <EntityType Name="Departments">
           <Key>
@@ -277,11 +283,24 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeaveTypeId" Type="int" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
-          <Property Name="LeaveDate" Type="datetime2" Precision="7" />
+          <Property Name="DateFrom" Type="datetime2" Precision="7" />
+          <Property Name="DateTo" Type="datetime2" Precision="7" />
+          <Property Name="isAdminApproved" Type="bit" />
           <Property Name="DateCreated" Type="datetime2" Precision="7" />
-          <Property Name="isApproved" Type="bit" />
+          <Property Name="DateModified" Type="datetime2" Precision="7" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="NumberOfDays" Type="int" />
+        </EntityType>
+        <EntityType Name="LeaveTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeaveType" Type="nvarchar" MaxLength="128" />
+          <Property Name="NumberOfDays" Type="int" />
         </EntityType>
         <EntityType Name="MachineConfigs">
           <Key>
@@ -297,6 +316,18 @@
           <Property Name="Id" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Type" Type="int" />
           <Property Name="Template" Type="nvarchar(max)" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="OvertimeAttendances">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OvertimeId" Type="nvarchar" MaxLength="128" />
+          <Property Name="CheckIn" Type="datetime2" Precision="7" />
+          <Property Name="CheckOut" Type="datetime2" Precision="7" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="Overtimes">
           <Key>
@@ -508,6 +539,8 @@
           <Property Name="TaxRate" Type="money" />
           <Property Name="isActive" Type="bit" />
           <Property Name="ZipCode" Type="int" />
+          <Property Name="ConfirmationCode" Type="int" />
+          <Property Name="CodeExpireDate" Type="datetime" />
         </EntityType>
         <EntityType Name="UsersInCampaigns">
           <Key>
@@ -965,6 +998,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Leaves_LeaveTypes">
+          <End Role="LeaveTypes" Type="Self.LeaveTypes" Multiplicity="0..1" />
+          <End Role="Leaves" Type="Self.Leaves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaveTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leaves">
+              <PropertyRef Name="LeaveTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leaves_ModifiedBy">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Leaves" Type="Self.Leaves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leaves">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leaves_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Leaves" Type="Self.Leaves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leaves">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OvertimeAttendances_OvertimeAttendances">
+          <End Role="Overtimes" Type="Self.Overtimes" Multiplicity="0..1" />
+          <End Role="OvertimeAttendances" Type="Self.OvertimeAttendances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Overtimes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OvertimeAttendances">
+              <PropertyRef Name="OvertimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Overtimes_CreatedBy">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Overtimes" Type="Self.Overtimes" Multiplicity="*" />
@@ -1365,8 +1446,10 @@
           <EntitySet Name="Holidays" EntityType="Self.Holidays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobApplications" EntityType="Self.JobApplications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Leaves" EntityType="Self.Leaves" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaveTypes" EntityType="Self.LeaveTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MachineConfigs" EntityType="Self.MachineConfigs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationsTemplates" EntityType="Self.NotificationsTemplates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OvertimeAttendances" EntityType="Self.OvertimeAttendances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Overtimes" EntityType="Self.Overtimes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonalityResults" EntityType="Self.PersonalityResults" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Positions" EntityType="Self.Positions" Schema="dbo" store:Type="Tables" />
@@ -1505,6 +1588,22 @@
           <AssociationSet Name="FK_JobApplications_Users" Association="Self.FK_JobApplications_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="JobApplications" EntitySet="JobApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_LeaveTypes" Association="Self.FK_Leaves_LeaveTypes">
+            <End Role="LeaveTypes" EntitySet="LeaveTypes" />
+            <End Role="Leaves" EntitySet="Leaves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_ModifiedBy" Association="Self.FK_Leaves_ModifiedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Leaves" EntitySet="Leaves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_Users" Association="Self.FK_Leaves_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Leaves" EntitySet="Leaves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OvertimeAttendances_OvertimeAttendances" Association="Self.FK_OvertimeAttendances_OvertimeAttendances">
+            <End Role="Overtimes" EntitySet="Overtimes" />
+            <End Role="OvertimeAttendances" EntitySet="OvertimeAttendances" />
           </AssociationSet>
           <AssociationSet Name="FK_Overtimes_CreatedBy" Association="Self.FK_Overtimes_CreatedBy">
             <End Role="Users" EntitySet="Users" />
@@ -1734,7 +1833,6 @@
             <End Role="UsersInCampaignShift" EntitySet="UsersInCampaignShift" />
           </AssociationSet>
           <EntitySet Name="Overtimes" EntityType="northopsModel.Overtimes" />
-          <EntitySet Name="Leaves" EntityType="northopsModel.Leaves" />
           <EntitySet Name="Users" EntityType="northopsModel.Users" />
           <AssociationSet Name="FK_Users_AddressTownCities" Association="northopsModel.FK_Users_AddressTownCities">
             <End Role="AddressTownCities" EntitySet="AddressTownCities" />
@@ -1899,6 +1997,25 @@
           <AssociationSet Name="FK_Breaks_Users" Association="northopsModel.FK_Breaks_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Breaks" EntitySet="Breaks" />
+          </AssociationSet>
+          <EntitySet Name="LeaveTypes" EntityType="northopsModel.LeaveTypes" />
+          <EntitySet Name="OvertimeAttendances" EntityType="northopsModel.OvertimeAttendances" />
+          <AssociationSet Name="FK_OvertimeAttendances_OvertimeAttendances" Association="northopsModel.FK_OvertimeAttendances_OvertimeAttendances">
+            <End Role="Overtimes" EntitySet="Overtimes" />
+            <End Role="OvertimeAttendances" EntitySet="OvertimeAttendances" />
+          </AssociationSet>
+          <EntitySet Name="Leaves" EntityType="northopsModel.Leaves" />
+          <AssociationSet Name="FK_Leaves_LeaveTypes" Association="northopsModel.FK_Leaves_LeaveTypes">
+            <End Role="LeaveTypes" EntitySet="LeaveTypes" />
+            <End Role="Leaves" EntitySet="Leaves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_ModifiedBy" Association="northopsModel.FK_Leaves_ModifiedBy">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Leaves" EntitySet="Leaves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leaves_Users" Association="northopsModel.FK_Leaves_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Leaves" EntitySet="Leaves" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AddressStateProvinces">
@@ -2114,6 +2231,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="Int32" />
           <Property Name="Template" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="PersonalityResults">
           <Key>
@@ -2531,16 +2649,7 @@
           <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CreatedByUser" Relationship="northopsModel.FK_Overtimes_CreatedBy" FromRole="Overtimes" ToRole="Users" />
           <NavigationProperty Name="ModifiedByUser" Relationship="northopsModel.FK_Overtimes_ModifiedBy" FromRole="Overtimes" ToRole="Users" />
-        </EntityType>
-        <EntityType Name="Leaves">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LeaveDate" Type="DateTime" Precision="7" />
-          <Property Name="DateCreated" Type="DateTime" Precision="7" />
-          <Property Name="isApproved" Type="Boolean" />
+          <NavigationProperty Name="OvertimeAttendances" Relationship="northopsModel.FK_OvertimeAttendances_OvertimeAttendances" FromRole="Overtimes" ToRole="OvertimeAttendances" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -2637,6 +2746,10 @@
           <NavigationProperty Name="ModifiedBy_User" Relationship="northopsModel.FK_RestDays_Users" FromRole="Users" ToRole="RestDays" />
           <NavigationProperty Name="Violations" Relationship="northopsModel.FK_Violations_Users" FromRole="Users" ToRole="Violations" />
           <NavigationProperty Name="Breaks" Relationship="northopsModel.FK_Breaks_Users" FromRole="Users" ToRole="Breaks" />
+          <NavigationProperty Name="ModifiedBy_Leaves" Relationship="northopsModel.FK_Leaves_ModifiedBy" FromRole="Users" ToRole="Leaves" />
+          <NavigationProperty Name="Leaves" Relationship="northopsModel.FK_Leaves_Users" FromRole="Users" ToRole="Leaves" />
+          <Property Name="ConfirmationCode" Type="Int32" />
+          <Property Name="CodeExpireDate" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_Users_AddressTownCities">
           <End Type="northopsModel.AddressTownCities" Role="AddressTownCities" Multiplicity="0..1" />
@@ -2936,6 +3049,12 @@
           <Property Name="isAgentApproved" Type="Boolean" />
           <Property Name="isAdminApproved" Type="Boolean" />
           <NavigationProperty Name="Schedules" Relationship="northopsModel.FK_DailyTimeRecords_Schedules" FromRole="DailyTimeRecords" ToRole="Schedules" />
+          <Property Name="isAbsent" Type="Boolean" />
+          <Property Name="OriginalDateFrom" Type="DateTime" Precision="7" />
+          <Property Name="OriginalDateTo" Type="DateTime" Precision="7" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tardiness" Type="Int32" />
+          <Property Name="TotalRenderedHrs" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <Association Name="FK_DailyTimeRecords_Users">
           <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
@@ -3227,6 +3346,93 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LeaveTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeaveType" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfDays" Type="Int32" />
+          <NavigationProperty Name="Leaves" Relationship="northopsModel.FK_Leaves_LeaveTypes" FromRole="LeaveTypes" ToRole="Leaves" />
+        </EntityType>
+        <EntityType Name="OvertimeAttendances">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OvertimeId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CheckIn" Type="DateTime" Precision="7" />
+          <Property Name="CheckOut" Type="DateTime" Precision="7" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Overtimes" Relationship="northopsModel.FK_OvertimeAttendances_OvertimeAttendances" FromRole="OvertimeAttendances" ToRole="Overtimes" />
+        </EntityType>
+        <Association Name="FK_OvertimeAttendances_OvertimeAttendances">
+          <End Type="northopsModel.Overtimes" Role="Overtimes" Multiplicity="0..1" />
+          <End Type="northopsModel.OvertimeAttendances" Role="OvertimeAttendances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Overtimes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OvertimeAttendances">
+              <PropertyRef Name="OvertimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Leaves">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeaveTypeId" Type="Int32" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateFrom" Type="DateTime" Precision="7" />
+          <Property Name="DateTo" Type="DateTime" Precision="7" />
+          <Property Name="isAdminApproved" Type="Boolean" />
+          <Property Name="DateCreated" Type="DateTime" Precision="7" />
+          <Property Name="DateModified" Type="DateTime" Precision="7" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfDays" Type="Int32" />
+          <NavigationProperty Name="LeaveTypes" Relationship="northopsModel.FK_Leaves_LeaveTypes" FromRole="Leaves" ToRole="LeaveTypes" />
+          <NavigationProperty Name="Modified_Users" Relationship="northopsModel.FK_Leaves_ModifiedBy" FromRole="Leaves" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="northopsModel.FK_Leaves_Users" FromRole="Leaves" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Leaves_LeaveTypes">
+          <End Type="northopsModel.LeaveTypes" Role="LeaveTypes" Multiplicity="0..1" />
+          <End Type="northopsModel.Leaves" Role="Leaves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaveTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leaves">
+              <PropertyRef Name="LeaveTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leaves_ModifiedBy">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Leaves" Role="Leaves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leaves">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leaves_Users">
+          <End Type="northopsModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="northopsModel.Leaves" Role="Leaves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leaves">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3429,6 +3635,7 @@
           <EntitySetMapping Name="NotificationsTemplates">
             <EntityTypeMapping TypeName="northopsModel.NotificationsTemplates">
               <MappingFragment StoreEntitySet="NotificationsTemplates">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="Template" ColumnName="Template" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -3637,20 +3844,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Leaves">
-            <EntityTypeMapping TypeName="northopsModel.Leaves">
-              <MappingFragment StoreEntitySet="Leaves">
-                <ScalarProperty Name="isApproved" ColumnName="isApproved" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="LeaveDate" ColumnName="LeaveDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="northopsModel.Users">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="CodeExpireDate" ColumnName="CodeExpireDate" />
+                <ScalarProperty Name="ConfirmationCode" ColumnName="ConfirmationCode" />
                 <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
@@ -3740,6 +3938,12 @@
           <EntitySetMapping Name="DailyTimeRecords">
             <EntityTypeMapping TypeName="northopsModel.DailyTimeRecords">
               <MappingFragment StoreEntitySet="DailyTimeRecords">
+                <ScalarProperty Name="TotalRenderedHrs" ColumnName="TotalRenderedHrs" />
+                <ScalarProperty Name="Tardiness" ColumnName="Tardiness" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="OriginalDateTo" ColumnName="OriginalDateTo" />
+                <ScalarProperty Name="OriginalDateFrom" ColumnName="OriginalDateFrom" />
+                <ScalarProperty Name="isAbsent" ColumnName="isAbsent" />
                 <ScalarProperty Name="isAdminApproved" ColumnName="isAdminApproved" />
                 <ScalarProperty Name="isAgentApproved" ColumnName="isAgentApproved" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -3869,6 +4073,43 @@
             <EntityTypeMapping TypeName="northopsModel.BreakTypes">
               <MappingFragment StoreEntitySet="BreakTypes">
                 <ScalarProperty Name="BreakType" ColumnName="BreakType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeaveTypes">
+            <EntityTypeMapping TypeName="northopsModel.LeaveTypes">
+              <MappingFragment StoreEntitySet="LeaveTypes">
+                <ScalarProperty Name="NumberOfDays" ColumnName="NumberOfDays" />
+                <ScalarProperty Name="LeaveType" ColumnName="LeaveType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OvertimeAttendances">
+            <EntityTypeMapping TypeName="northopsModel.OvertimeAttendances">
+              <MappingFragment StoreEntitySet="OvertimeAttendances">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="OvertimeId" ColumnName="OvertimeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leaves">
+            <EntityTypeMapping TypeName="northopsModel.Leaves">
+              <MappingFragment StoreEntitySet="Leaves">
+                <ScalarProperty Name="NumberOfDays" ColumnName="NumberOfDays" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="isAdminApproved" ColumnName="isAdminApproved" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LeaveTypeId" ColumnName="LeaveTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

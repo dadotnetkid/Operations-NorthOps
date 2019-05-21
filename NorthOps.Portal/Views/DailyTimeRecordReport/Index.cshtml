@@ -1,0 +1,36 @@
+﻿@model NorthOps.Models.ViewModels.DailyTimeRecordViewModel
+@{
+    ViewBag.Title = "Daily Time Record";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Ajax.BeginForm("DtrReportGeneratePartial", new {}, new AjaxOptions()
+{
+    OnBegin= "showLoading()",
+    OnComplete= "hideLoading()",
+    UpdateTargetId= "dtr-report-container"
+
+}))
+{
+    Html.RenderPartial("_SearchReportPartial");
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="dtr-report-container">
+              
+            </div>
+        </div>
+    </div>
+}
+@Html.DevExpress().LoadingPanel(settings =>
+{
+    settings.Name = "ldpReportPartial";
+}).GetHtml()
+
+<script>
+
+    function showLoading() {
+        ldpReportPartial.Show();
+    }
+    function hideLoading() {
+        ldpReportPartial.Hide();
+    }
+</script>

@@ -6,3 +6,15 @@
 
 
 @Html.Action("DailyTimeRecordGridViewPartial")
+
+
+<script>
+
+    function dateChange(s,e) {
+        var day = s.GetDate().getDate();
+        var month = s.GetDate().getMonth();
+        var year = s.GetDate().getFullYear();
+        DateTo.SetMinDate(new Date(year, month, day));
+
+    }
+</script>

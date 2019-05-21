@@ -1,0 +1,15 @@
+﻿@{
+    Html.DevExpress().ComboBox(settings =>
+    {
+        settings.Name = "UserId";
+        settings.Width = Unit.Percentage(100);
+        settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+        settings.Properties.ValueField = "Id";
+        settings.Properties.TextField = "FullName";
+        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+     
+        settings.CallbackRouteValues = new { Controller = "DailyTimeRecordReport", Action = "CboUsersPartial" };
+        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+        settings.Properties.Caption = "Employee";
+    }).Bind(ViewBag.UserId).BindList(Model).GetHtml();
+}

@@ -1175,7 +1175,7 @@ namespace ZKTeco.SDK.MachineManager
 
         public int STD_ClearGLog()
         {
-            throw new NotImplementedException();
+            return this.DeleteDeviceData("TransAction", "", "");
         }
 
         public int STD_ClearKeeperData()

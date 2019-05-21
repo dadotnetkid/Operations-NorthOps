@@ -1,0 +1,108 @@
+﻿@model DailyTimeRecords
+<div class="row">
+    
+    <div class="col-lg-3">
+        @{
+            Html.RenderAction("cboSchedules", new { ScheduleId = Model?.ScheduleId });
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEditFor(m => m.OriginalDateFrom, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.Caption = "Original Check In";
+                settings.Properties.TimeSectionProperties.Visible = true;
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.ClientEnabled = false;
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEditFor(m => m.OriginalDateTo, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TimeSectionProperties.Visible = true;
+                settings.Properties.Caption = "Original Check Out";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.ClientEnabled = false;
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEditFor(m => m.DateFrom, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.Caption = "Modified Check In";
+                settings.Properties.TimeSectionProperties.Visible = true;
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.ClientEnabled = false;
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEditFor(m => m.DateTo, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.TimeSectionProperties.Visible = true;
+                settings.Properties.Caption = "Modified Check Out";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Properties.EditFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.Properties.DisplayFormatString = "MM-dd-yyyy hh:mm tt";
+                settings.ClientEnabled = false;
+            }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().CheckBoxFor(m => m.isAdminApproved, settings =>
+            {
+                settings.Width = Unit.Percentage(100);
+                settings.Properties.Caption = "Approved";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @{
+            Html.DevExpress().MemoFor(m => m.Note, settings =>
+            {
+                settings.Properties.Caption = "Note";
+                settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                settings.Width = Unit.Percentage(100);
+                settings.Height = Unit.Pixel(200);
+            }).GetHtml();
+        }
+    </div>
+</div>
+<div class="row margin-top-10 ">
+    <div class="col-lg-12">
+        @{
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnSave";
+                settings.Text = "Save";
+
+                settings.ClientSideEvents.Click = "function(s,e){UnApprovedDailyTimeRecordGridView.UpdateEdit()}";
+                settings.ControlStyle.CssClass = "margin-r-5";
+            }).GetHtml();
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnCancel";
+                settings.Text = "Cancel";
+                settings.ClientSideEvents.Click = "function(s,e){UnApprovedDailyTimeRecordGridView.CancelEdit()}";
+            }).GetHtml();
+        }
+    </div>
+</div>

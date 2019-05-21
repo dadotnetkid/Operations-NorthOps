@@ -1,0 +1,45 @@
+﻿<input type="hidden" name="email" id="email" />
+<div class="panel panel-primary">
+    <div class="panel-heading"><b>Bulk Email Sending</b></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-6">
+                @{
+
+                    @Html.Action("BulkEmailGridViewPartial")
+
+                }
+            </div>
+            <div class="col-lg-6">
+                @{
+                    Html.DevExpress().TextBox(settings =>
+                    {
+                        settings.Properties.Caption = "Email Subject";
+                        settings.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                        settings.Name = "subject";
+                        settings.Properties.ClientSideEvents.KeyUp = "function(s,e){btnEnabled()}";
+                        settings.Width = Unit.Percentage(100);
+                    }).GetHtml();
+
+
+                    using(Html.BeginForm())
+                     {
+                         Html.RenderAction("HtmlEditorPartial");
+                     }
+
+                }
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        @{
+            Html.DevExpress().Button(settings =>
+            {
+                settings.Name = "btnSend";
+                settings.Text = "SEND";
+                settings.ClientEnabled = false;
+                settings.UseSubmitBehavior = true;
+            }).GetHtml();
+        }
+    </div>
+</div>

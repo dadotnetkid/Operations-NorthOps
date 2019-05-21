@@ -8,8 +8,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using NorthOps.AspIdentity;
 using NorthOps.Models;
+using NorthOps.Models.Config;
 using NorthOps.Models.Repository;
 using NorthOps.Services.EmailService;
 using NorthOps.Services.NotificationService.EmailService;
@@ -20,6 +20,7 @@ namespace NorthOps.Ops.Controllers
     //[RoutePrefix("recruit")]
     public class RecruitController : Controller
     {
+        #region Identity
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
@@ -33,6 +34,8 @@ namespace NorthOps.Ops.Controllers
             }
         }
         private UnitOfWork unitOfWork = new UnitOfWork();
+        #endregion
+
 
         public RecruitController() { }
         public RecruitController(ApplicationUserManager userManager)

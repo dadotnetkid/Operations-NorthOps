@@ -31,7 +31,7 @@
 
 }
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         @{
             Html.DevExpress().LabelFor(m => m.Email).GetHtml();
             Html.DevExpress().TextBoxFor(m => m.Email, txt =>
@@ -43,7 +43,7 @@
         }
 
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         @{
             Html.DevExpress().LabelFor(m => m.UserName).GetHtml();
             Html.DevExpress().TextBoxFor(m => m.UserName, txt =>
@@ -55,6 +55,14 @@
         }
 
     </div>
+    <div class="col-lg-4">
+        <label>User Role</label>
+        @{
+
+            Html.RenderAction("TokenUserRolesPartial", new { UserId = Model?.Id });
+        }
+    </div>
+
 </div>
 <div class="row margin-top-5">
 

@@ -12,7 +12,7 @@ using NorthOps.Services.DTRService;
 
 namespace NorthOps.Ops.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Human Resource,Administrator")]
     public class DailyTimeRecordReportController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();

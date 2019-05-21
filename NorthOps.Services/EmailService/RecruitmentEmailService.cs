@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NorthOps.AspIdentity;
 using NorthOps.Models;
+using NorthOps.Models.Config;
 using NorthOps.Models.Repository;
 
 namespace NorthOps.Services.EmailService
@@ -20,7 +20,7 @@ namespace NorthOps.Services.EmailService
         }
         public async Task Send(string userId, string subject, NotificationType notificationType)
         {
-            var emailTemplate = unitOfWork.NotificationTemplatesRepo.Find(m => m.Type == (int)notificationType)?.Template;
+            var emailTemplate = unitOfWork.NotificationTemplatesRepo.Find(m => m.Type == (int)notificationType && m.isActive == true)?.Template;
             switch (notificationType)
             {
                 case NotificationType.Resume:
@@ -61,7 +61,7 @@ namespace NorthOps.Services.EmailService
                 case NotificationType.IsExamPassed:
                     emailTemplate = emailTemplate?
                                            .Replace("@FullName", this.jobApplications.Users.FullName);
-                                         
+
                     break;
                 case NotificationType.IsPersonalInterviewPassed:
 

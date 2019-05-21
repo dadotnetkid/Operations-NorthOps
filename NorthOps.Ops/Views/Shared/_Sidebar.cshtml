@@ -34,30 +34,30 @@
                     <a href="@Url.Action("Index", "Violations")"><i class="fa fa-music"></i> <span>Violation Logs</span></a>
                 </li>
             }
-            @if (User.IsInRole("Administrator"))
+            @if (User.IsInRoles("Administrator", "Team Leader"))
             {
-
-
                 <li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(DocumentsController.Index) && ViewContext.RouteData.Values["Controller"].ToString() == "Documents" ? "active" : "")">
                     <a href="@Url.Action("Index", "Documents")"><i class="fa fa-file-archive-o"></i> <span>Documents</span></a>
                 </li>
-                <li class="@("treeview " + (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit" ? "active" : ""))">
-                    <a href="#">
-                        <i class="fa fa-handshake-o"></i> <span>Recruitment</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        @*<li class="@(ViewContext.RouteData.Values["Action"].ToString() == nameof(RecruitController.Index) && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit"? "active" : "")">
-                                <a href="@Url.Action("Index", "recruit")"><i class="fa fa-users"></i> <span>Applicants</span></a>
-                            </li>*@
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(RecruitController.JobApplications).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit" ? "active" : "")">
-                            <a href="@Url.Action("JobApplications", "recruit")"><i class="fa fa-calendar-check-o"></i> <span>Manage Applicants</span></a>
-                        </li>
-                    </ul>
+                if (User.IsInRoles("Administrator"))
+                {
+                    <li class="@("treeview " + (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit" ? "active" : ""))">
+                        <a href="#">
+                            <i class="fa fa-handshake-o"></i> <span>Recruitment</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
 
-                </li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(RecruitController.JobApplications).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "recruit" ? "active" : "")">
+                                <a href="@Url.Action("JobApplications", "recruit")"><i class="fa fa-calendar-check-o"></i> <span>Manage Applicants</span></a>
+                            </li>
+                        </ul>
+
+                    </li>
+                }
+                
                 <li class="@("treeview " + (ControllerServices.IsControllerName("employee")   ? "active" : ""))">
                     <a href="#">
                         <i class="fa fa-group"></i> <span>Manage Employee</span>
@@ -70,67 +70,85 @@
                         <li class="@(ControllerServices.IsMenuBarActive("index","employee")? "active" : "")">
                             <a href="@Url.Action("index", "employee")"><i class="fa fa-users"></i> <span> Employees</span></a>
                         </li>
-                        <li class="@(ControllerServices.IsMenuBarActive("index","ot")? "active" : "")">
-                            <a href="@Url.Action("index", "ot")"><i class="fa fa-clock-o"></i> <span> Overtime</span></a>
-                        </li>
-                        <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("schedules") ? "active" : "")">
-                            <a href="@Url.Action("index", "schedules")"><i class="fa fa-calendar-o"></i> Schedules</a>
-                        </li>
-                        <li class="@(ControllerServices.IsControllerName("dailytimeRecord")&& ControllerServices.IsActionName("index") ? "active" : "")">
-                            <a href="@Url.Action("index", "dailytimeRecord")"><i class="fa fa-calendar-plus-o"></i> Daily Time Record</a>
-                        </li>
-                        <li class="@(ControllerServices.IsControllerName("holiday")&& ControllerServices.IsActionName("index") ? "active" : "")">
-                            <a href="@Url.Action("index", "holiday")"><i class="fa fa-calendar-times-o"></i> Holidays</a>
-                        </li>
+                        @if (User.IsInRoles("Administrator"))
+                        {
+                            <li class="@(ControllerServices.IsMenuBarActive("index","ot")? "active" : "")">
+                                <a href="@Url.Action("index", "ot")"><i class="fa fa-clock-o"></i> <span> Overtime</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("schedules") ? "active" : "")">
+                                <a href="@Url.Action("index", "schedules")"><i class="fa fa-calendar-o"></i> Schedules</a>
+                            </li>
+                            <li class="@(ControllerServices.IsControllerName("dailytimeRecord")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                <a href="@Url.Action("index", "dailytimeRecord")"><i class="fa fa-calendar-plus-o"></i> Daily Time Record</a>
+                            </li>
+                            <li class="@(ControllerServices.IsControllerName("dailytimeRecord")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                <a href="@Url.Action("UnApprovedDailyTimeRecord", "dailytimeRecord")"><i class="fa fa-calendar-plus-o"></i>Unapproved Daily Time Record</a>
+                            </li>
+                            <li class="@(ControllerServices.IsActionName("index") && ControllerServices.IsControllerName("leaves") ? "active" : "")">
+                                <a href="@Url.Action("index", "leaves")"><i class="fa fa-calendar-times-o"></i> <span> Leaves</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsControllerName("holiday")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                <a href="@Url.Action("index", "holiday")"><i class="fa fa-calendar-times-o"></i> Holidays</a>
+                            </li>
+                        }
                     </ul>
-
                 </li>
-                <li class="@("treeview " + (ControllerServices.IsControllerName("ManageForms")   ? "active" : ""))">
-                    <a href="#">
-                        <i class="fa fa-list-alt"></i> <span>Manage Forms</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
+                if (User.IsInRole("Administrator"))
+                {
+                    <li class="@("treeview " + (ControllerServices.IsControllerName("ManageForms")   ? "active" : ""))">
+                        <a href="#">
+                            <i class="fa fa-list-alt"></i> <span>Manage Forms</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
 
-                        <li class="@(ControllerServices.IsMenuBarActive("branch","manageforms")? "active" : "")">
-                            <a href="@Url.Action("Branch", "manageforms")"><i class="fa fa-list-alt"></i> <span> Branch</span></a>
-                        </li>
-                        <li class="@(ControllerServices.IsMenuBarActive("division","manageforms")? "active" : "")">
-                            <a href="@Url.Action("Division", "manageforms")"><i class="fa fa-list-alt"></i> <span> Division</span></a>
-                        </li>
-                        <li class="@(ControllerServices.IsMenuBarActive("department","manageforms")? "active" : "")">
-                            <a href="@Url.Action("department", "manageforms")"><i class="fa fa-list-alt"></i> <span> Department</span></a>
-                        </li>
-                    </ul>
+                            <li class="@(ControllerServices.IsMenuBarActive("branch","manageforms")? "active" : "")">
+                                <a href="@Url.Action("Branch", "manageforms")"><i class="fa fa-list-alt"></i> <span> Branch</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsMenuBarActive("division","manageforms")? "active" : "")">
+                                <a href="@Url.Action("Division", "manageforms")"><i class="fa fa-list-alt"></i> <span> Division</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsMenuBarActive("department","manageforms")? "active" : "")">
+                                <a href="@Url.Action("department", "manageforms")"><i class="fa fa-list-alt"></i> <span> Department</span></a>
+                            </li>
+                        </ul>
 
-                </li>
-                <li class="@("treeview " + (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "exam" || ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "video" || ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "filemanager"   ? "active" : ""))">
-                    <a href="#">
-                        <i class="fa fa-graduation-cap"></i> <span>Exam Management</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(ExamController.Categories).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "exam" ? "active" : "")">
-                            <a href="@Url.Action("categories", "exam")"><i class="fa fa-bars"></i> <span> Categories</span></a>
-                        </li>
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(ExamController.Examinations).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "exam" ? "active" : "")">
-                            <a href="@Url.Action("examinations", "exam")"><i class="fa fa-bars"></i> <span> Examinations</span></a>
-                        </li>
-                        <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(VideoController.Index).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "video" ? "active" : "")">
-                            <a href="@Url.Action("index", "video")"><i class="fa fa-bars"></i> <span> Videos</span></a>
-                        </li>
-
-
-
-                    </ul>
-
-                </li>
+                    </li>
+                    <li class="@("treeview " + (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "exam" || ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "video" || ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "filemanager"   ? "active" : ""))">
+                        <a href="#">
+                            <i class="fa fa-graduation-cap"></i> <span>Exam Management</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(ExamController.Categories).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "exam" ? "active" : "")">
+                                <a href="@Url.Action("categories", "exam")"><i class="fa fa-bars"></i> <span> Categories</span></a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(ExamController.Examinations).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "exam" ? "active" : "")">
+                                <a href="@Url.Action("examinations", "exam")"><i class="fa fa-bars"></i> <span> Examinations</span></a>
+                            </li>
+                            <li class="@(ViewContext.RouteData.Values["Action"].ToString().ToLower() == nameof(VideoController.Index).ToLower() && ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "video" ? "active" : "")">
+                                <a href="@Url.Action("index", "video")"><i class="fa fa-bars"></i> <span> Videos</span></a>
+                            </li>
 
 
+
+                        </ul>
+
+                    </li>
+                }
+                
+
+
+
+            }
+
+
+            @if (User.IsInRoles("Administrator", "Human Resource", "Team Leader"))
+            {
                 <li class="@("treeview " + (ControllerServices.IsControllerName("maintenance","filemanagementdata","notificationtemplate")   ? "active" : ""))">
                     <a href="#">
                         <i class="fa fa-gears"></i> <span>Maintenance</span>
@@ -143,46 +161,49 @@
                         <li class="@(ControllerServices.IsActionName("users")? "active" : "")">
                             <a href="@Url.Action("users", "maintenance")"><i class="fa fa-users"></i> <span> Users</span></a>
                         </li>
-                        <li class="@(ControllerServices.IsActionName("userroles") ? "active" : "")">
-                            <a href="@Url.Action("userroles", "maintenance")"><i class="fa fa-user-secret"></i> <span> User Roles</span></a>
-                        </li>
-                        <li class="@(ControllerServices.IsActionName("towncity") ? "active" : "")">
-                            <a href="@Url.Action("TownCity", "maintenance")"><i class="fa fa-address-book"></i> <span> Town City</span></a>
-                        </li>
-                        <li class="@(ControllerServices.IsControllerName("")&& ControllerServices.IsActionName("index") ? "active" : "")">
-                            <a href="@Url.Action("index", "notificationtemplate")"><i class="fa fa-address-book"></i> <span> Notification Template</span></a>
-                        </li>
+                        @if (User.IsInRoles("Administrator", "Human Resource"))
+                        {
+                            <li class="@(ControllerServices.IsActionName("userroles") ? "active" : "")">
+                                <a href="@Url.Action("userroles", "maintenance")"><i class="fa fa-user-secret"></i> <span> User Roles</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsActionName("towncity") ? "active" : "")">
+                                <a href="@Url.Action("TownCity", "maintenance")"><i class="fa fa-address-book"></i> <span> Town City</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsControllerName("")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                <a href="@Url.Action("index", "notificationtemplate")"><i class="fa fa-address-book"></i> <span> Notification Template</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsControllerName("attendance")&& ControllerServices.IsActionName("AttendanceLog") ? "active" : "")">
+                                <a href="@Url.Action("AttendanceLog", "attendance")"><i class="fa fa-address-book"></i> <span> Attendance Log</span></a>
+                            </li>
+                            <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                <a href="@Url.Action("index", "campaigns")"><i class="fa fa-circle-o"></i> <span> Campaigns</span></a>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-circle-o"></i> DTR
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
 
-                        <li class="@(ControllerServices.IsControllerName("attendance")&& ControllerServices.IsActionName("AttendanceLog") ? "active" : "")">
-                            <a href="@Url.Action("AttendanceLog", "attendance")"><i class="fa fa-address-book"></i> <span> Attendance Log</span></a>
-                        </li>
+                                    <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                        <a href="@Url.Action("index", "campaigns")"><i class="fa fa-circle-o"></i> <span> Campaigns</span></a>
+                                    </li>
+                                    <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("shifts") ? "active" : "")">
+                                        <a href="@Url.Action("shifts", "campaigns")"><i class="fa fa-circle-o"></i> <span> Shifts</span></a>
+                                    </li>
+                                    <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
+                                        <a href="@Url.Action("userscampaignshift", "campaigns")"><i class="fa fa-circle-o"></i> <span> Users in Campaign Shifts</span></a>
+                                    </li>
 
-                        <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
-                            <a href="@Url.Action("index", "campaigns")"><i class="fa fa-circle-o"></i> <span> Campaigns</span></a>
-                        </li>
+                                    <li><a href="@Url.Action("index", "schedules")"><i class="fa fa-circle-o"></i> Generate Schedules</a></li>
+                                </ul>
+                            </li>
+                        }
 
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-circle-o"></i> DTR
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu">
 
-                                <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
-                                    <a href="@Url.Action("index", "campaigns")"><i class="fa fa-circle-o"></i> <span> Campaigns</span></a>
-                                </li>
-                                <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("shifts") ? "active" : "")">
-                                    <a href="@Url.Action("shifts", "campaigns")"><i class="fa fa-circle-o"></i> <span> Shifts</span></a>
-                                </li>
-                                <li class="@(ControllerServices.IsControllerName("campaigns")&& ControllerServices.IsActionName("index") ? "active" : "")">
-                                    <a href="@Url.Action("userscampaignshift", "campaigns")"><i class="fa fa-circle-o"></i> <span> Users in Campaign Shifts</span></a>
-                                </li>
-                                
-                                <li><a href="@Url.Action("index", "schedules")"><i class="fa fa-circle-o"></i> Generate Schedules</a></li>
-                            </ul>
-                        </li>
+
 
                     </ul>
 
@@ -203,6 +224,8 @@
 
                 </li>
             }
+
+
             @{
 
 

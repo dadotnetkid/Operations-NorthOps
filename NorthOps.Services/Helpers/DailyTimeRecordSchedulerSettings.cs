@@ -89,9 +89,14 @@ namespace NorthOps.Services.Helpers
                 // Update the appointment in your data context
                 var dailyTimeRecords = unitOfWork.DailyTimeRecordsRepo.Find(m => m.Id == appointment.Id);
                 dailyTimeRecords.ModifiedBy=UserId;
+                if (dailyTimeRecords.OriginalDateFrom == null)
+                {
+                    dailyTimeRecords.OriginalDateFrom = dailyTimeRecords.DateFrom;
+                    dailyTimeRecords.OriginalDateTo = dailyTimeRecords.DateTo;
+                }
+                
                 dailyTimeRecords.DateFrom = appointment.DateFrom;
                 dailyTimeRecords.DateTo = appointment.DateTo;
-                
                 unitOfWork.Save();
             }
         }

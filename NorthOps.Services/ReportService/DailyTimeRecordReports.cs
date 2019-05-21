@@ -72,6 +72,12 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
     private XRTableCell xrTableCell31;
     private XRTableCell xrTableCell32;
     private XRLabel xrLabel3;
+    private XRTableCell xrTableCell33;
+    private XRTableCell xrTableCell34;
+    private XRTableCell xrTableCell36;
+    private XRTableCell xrTableCell35;
+    private XRTableCell xrTableCell38;
+    private XRTableCell xrTableCell37;
 
     /// <summary>
     /// Required designer variable.
@@ -127,8 +133,11 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell2 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell3 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell25 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell34 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell38 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell4 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell36 = new DevExpress.XtraReports.UI.XRTableCell();
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrTable2 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -136,8 +145,12 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell7 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell8 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell26 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell33 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell37 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell9 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell10 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell35 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.DetailReport1 = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail2 = new DevExpress.XtraReports.UI.DetailBand();
             this.xrTable3 = new DevExpress.XtraReports.UI.XRTable();
@@ -163,21 +176,20 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell27 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell28 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell29 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
+            this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable7 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow8 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell30 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell31 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell32 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -269,7 +281,7 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             // 
             this.xrLabel1.Dpi = 100F;
             this.xrLabel1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
-            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(239.5833F, 10.00001F);
+            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(373.3335F, 10.00001F);
             this.xrLabel1.Name = "xrLabel1";
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel1.SizeF = new System.Drawing.SizeF(238.5417F, 23F);
@@ -294,7 +306,6 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.DetailReport.DataMember = "DailyTimeRecords";
             this.DetailReport.DataSource = this.objectDataSource1;
             this.DetailReport.Dpi = 100F;
-            this.DetailReport.Expanded = false;
             this.DetailReport.Level = 0;
             this.DetailReport.Name = "DetailReport";
             // 
@@ -303,7 +314,6 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.Detail1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable1});
             this.Detail1.Dpi = 100F;
-            this.Detail1.Expanded = false;
             this.Detail1.HeightF = 28.125F;
             this.Detail1.Name = "Detail1";
             // 
@@ -314,7 +324,7 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTable1.Name = "xrTable1";
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow1});
-            this.xrTable1.SizeF = new System.Drawing.SizeF(795F, 25F);
+            this.xrTable1.SizeF = new System.Drawing.SizeF(1043.462F, 25F);
             // 
             // xrTableRow1
             // 
@@ -326,8 +336,11 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell2,
             this.xrTableCell3,
             this.xrTableCell25,
+            this.xrTableCell34,
+            this.xrTableCell38,
             this.xrTableCell4,
-            this.xrTableCell5});
+            this.xrTableCell5,
+            this.xrTableCell36});
             this.xrTableRow1.Dpi = 100F;
             this.xrTableRow1.Name = "xrTableRow1";
             this.xrTableRow1.StylePriority.UseBorders = false;
@@ -351,7 +364,7 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell2.Dpi = 100F;
             this.xrTableCell2.Name = "xrTableCell2";
             this.xrTableCell2.Text = "xrTableCell2";
-            this.xrTableCell2.Weight = 0.78439513808434036D;
+            this.xrTableCell2.Weight = 0.90402408332492779D;
             // 
             // xrTableCell3
             // 
@@ -360,15 +373,33 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell3.Dpi = 100F;
             this.xrTableCell3.Name = "xrTableCell3";
             this.xrTableCell3.Text = "xrTableCell3";
-            this.xrTableCell3.Weight = 0.69965128218167227D;
+            this.xrTableCell3.Weight = 1.0223012546897956D;
             // 
             // xrTableCell25
             // 
             this.xrTableCell25.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "DailyTimeRecords.TimeRendered", "{0:n2}")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "DailyTimeRecords.TotalRenderedHrs", "{0:n2}")});
             this.xrTableCell25.Dpi = 100F;
             this.xrTableCell25.Name = "xrTableCell25";
-            this.xrTableCell25.Weight = 0.69965128218167227D;
+            this.xrTableCell25.Weight = 1.0768689663917714D;
+            // 
+            // xrTableCell34
+            // 
+            this.xrTableCell34.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "DailyTimeRecords.Absent")});
+            this.xrTableCell34.Dpi = 100F;
+            this.xrTableCell34.Name = "xrTableCell34";
+            this.xrTableCell34.Text = "xrTableCell34";
+            this.xrTableCell34.Weight = 0.82570209577005771D;
+            // 
+            // xrTableCell38
+            // 
+            this.xrTableCell38.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "DailyTimeRecords.Tardiness")});
+            this.xrTableCell38.Dpi = 100F;
+            this.xrTableCell38.Name = "xrTableCell38";
+            this.xrTableCell38.Text = "xrTableCell38";
+            this.xrTableCell38.Weight = 1.1500421796998448D;
             // 
             // xrTableCell4
             // 
@@ -377,7 +408,7 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell4.Dpi = 100F;
             this.xrTableCell4.Name = "xrTableCell4";
             this.xrTableCell4.Text = "xrTableCell4";
-            this.xrTableCell4.Weight = 1.5554264572599632D;
+            this.xrTableCell4.Weight = 1.8710384943511773D;
             // 
             // xrTableCell5
             // 
@@ -388,12 +419,20 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell5.Text = "xrTableCell5";
             this.xrTableCell5.Weight = 1.474351816747397D;
             // 
+            // xrTableCell36
+            // 
+            this.xrTableCell36.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "DailyTimeRecords.ModifyStatus")});
+            this.xrTableCell36.Dpi = 100F;
+            this.xrTableCell36.Name = "xrTableCell36";
+            this.xrTableCell36.Text = "xrTableCell36";
+            this.xrTableCell36.Weight = 1.474351816747397D;
+            // 
             // ReportHeader
             // 
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable2});
             this.ReportHeader.Dpi = 100F;
-            this.ReportHeader.Expanded = false;
             this.ReportHeader.HeightF = 61.45833F;
             this.ReportHeader.Name = "ReportHeader";
             // 
@@ -404,7 +443,7 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTable2.Name = "xrTable2";
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
-            this.xrTable2.SizeF = new System.Drawing.SizeF(795F, 25F);
+            this.xrTable2.SizeF = new System.Drawing.SizeF(1043.462F, 25F);
             // 
             // xrTableRow2
             // 
@@ -413,8 +452,11 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell7,
             this.xrTableCell8,
             this.xrTableCell26,
+            this.xrTableCell33,
+            this.xrTableCell37,
             this.xrTableCell9,
-            this.xrTableCell10});
+            this.xrTableCell10,
+            this.xrTableCell35});
             this.xrTableRow2.Dpi = 100F;
             this.xrTableRow2.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrTableRow2.Name = "xrTableRow2";
@@ -435,35 +477,61 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell7.Dpi = 100F;
             this.xrTableCell7.Name = "xrTableCell7";
             this.xrTableCell7.Text = "Time In";
-            this.xrTableCell7.Weight = 0.78439513808434036D;
+            this.xrTableCell7.Weight = 0.90402417267271273D;
             // 
             // xrTableCell8
             // 
             this.xrTableCell8.Dpi = 100F;
             this.xrTableCell8.Name = "xrTableCell8";
             this.xrTableCell8.Text = "Time Out";
-            this.xrTableCell8.Weight = 0.699651546091578D;
+            this.xrTableCell8.Weight = 1.0223013042158513D;
             // 
             // xrTableCell26
             // 
             this.xrTableCell26.Dpi = 100F;
             this.xrTableCell26.Name = "xrTableCell26";
             this.xrTableCell26.Text = "Rendered";
-            this.xrTableCell26.Weight = 0.699651546091578D;
+            this.xrTableCell26.Weight = 0.9990711030693592D;
+            // 
+            // xrTableCell33
+            // 
+            this.xrTableCell33.Dpi = 100F;
+            this.xrTableCell33.Name = "xrTableCell33";
+            this.xrTableCell33.Text = "Absent";
+            this.xrTableCell33.Weight = 0.81372745230338839D;
+            // 
+            // xrTableCell37
+            // 
+            this.xrTableCell37.Dpi = 100F;
+            this.xrTableCell37.Name = "xrTableCell37";
+            this.xrTableCell37.Text = "Tardiness";
+            this.xrTableCell37.Weight = 1.0680389267484498D;
             // 
             // xrTableCell9
             // 
             this.xrTableCell9.Dpi = 100F;
             this.xrTableCell9.Name = "xrTableCell9";
             this.xrTableCell9.Text = "Created By";
-            this.xrTableCell9.Weight = 1.5554263253050105D;
+            this.xrTableCell9.Weight = 1.9092271618839691D;
             // 
             // xrTableCell10
             // 
             this.xrTableCell10.Dpi = 100F;
             this.xrTableCell10.Name = "xrTableCell10";
             this.xrTableCell10.Text = "Modified By";
-            this.xrTableCell10.Weight = 1.4743518167473972D;
+            this.xrTableCell10.Weight = 1.4315865360264963D;
+            // 
+            // xrTableCell35
+            // 
+            this.xrTableCell35.Dpi = 100F;
+            this.xrTableCell35.Name = "xrTableCell35";
+            this.xrTableCell35.Text = "Status";
+            this.xrTableCell35.Weight = 1.4743504641372374D;
+            // 
+            // objectDataSource1
+            // 
+            this.objectDataSource1.DataSource = typeof(NorthOps.Models.ViewModels.DailyTimeRecordViewModel);
+            this.objectDataSource1.Name = "objectDataSource1";
             // 
             // DetailReport1
             // 
@@ -473,6 +541,7 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.DetailReport1.DataMember = "Overtimes";
             this.DetailReport1.DataSource = this.objectDataSource1;
             this.DetailReport1.Dpi = 100F;
+            this.DetailReport1.Expanded = false;
             this.DetailReport1.Level = 1;
             this.DetailReport1.Name = "DetailReport1";
             // 
@@ -645,6 +714,7 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.DetailReport2.DataMember = "RestDays";
             this.DetailReport2.DataSource = this.objectDataSource1;
             this.DetailReport2.Dpi = 100F;
+            this.DetailReport2.Expanded = false;
             this.DetailReport2.Level = 2;
             this.DetailReport2.Name = "DetailReport2";
             // 
@@ -712,11 +782,6 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell29.Text = "xrTableCell29";
             this.xrTableCell29.Weight = 0.8144651450460294D;
             // 
-            // objectDataSource1
-            // 
-            this.objectDataSource1.DataSource = typeof(NorthOps.Models.ViewModels.DailyTimeRecordViewModel);
-            this.objectDataSource1.Name = "objectDataSource1";
-            // 
             // GroupHeader1
             // 
             this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
@@ -727,6 +792,20 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.GroupHeader1.HeightF = 56.25F;
             this.GroupHeader1.Name = "GroupHeader1";
             this.GroupHeader1.StylePriority.UseFont = false;
+            // 
+            // xrLabel3
+            // 
+            this.xrLabel3.Dpi = 100F;
+            this.xrLabel3.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0.0001271566F, 0F);
+            this.xrLabel3.Name = "xrLabel3";
+            this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 5, 5, 100F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(198.75F, 23F);
+            this.xrLabel3.StylePriority.UseFont = false;
+            this.xrLabel3.StylePriority.UsePadding = false;
+            this.xrLabel3.StylePriority.UseTextAlignment = false;
+            this.xrLabel3.Text = "Rest Day";
+            this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrTable7
             // 
@@ -772,20 +851,6 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.xrTableCell32.Text = "Modified By";
             this.xrTableCell32.Weight = 0.81446505837378869D;
             // 
-            // xrLabel3
-            // 
-            this.xrLabel3.Dpi = 100F;
-            this.xrLabel3.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold);
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0.0001271566F, 0F);
-            this.xrLabel3.Name = "xrLabel3";
-            this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 5, 5, 100F);
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(198.75F, 23F);
-            this.xrLabel3.StylePriority.UseFont = false;
-            this.xrLabel3.StylePriority.UsePadding = false;
-            this.xrLabel3.StylePriority.UseTextAlignment = false;
-            this.xrLabel3.Text = "Rest Day";
-            this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
             // DailyTimeRecordReports
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -798,15 +863,18 @@ public class DailyTimeRecordReports : DevExpress.XtraReports.UI.XtraReport
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.objectDataSource1});
             this.DataSource = this.objectDataSource1;
+            this.Landscape = true;
             this.Margins = new System.Drawing.Printing.Margins(32, 23, 41, 22);
+            this.PageHeight = 850;
+            this.PageWidth = 1100;
             this.Version = "16.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrTable5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 

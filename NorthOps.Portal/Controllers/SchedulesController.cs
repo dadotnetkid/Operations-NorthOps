@@ -31,7 +31,7 @@ namespace NorthOps.Portal.Controllers
         [ValidateInput(false)]
         public ActionResult SchedulesGridViewPartial()
         {
-            return PartialView("_SchedulesGridViewPartial", scheduleModel.ToList());
+            return PartialView("_SchedulesGridViewPartial", scheduleModel.OrderByDescending(m=>m.CreatedDate).ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -44,6 +44,7 @@ namespace NorthOps.Portal.Controllers
                 {
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = UserId;
+                    item.CreatedDate = DateTime.Now;
                     unitOfWork.SchedulesRepo.Insert(item);
                     unitOfWork.Save();
                 }
@@ -55,7 +56,7 @@ namespace NorthOps.Portal.Controllers
             else
                 ViewData["EditError"] = "Please, correct all errors.";
 
-            return PartialView("_SchedulesGridViewPartial", scheduleModel.ToList());
+            return PartialView("_SchedulesGridViewPartial", scheduleModel.OrderByDescending(m => m.CreatedDate).ToList());
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult SchedulesGridViewPartialUpdate([ModelBinder(typeof(DevExpressEditorsBinder))]Models.Schedules item)
@@ -66,6 +67,7 @@ namespace NorthOps.Portal.Controllers
                 try
                 {
                     item.UserId = UserId;
+                    
                     unitOfWork.SchedulesRepo.Update(item);
                     unitOfWork.Save();
                 }
@@ -77,7 +79,7 @@ namespace NorthOps.Portal.Controllers
             else
                 ViewData["EditError"] = "Please, correct all errors.";
 
-            return PartialView("_SchedulesGridViewPartial", scheduleModel.ToList());
+            return PartialView("_SchedulesGridViewPartial", scheduleModel.OrderByDescending(m => m.CreatedDate).ToList());
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult SchedulesGridViewPartialDelete([ModelBinder(typeof(DevExpressEditorsBinder))]string Id)
@@ -96,7 +98,7 @@ namespace NorthOps.Portal.Controllers
                 }
             }
 
-            return PartialView("_SchedulesGridViewPartial", scheduleModel.ToList());
+            return PartialView("_SchedulesGridViewPartial", scheduleModel.OrderByDescending(m => m.CreatedDate).ToList());
         }
         public ActionResult AddEditSchedulePartial([ModelBinder(typeof(DevExpressEditorsBinder))]System.String scheduleId)
         {
@@ -130,6 +132,7 @@ namespace NorthOps.Portal.Controllers
                             TimeZoneInfo.ConvertTime(m.ScheduleDateFrom, TimeZoneInfo.FindSystemTimeZoneById(TimeZone));
                         m.ScheduleDateTo =
                             TimeZoneInfo.ConvertTime(m.ScheduleDateTo, TimeZoneInfo.FindSystemTimeZoneById(TimeZone));
+                
                     });
             }
             return PartialView("_SchedulerPartial", appointments);

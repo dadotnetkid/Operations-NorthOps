@@ -103,5 +103,11 @@ namespace NorthOps.Ops.Controllers
             var model = unitOfWork.NotificationTemplatesRepo.Get();
             return PartialView("_NotificationsTemplatesGridViewPartial", model);
         }
+
+        public ActionResult AddEditNotificationTemplatesPartial([ModelBinder(typeof(DevExpressEditorsBinder))] string _Id )
+        {
+            var model = unitOfWork.NotificationTemplatesRepo.Find(m => m.Id == _Id);
+            return PartialView("_AddEditNotificationsTemplatesPartial", model);
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using NorthOps.Models.Config;
 using NorthOps.Models.Repository;
 using NorthOps.Models.ViewModels;
 
@@ -21,7 +22,18 @@ namespace NorthOps.Models
             // Add custom user claims here
             return userIdentity;
         }
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(ApplicationUserManager manager, string authenticationType)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
 
+            // Add custom user claims here
+            userIdentity.AddClaim(new Claim("FullName", this.FullName));
+            userIdentity.AddClaim(new Claim("Email", this.Email));
+            userIdentity.AddClaim(new Claim("DepartmentId", this.DepartmentId.ToString()));
+            // Add custom user claims here
+            return userIdentity;
+        }
         public string FullName
         {
             get

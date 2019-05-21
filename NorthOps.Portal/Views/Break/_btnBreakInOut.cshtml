@@ -6,6 +6,7 @@
         {
             settings.Properties.ValueField = "Id";
             settings.Properties.TextField = "BreakType";
+
         }).BindList(new UnitOfWork().BreakTypesRepo.Get()).GetHtml()
     </div>
     <div class="col-lg-6" >
@@ -19,6 +20,8 @@
                 settings.RouteValues = new {Controller = "Break", Action = "BreakInOutPartial", BreakInOut = BreakInOut.Out};
                 settings.Text = "Break Out";
                 settings.UseSubmitBehavior = true;
+                settings.ClientSideEvents.Click = "function(s,e){disable(s)}";
+                settings.ClientEnabled = true;
             }).GetHtml();
         }
         else if (Model.EndTime == null)
@@ -30,6 +33,8 @@
                 settings.Name = "btnBreakIn";
                 settings.RouteValues = new {Controller = "Break", Action = "BreakInOutPartial", BreakInOut = BreakInOut.In};
                 settings.Text = "Break In";
+                settings.ClientSideEvents.Click = "function(s,e){disable(s)}";
+                settings.ClientEnabled = true;
             }).GetHtml();
         }
         else
@@ -40,6 +45,8 @@
                 settings.RouteValues = new {Controller = "Break", Action = "BreakInOutPartial", BreakInOut = BreakInOut.Out};
                 settings.Text = "Break Out";
                 settings.UseSubmitBehavior = true;
+                settings.ClientSideEvents.Click = "function(s,e){disable(s)}";
+                settings.ClientEnabled = true;
             }).GetHtml();
         }
     }

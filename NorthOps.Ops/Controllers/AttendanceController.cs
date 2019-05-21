@@ -16,6 +16,19 @@ namespace NorthOps.Ops.Controllers
     public class AttendanceController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
+
+        object AttendanceModel()
+        {
+            var model = unitOfWork.AttendancesRepo.Fetch().OrderByDescending(m => m.LogDateTime).Select(x => new
+            {
+                x.LogDateTime,
+                x.InOutState,
+                FullName = x.Biometrics.Users.FirstName + " " + x.Biometrics.Users.LastName,
+                x.Id
+            });
+            return model;
+        }
+
         // GET: Attendance
         public ActionResult AttendanceLog()
         {
@@ -26,8 +39,8 @@ namespace NorthOps.Ops.Controllers
         [ValidateInput(false)]
         public ActionResult AttendanceLogGridViewPartial()
         {
-            var model = unitOfWork.AttendancesRepo.Get();
-            return PartialView("_AttendanceLogGridViewPartial", model);
+
+            return PartialView("_AttendanceLogGridViewPartial", AttendanceModel());
         }
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> AttendanceLogGridViewPartialAddNew([ModelBinder(typeof(DevExpressEditorsBinder))]Attendances item, [ModelBinder(typeof(DevExpressEditorsBinder))] string userId)
@@ -43,11 +56,11 @@ namespace NorthOps.Ops.Controllers
                 ViewData["EditError"] = e.Message;
             }
 
-            var model = unitOfWork.AttendancesRepo.Get();
-            return PartialView("_AttendanceLogGridViewPartial", model);
+
+            return PartialView("_AttendanceLogGridViewPartial", AttendanceModel());
         }
         [HttpPost, ValidateInput(false)]
-        public async Task<ActionResult> GetAttendanceLog(DateTime dateFrom,DateTime dateTo)
+        public async Task<ActionResult> GetAttendanceLog(DateTime dateFrom, DateTime dateTo)
         {
             try
             {
@@ -59,8 +72,8 @@ namespace NorthOps.Ops.Controllers
                 ViewData["EditError"] = e.Message;
             }
 
-            var model = unitOfWork.AttendancesRepo.Get();
-            return PartialView("_AttendanceLogGridViewPartial", model);
+
+            return PartialView("_AttendanceLogGridViewPartial", AttendanceModel());
         }
 
 
@@ -77,8 +90,8 @@ namespace NorthOps.Ops.Controllers
                 ViewData["EditError"] = e.Message;
             }
 
-            var model = unitOfWork.AttendancesRepo.Get();
-            return PartialView("_AttendanceLogGridViewPartial", model);
+
+            return PartialView("_AttendanceLogGridViewPartial", AttendanceModel());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -86,7 +99,7 @@ namespace NorthOps.Ops.Controllers
         {
             try
             {
-                unitOfWork.AttendancesRepo.Delete(m=>m.Id==Id);
+                unitOfWork.AttendancesRepo.Delete(m => m.Id == Id);
                 await unitOfWork.SaveAsync();
             }
             catch (Exception e)
@@ -94,8 +107,8 @@ namespace NorthOps.Ops.Controllers
                 ViewData["EditError"] = e.Message;
             }
 
-            var model = unitOfWork.AttendancesRepo.Get();
-            return PartialView("_AttendanceLogGridViewPartial", model);
+
+            return PartialView("_AttendanceLogGridViewPartial", AttendanceModel());
         }
 
         public ActionResult AddEditAttendancePartial([ModelBinder(typeof(DevExpressEditorsBinder))] Attendances item)

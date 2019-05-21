@@ -1,0 +1,47 @@
+﻿<div class="row">
+
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEdit(btn =>
+           {
+               btn.Name = "DateLogFrom";
+               btn.Width = Unit.Percentage(100);
+               btn.Properties.Caption = "Date From";
+               btn.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+           }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().DateEdit(btn =>
+           {
+               btn.Name = "DateLogTo";
+               btn.Width = Unit.Percentage(100);
+               btn.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+               btn.Properties.Caption = "Date To";
+           }).GetHtml();
+        }
+    </div>
+    <div class="col-lg-3">
+        @{
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnGenerate";
+                btn.ControlStyle.CssClass = "margin-top-36";
+                   // btn.ClientSideEvents.Click = "function(s,e){submitCallback(s,e);}";
+                   btn.RouteValues = new { Controller = "DailyTimeRecordReport", Action = "dtrReportGeneratePartial", isGenerated = true, UserId = User.Identity.GetUserId() };
+                btn.UseSubmitBehavior = true;
+                btn.Text = "Generate";
+            }).GetHtml();
+            Html.DevExpress().Button(btn =>
+            {
+                btn.Name = "btnSearch";
+                btn.ControlStyle.CssClass = "margin-top-36";
+                   // btn.ClientSideEvents.Click = "function(s,e){submitCallback(s,e);}";
+                   btn.RouteValues = new { Controller = "DailyTimeRecordReport", Action = "dtrReportGeneratePartial", isGenerated = false, UserId = User.Identity.GetUserId() };
+                btn.UseSubmitBehavior = true;
+                btn.Text = "Search";
+            }).GetHtml();
+        }
+    </div>
+</div>

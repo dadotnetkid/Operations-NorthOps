@@ -5,33 +5,33 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="094b08693cd7459295a9f21a5b871251" Name="Diagram1" ZoomLevel="75">
-        <EntityTypeShape EntityType="northopsModel.AddressStateProvinces" Width="1.5" PointX="4.5" PointY="31.5" />
-        <EntityTypeShape EntityType="northopsModel.AddressTownCities" Width="1.5" PointX="6.75" PointY="31.25" />
-        <EntityTypeShape EntityType="northopsModel.ApplicantAnswers" Width="1.5" PointX="11.25" PointY="39.5" />
-        <EntityTypeShape EntityType="northopsModel.Applicants" Width="1.5" PointX="14.25" PointY="39.625" />
-        <EntityTypeShape EntityType="northopsModel.Biometrics" Width="1.5" PointX="11.25" PointY="74.75" />
-        <EntityTypeShape EntityType="northopsModel.Branch" Width="1.5" PointX="6.75" PointY="52.25" />
-        <EntityTypeShape EntityType="northopsModel.Campaigns" Width="1.5" PointX="0.75" PointY="39.625" />
-        <EntityTypeShape EntityType="northopsModel.Categories" Width="1.5" PointX="2.25" PointY="20.5" />
-        <EntityTypeShape EntityType="northopsModel.Choices" Width="1.5" PointX="9" PointY="21.625" />
-        <EntityTypeShape EntityType="northopsModel.Departments" Width="1.5" PointX="6.75" PointY="49.75" />
-        <EntityTypeShape EntityType="northopsModel.Divisions" Width="1.5" PointX="6.75" PointY="34.75" />
-        <EntityTypeShape EntityType="northopsModel.EducationAttainments" Width="1.5" PointX="11.25" PointY="80.375" />
-        <EntityTypeShape EntityType="northopsModel.EmployeeNotications" Width="1.5" PointX="11.25" PointY="25" />
-        <EntityTypeShape EntityType="northopsModel.EmploymentHistories" Width="1.5" PointX="11.25" PointY="22" />
+        <EntityTypeShape EntityType="northopsModel.AddressStateProvinces" Width="1.5" PointX="4.5" PointY="37.5" />
+        <EntityTypeShape EntityType="northopsModel.AddressTownCities" Width="1.5" PointX="6.75" PointY="37.375" />
+        <EntityTypeShape EntityType="northopsModel.ApplicantAnswers" Width="1.5" PointX="11.25" PointY="38.125" />
+        <EntityTypeShape EntityType="northopsModel.Applicants" Width="1.5" PointX="11.25" PointY="46.25" />
+        <EntityTypeShape EntityType="northopsModel.Biometrics" Width="1.5" PointX="11.25" PointY="76.875" />
+        <EntityTypeShape EntityType="northopsModel.Branch" Width="1.5" PointX="6.75" PointY="54.875" />
+        <EntityTypeShape EntityType="northopsModel.Campaigns" Width="1.5" PointX="0.75" PointY="42.25" />
+        <EntityTypeShape EntityType="northopsModel.Categories" Width="1.5" PointX="2.25" PointY="27" />
+        <EntityTypeShape EntityType="northopsModel.Choices" Width="1.5" PointX="9" PointY="28.25" />
+        <EntityTypeShape EntityType="northopsModel.Departments" Width="1.5" PointX="6.75" PointY="52.25" />
+        <EntityTypeShape EntityType="northopsModel.Divisions" Width="1.5" PointX="6.75" PointY="34.25" />
+        <EntityTypeShape EntityType="northopsModel.EducationAttainments" Width="1.5" PointX="11.25" PointY="82.5" />
+        <EntityTypeShape EntityType="northopsModel.EmployeeNotications" Width="1.5" PointX="11.25" PointY="31.125" />
+        <EntityTypeShape EntityType="northopsModel.EmploymentHistories" Width="1.5" PointX="11.25" PointY="24.5" />
         <EntityTypeShape EntityType="northopsModel.Equivalents" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="northopsModel.Exams" Width="1.5" PointX="4.5" PointY="19.25" />
-        <EntityTypeShape EntityType="northopsModel.JobApplications" Width="1.5" PointX="11.25" PointY="83.5" />
+        <EntityTypeShape EntityType="northopsModel.Exams" Width="1.5" PointX="4.5" PointY="25.75" />
+        <EntityTypeShape EntityType="northopsModel.JobApplications" Width="1.5" PointX="11.25" PointY="85.625" />
         <EntityTypeShape EntityType="northopsModel.NotificationsTemplates" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="northopsModel.PersonalityResults" Width="1.5" PointX="11.25" PointY="27.5" />
+        <EntityTypeShape EntityType="northopsModel.PersonalityResults" Width="1.5" PointX="11.25" PointY="33.625" />
         <EntityTypeShape EntityType="northopsModel.Positions" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="northopsModel.Questions" Width="1.5" PointX="6.75" PointY="21.375" />
-        <EntityTypeShape EntityType="northopsModel.Shifts" Width="1.5" PointX="3" PointY="88" />
-        <EntityTypeShape EntityType="northopsModel.TypingSpeeds" Width="1.5" PointX="6.75" PointY="18.25" />
-        <EntityTypeShape EntityType="northopsModel.UserClaims" Width="1.5" PointX="11.25" PointY="71.375" />
-        <EntityTypeShape EntityType="northopsModel.UserLogins" Width="1.5" PointX="11.25" PointY="77.875" />
-        <EntityTypeShape EntityType="northopsModel.UserRoles" Width="1.5" PointX="6.75" PointY="47.25" />
-        <EntityTypeShape EntityType="northopsModel.Videos" Width="1.5" PointX="4.5" PointY="24" />
+        <EntityTypeShape EntityType="northopsModel.Questions" Width="1.5" PointX="6.75" PointY="27.875" />
+        <EntityTypeShape EntityType="northopsModel.Shifts" Width="1.5" PointX="3" PointY="90.75" />
+        <EntityTypeShape EntityType="northopsModel.TypingSpeeds" Width="1.5" PointX="6.75" PointY="24.875" />
+        <EntityTypeShape EntityType="northopsModel.UserClaims" Width="1.5" PointX="11.25" PointY="73.5" />
+        <EntityTypeShape EntityType="northopsModel.UserLogins" Width="1.5" PointX="11.25" PointY="80" />
+        <EntityTypeShape EntityType="northopsModel.UserRoles" Width="1.5" PointX="6.75" PointY="49.75" />
+        <EntityTypeShape EntityType="northopsModel.Videos" Width="1.5" PointX="4.5" PointY="30.625" />
         <AssociationConnector Association="northopsModel.FK_dbo_AddressTownCities_dbo_AddressStateProvinces_StateProvinceId" />
         <AssociationConnector Association="northopsModel.FK_ApplicantAnswer_ChoiceId" />
         <AssociationConnector Association="northopsModel.FK_ApplicantAnswer_QuestionId" />
@@ -43,21 +43,20 @@
         <AssociationConnector Association="northopsModel.FK_Video_ExamId" />
         <AssociationConnector Association="northopsModel.FK_Question_VideoId" />
         <AssociationConnector Association="northopsModel.CampaignsInShifts" />
-        <EntityTypeShape EntityType="northopsModel.Inventory" Width="1.5" PointX="11.25" PointY="35.75" />
-        <EntityTypeShape EntityType="northopsModel.Items" Width="1.5" PointX="9" PointY="27.5" />
-        <EntityTypeShape EntityType="northopsModel.ItemTypes" Width="1.5" PointX="6.75" PointY="28.125" />
+        <EntityTypeShape EntityType="northopsModel.Inventory" Width="1.5" PointX="14.25" PointY="42.25" />
+        <EntityTypeShape EntityType="northopsModel.Items" Width="1.5" PointX="12" PointY="54.125" />
+        <EntityTypeShape EntityType="northopsModel.ItemTypes" Width="1.5" PointX="9.75" PointY="54.625" />
         <AssociationConnector Association="northopsModel.FK_Inventory_ItemTypes" />
         <AssociationConnector Association="northopsModel.FK_Items_ItemTypes" />
-        <EntityTypeShape EntityType="northopsModel.Recordings" Width="1.5" PointX="3" PointY="38.25" />
+        <EntityTypeShape EntityType="northopsModel.Recordings" Width="1.5" PointX="3" PointY="40.875" />
         <AssociationConnector Association="northopsModel.FK_Recordings_Campaigns" />
-        <EntityTypeShape EntityType="northopsModel.Documents" Width="1.5" PointX="6" PointY="39.375" />
+        <EntityTypeShape EntityType="northopsModel.Documents" Width="1.5" PointX="6" PointY="41.875" />
         <AssociationConnector Association="northopsModel.FK_Documents_Campaigns" />
-        <EntityTypeShape EntityType="northopsModel.UsersInCampaignShift" Width="1.5" PointX="11.25" PointY="59.875" />
+        <EntityTypeShape EntityType="northopsModel.UsersInCampaignShift" Width="1.5" PointX="11.25" PointY="62.5" />
         <AssociationConnector Association="northopsModel.FK_UsersInCampaignShift_Campaigns" />
         <AssociationConnector Association="northopsModel.FK_UsersInCampaignShift_Shifts" />
-        <EntityTypeShape EntityType="northopsModel.Overtimes" Width="1.5" PointX="11.25" PointY="63.875" />
-        <EntityTypeShape EntityType="northopsModel.Leaves" Width="1.5" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="northopsModel.Users" Width="1.5" PointX="9" PointY="31.625" />
+        <EntityTypeShape EntityType="northopsModel.Overtimes" Width="1.5" PointX="11.25" PointY="65.75" />
+        <EntityTypeShape EntityType="northopsModel.Users" Width="1.5" PointX="9" PointY="34.125" />
         <AssociationConnector Association="northopsModel.FK_Users_AddressTownCities" />
         <AssociationConnector Association="northopsModel.FK_ApplicantAnswer_UserId" />
         <AssociationConnector Association="northopsModel.FK_Applicants_UserId" />
@@ -79,35 +78,42 @@
         <AssociationConnector Association="northopsModel.FK_UsersInCampaignShift_Users" />
         <AssociationConnector Association="northopsModel.UsersInCampaigns" />
         <AssociationConnector Association="northopsModel.UsersInRoles" />
-        <EntityTypeShape EntityType="northopsModel.ErrorTypes" Width="1.5" PointX="0.75" PointY="33.625" />
+        <EntityTypeShape EntityType="northopsModel.ErrorTypes" Width="1.5" PointX="0.75" PointY="36.125" />
         <AssociationConnector Association="northopsModel.FK_Recordings_ErrorTypes" />
         <AssociationConnector Association="northopsModel.FK_Recordings_CreatedBy" />
-        <EntityTypeShape EntityType="northopsModel.DailyTimeRecords" Width="1.5" PointX="13.5" PointY="43.25" />
+        <EntityTypeShape EntityType="northopsModel.DailyTimeRecords" Width="1.5" PointX="16.5" PointY="48.5" />
         <AssociationConnector Association="northopsModel.FK_DailyTimeRecords_Users" />
         <AssociationConnector Association="northopsModel.FK_DailyTimeRecords_Users1" />
         <AssociationConnector Association="northopsModel.FK_Overtimes_CreatedBy" />
         <AssociationConnector Association="northopsModel.FK_Overtimes_ModifiedBy" />
-        <EntityTypeShape EntityType="northopsModel.Schedules" Width="1.5" PointX="11.25" PointY="53.5" />
+        <EntityTypeShape EntityType="northopsModel.Schedules" Width="1.5" PointX="11.25" PointY="58.5" />
         <AssociationConnector Association="northopsModel.FK_DailyTimeRecords_Schedules" />
         <AssociationConnector Association="northopsModel.FK_Schedules_Users" />
-        <EntityTypeShape EntityType="northopsModel.Holidays" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="northopsModel.Attendances" Width="1.5" PointX="13.5" PointY="74.125" />
+        <EntityTypeShape EntityType="northopsModel.Holidays" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="northopsModel.Attendances" Width="1.5" PointX="13.5" PointY="76.25" />
         <AssociationConnector Association="northopsModel.FK_Attendances_Biometrics" />
-        <EntityTypeShape EntityType="northopsModel.MachineConfigs" Width="1.5" PointX="4.75" PointY="3.75" />
-        <EntityTypeShape EntityType="northopsModel.Sanctions" Width="1.5" PointX="5.25" PointY="44.125" />
+        <EntityTypeShape EntityType="northopsModel.MachineConfigs" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="northopsModel.Sanctions" Width="1.5" PointX="5.25" PointY="46.625" />
         <AssociationConnector Association="northopsModel.CoachingLogsInSanctions" />
-        <EntityTypeShape EntityType="northopsModel.ViolationTypes" Width="1.5" PointX="12" PointY="33.125" />
-        <EntityTypeShape EntityType="northopsModel.RestDays" Width="1.5" PointX="11.25" PointY="67.75" />
+        <EntityTypeShape EntityType="northopsModel.ViolationTypes" Width="1.5" PointX="12" PointY="28.625" />
+        <EntityTypeShape EntityType="northopsModel.RestDays" Width="1.5" PointX="11.25" PointY="69.875" />
         <AssociationConnector Association="northopsModel.FK_DayOff_Users" />
         <AssociationConnector Association="northopsModel.FK_RestDays_CreatedBy" />
         <AssociationConnector Association="northopsModel.FK_RestDays_Users" />
-        <EntityTypeShape EntityType="northopsModel.Violations" Width="1.5" PointX="14.25" PointY="35" />
+        <EntityTypeShape EntityType="northopsModel.Violations" Width="1.5" PointX="14.25" PointY="37.5" />
         <AssociationConnector Association="northopsModel.FK_Violations_Users" />
         <AssociationConnector Association="northopsModel.FK_Violations_ViolationTypes" />
-        <EntityTypeShape EntityType="northopsModel.Breaks" Width="1.5" PointX="11.25" PointY="43.625" />
-        <EntityTypeShape EntityType="northopsModel.BreakTypes" Width="1.5" PointX="9" PointY="51.125" />
+        <EntityTypeShape EntityType="northopsModel.Breaks" Width="1.5" PointX="14.25" PointY="46.25" />
+        <EntityTypeShape EntityType="northopsModel.BreakTypes" Width="1.5" PointX="12" PointY="49.625" />
         <AssociationConnector Association="northopsModel.FK_Breaks_BreakTypes" />
         <AssociationConnector Association="northopsModel.FK_Breaks_Users" />
+        <EntityTypeShape EntityType="northopsModel.LeaveTypes" Width="1.5" PointX="9" PointY="31.625" />
+        <EntityTypeShape EntityType="northopsModel.OvertimeAttendances" Width="1.5" PointX="13.5" PointY="66.25" />
+        <AssociationConnector Association="northopsModel.FK_OvertimeAttendances_OvertimeAttendances" />
+        <EntityTypeShape EntityType="northopsModel.Leaves" Width="1.5" PointX="17.25" PointY="37.625" />
+        <AssociationConnector Association="northopsModel.FK_Leaves_LeaveTypes" />
+        <AssociationConnector Association="northopsModel.FK_Leaves_ModifiedBy" />
+        <AssociationConnector Association="northopsModel.FK_Leaves_Users" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
